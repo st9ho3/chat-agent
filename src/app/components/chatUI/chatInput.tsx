@@ -5,11 +5,11 @@ import { Paperclip, Hammer } from 'lucide-react';
 import { useHomeContext } from '../../context/homeContext/homeContext';
 import { createMessage } from '@/app/services/services';
 
-const ChatInput: React.FC = () => {
-  const { state,dispatch } = useHomeContext();
-  const [text, setText] = useState('');
+const ChatInput = () => {
+  const { state, dispatch } = useHomeContext();
+  const [text, setText] = useState<string>('');
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = (e: React.FormEvent): void => {
     e.preventDefault();
     if (!text.trim()) return;
 

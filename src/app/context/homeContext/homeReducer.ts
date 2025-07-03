@@ -1,6 +1,5 @@
 import { getInitialMessages } from '../../services/helpers';
 
-
 // Initial state for the reducer
 const initialState: HomeState = {
   dialogExists: false,
