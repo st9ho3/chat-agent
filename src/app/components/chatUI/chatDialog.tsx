@@ -1,27 +1,35 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useRef, useState } from 'react'
 import Message from './message'
+import { useHomeContext } from '@/app/context/homeContext/homeContext';
+
+
+
 const ChatDialog = () => {
 
-  const messages = [
-  { user: "me", text: "Hey, how's it going today?" },
-  { user: "system", text: "I'm doing well, thanks for asking! How can I assist you?" },
-  { user: "me", text: "I'm looking for some information about the weather tomorrow." },
-  { user: "system", text: "Sure, I can help with that. What city are you interested in?" },
-  { user: "me", text: "New York City, please." },
-  { user: "system", text: "The forecast for New York City tomorrow is partly cloudy with a high of 75°F (24°C)." },
-  { user: "me", text: "Perfect, thanks!" },
-  { user: "system", text: "You're welcome! Is there anything else I can help with?" }
-];
+  const {state} = useHomeContext();
+  const messageRef = useRef<HTMLDivElement | null>(null);
 
-console.log(messages);
+  const scrollToBottom = () => {
+     const container = messageRef.current ? messageRef.current.parentElement : null;
+         if (container) {
+            container.scrollTop = container.scrollHeight;
+         }
+  };
+
+   useEffect(() => {
+        scrollToBottom();
+    }, [state.messages]);
 
   return (
    <div className="flex flex-col w-full h-4/5 mb-1 p-3 overflow-y-auto">
-    {messages.map((message) => (
-      <Message key={message.text} user={message.user} text={message.text} />
+    {state.messages.map((message) => (
+      <Message key={message.id} user={message.sender} text={message.message} />
+      
     ))}
+    <div ref={messageRef} />
   </div>
   )
 }
 
-export default ChatDialog
+export default ChatDialog;
