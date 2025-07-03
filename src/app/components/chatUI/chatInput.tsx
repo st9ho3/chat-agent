@@ -1,6 +1,6 @@
 "use client";
 import { Paperclip, Hammer } from 'lucide-react';
-import { useHomeContext } from '../context/homeContext/homeContext';
+import { useHomeContext } from '../../context/homeContext/homeContext';
 
 
 const ChatInput = () => {
@@ -13,7 +13,7 @@ const toggleDialog = (): void => {
     }  
     
     return (
-    <div className="border-1 w-full lg:w-1/2 lg:h-1/8 h-1/5 min-h-26 p-3 rounded-2xl border-gray-300">
+    <div className="border-1 w-full lg:h-1/8 h-1/6 min-h-26 p-3 rounded-2xl border-gray-300">
       <div className="flex ">
         <input type="text" className=" w-full h-1/4 p-2 focus:outline-none text-gray-500 placeholder:text-gray-400" placeholder="Type your message here..." />
         <button onClick={ !state.dialogExists ? toggleDialog : undefined} className="border-1 border-gray-400 text-gray-500 p-1 ml-1 rounded-md cursor-pointer h">Send</button>

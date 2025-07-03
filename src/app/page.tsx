@@ -1,17 +1,11 @@
-"use client";
 
-import ChatDialog from "./components/chatDialog";
-import ChatInput from "./components/chatInput";
-import { useHomeContext } from "./context/homeContext/homeContext";
+import ChatUI from "./components/chatUI/chatUI";
 
 export default function Home() {
-  const {state} = useHomeContext();
-
   
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen p-2">
-      { state.dialogExists && <ChatDialog />}
-     <ChatInput />
+    <div className="flex justify-end " >
+      <ChatUI />
     </div>
   );
 }

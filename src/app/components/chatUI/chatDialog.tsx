@@ -16,7 +16,7 @@ const ChatDialog = () => {
 console.log(messages);
 
   return (
-   <div className="flex flex-col  w-full lg:w-1/2 h-4/5 p-3 overflow-y-scroll ">
+   <div className="flex flex-col w-full h-4/5 mb-1 p-3 overflow-y-auto">
     {messages.map((message) => (
       <Message key={message.text} user={message.user} text={message.text} />
     ))}
