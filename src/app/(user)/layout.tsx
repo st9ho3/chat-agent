@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import HomeContextProvider from "../context/homeContext/homeContext";
 import Chat from "../components/chatUI/chat";
+import CreateButton from "../components/recipes/createButton";
 
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({
       >
         <HomeContextProvider>
           {children}
+          <CreateButton />
           <Chat />
         </HomeContextProvider>
       </body>

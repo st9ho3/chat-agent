@@ -6,6 +6,7 @@ const initialState: HomeState = {
   chatOpen: false,
   messages: getInitialMessages(),
   currentPage: 1,
+  isModalOpen: false
 };
 
 // The reducer function
@@ -27,6 +28,16 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
       return {
         ...state,
         currentPage: action.payload
+      }
+    case 'OPEN_MODAL':
+      return {
+        ...state,
+        isModalOpen: true
+      }
+    case 'CLOSE_MODAL':
+      return {
+        ...state,
+        isModalOpen: false
       }
     default:
       return state;

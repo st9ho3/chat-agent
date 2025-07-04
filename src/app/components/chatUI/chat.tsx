@@ -10,6 +10,7 @@ const Chat = () => {
       const toggleChat = (): void => {
         dispatch({ type: "TOGGLE_CHAT" });
       };
+      
   return (
      <div className="flex justify-end ">
       {!state.chatOpen ? (
@@ -27,8 +28,8 @@ const Chat = () => {
           >
             <X />
           </div>
-          <div className="fixed bottom-0 z-50 w-full m-auto lg:w-3/4 lg:left-200">
-            <ChatUI />
+          <div className="fixed bottom-0 z-50 w-full m-auto lg:w-3/4 xl:left-297 md:left-198 md:w-3/4">
+            <ChatUI isOpen={state.chatOpen} onClose={toggleChat} />
           </div>
           
         </>

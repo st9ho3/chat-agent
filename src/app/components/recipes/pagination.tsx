@@ -1,29 +1,64 @@
-"use client"
-import React, { use } from 'react'
-import Button from '../shared/sharedButton'
-import { paginationPages } from '@/app/services/helpers'
-import { useHomeContext } from '@/app/context/homeContext/homeContext'
+"use client";
+import React from 'react';
+import Button from '../shared/sharedButton';
+import { paginationPages } from '@/app/services/helpers';
+import { useHomeContext } from '@/app/context/homeContext/homeContext';
 
 
-const Pagination = ({items}: {items: Recipe[]}) => {
-  const {state, dispatch} = useHomeContext()
-  const pages = paginationPages(items, 10)
-  console.log(pages)
+const Pagination = ({ items }: { items: Recipe[] }) => {
+  const { state, dispatch } = useHomeContext();
+  const pages = paginationPages(items, 10);
+
+  const handlePrev = (): void => {
+    if (state.currentPage > 1) {
+      dispatch({ type: "CHOOSE_PAGE", payload: state.currentPage - 1 });
+    }
+  };
+
+  const handleNext = (): void => {
+    if (state.currentPage < pages.length) {
+      dispatch({ type: "CHOOSE_PAGE", payload: state.currentPage + 1 });
+    }
+  };
+
+  if (pages.length <= 1) {
+    return null; // Don't render pagination if there's only one page or less
+  }
 
   return (
-    <div className='absolute bottom-5 left-0 right-0 flex justify-center items-center mx-20'>
-      <Button text='Prev' />
-      <div className=' mx-5'>
+    <div className='absolute bottom-5 left-0 right-0 flex justify-center items-center mx-auto w-full max-w-md px-4'>
+      <Button 
+        text='Prev' 
+        action={handlePrev}
+      />
+      <div className='mx-5 flex items-center justify-center'>
         {pages.map((page) => (
-          <span key={page} onClick={() => dispatch({type: "CHOOSE_PAGE", payload: page })} className='w-10 h-10 p-1 mx-1 cursor-pointer text-gray-500 rounded-sm'>
+          <button 
+            key={page} 
+            onClick={() => dispatch({ type: "CHOOSE_PAGE", payload: page })} 
+            className={`
+              w-6 h-6 mx-1 
+              cursor-pointer 
+              text-gray-600 
+              rounded-md 
+              flex items-center justify-center
+              transition-colors duration-200
+              ${state.currentPage === page 
+                ? 'border-gray-400 border-1' 
+                : 'border-gray-200 hover:bg-gray-300'
+              }
+            `}
+          >
             {page}
-          </span>
+          </button>
         ))}
       </div>
-      <Button text='Next' />
+      <Button 
+        text='Next' 
+        action={handleNext} 
+      />
     </div>
-  )
-}
+  );
+};
 
-export default Pagination
-
+export default Pagination;

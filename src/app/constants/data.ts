@@ -167,33 +167,89 @@ export const recipes: Recipe[] = [
     dateCreated: new Date('2025-07-06'),
     category: 'dessert',
     imgPath: '/images/Apple Crumble.png'
+  },
+  {
+    id: 'R011',
+    title: 'Shrimp Scampi with Linguine',
+    totalCost: 15.00,
+    ingredients: [
+      { ingredient: 'Shrimp', quantity: 400, unit: 'g' },
+      { ingredient: 'Linguine', quantity: 300, unit: 'g' },
+      { ingredient: 'Garlic', quantity: 30, unit: 'g' },
+      { ingredient: 'White Wine', quantity: 100, unit: 'ml' },
+      { ingredient: 'Butter', quantity: 50, unit: 'g' },
+      { ingredient: 'Parsley', quantity: 10, unit: 'g' }
+    ],
+    createdBy: 'Chef Noah',
+    dateCreated: new Date('2025-07-04'),
+    category: 'main',
+    imgPath: '/images/Shrimp Scampi with Linguine.png'
+  },
+  {
+    id: 'R012',
+    title: 'Gazpacho',
+    totalCost: 6.20,
+    ingredients: [
+      { ingredient: 'Cucumbers', quantity: 200, unit: 'g' },
+      { ingredient: 'Red Bell Pepper', quantity: 150, unit: 'g' },
+      { ingredient: 'Onion', quantity: 50, unit: 'g' },
+      { ingredient: 'Tomato Juice', quantity: 500, unit: 'ml' },
+      { ingredient: 'Olive Oil', quantity: 40, unit: 'ml' },
+      { ingredient: 'Red Wine Vinegar', quantity: 20, unit: 'ml' }
+    ],
+    createdBy: 'Chef Isabel',
+    dateCreated: new Date('2025-07-05'),
+    category: 'starter',
+    imgPath: '/images/Gazpacho.png'
+  },
+  {
+    id: 'R013',
+    title: 'Apple Crumble',
+    totalCost: 7.80,
+    ingredients: [
+      { ingredient: 'Apples', quantity: 800, unit: 'g' },
+      { ingredient: 'Oats', quantity: 100, unit: 'g' },
+      { ingredient: 'Brown Sugar', quantity: 80, unit: 'g' },
+      { ingredient: 'Flour', quantity: 60, unit: 'g' },
+      { ingredient: 'Butter', quantity: 70, unit: 'g' },
+      { ingredient: 'Cinnamon', quantity: 5, unit: 'g' }
+    ],
+    createdBy: 'Baker James',
+    dateCreated: new Date('2025-07-06'),
+    category: 'dessert',
+    imgPath: '/images/Apple Crumble.png'
   }
 ];
 
 export const columns: Column[] = [
   {header: 'Food Name',
    accessor: 'foodName',
-   className: " text-gray-500 text-sm text-center md:text-left"
+   className: " text-gray-500 w-2/4 md:w-3/10 text-sm text-center md:text-left"
   },
   {
     header: 'Created By',
     accessor: 'createdBy',
-    className: "hidden md:table-cell text-gray-500 text-sm text-left pl-4"
+    className: "hidden md:table-cell md:w-1.5/10   text-gray-500 text-sm text-left pl-4"
   },
   {
     header: 'Date Created',
     accessor: 'dateCreated',
-    className: "hidden md:table-cell text-gray-500 text-sm text-left pl-4"
+    className: "hidden md:table-cell md:w-1.5/10   text-gray-500 text-sm text-left pl-4"
   },
   {
     header: 'Category',
     accessor: 'category',
-    className: "hidden md:table-cell text-gray-500 text-sm text-left pl-4"
+    className: "hidden md:table-cell md:w-1.5/10  text-gray-500 text-sm text-left pl-4"
   },
   {
     header: 'Cost',
     accessor: 'totalCost',
-    className: "text-gray-500 text-sm text-center md:text-left "
+    className: "hidden md:table-cell text-gray-500 text-sm md:w-1.5/10  text-center md:text-left md:pl-4 "
+  },
+  {
+    header: 'Actions',
+    accessor: 'actions',
+    className: "text-gray-500 text-sm md:w-1/10 text-center md:text-left pl-4 "
   }
 ]
 
