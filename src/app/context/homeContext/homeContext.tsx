@@ -3,11 +3,6 @@
 import {createContext, useContext, useReducer} from 'react'
 import {initialState, homeReducer} from './homeReducer'
 
-type Action =
-  | { type: "TOGGLE_DIALOG" }
-  | { type: "TOGGLE_CHAT" }
-  | { type: "UPDATE_MESSAGES"; payload: Message };
-
 interface HomeContextProps {
     state: typeof initialState,
     dispatch: React.Dispatch<Action>;

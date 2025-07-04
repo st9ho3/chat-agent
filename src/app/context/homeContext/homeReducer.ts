@@ -5,6 +5,7 @@ const initialState: HomeState = {
   dialogExists: false,
   chatOpen: false,
   messages: getInitialMessages(),
+  currentPage: 1,
 };
 
 // The reducer function
@@ -22,6 +23,11 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
         ...state,
         messages: updatedMessages,
       };
+    case 'CHOOSE_PAGE':
+      return {
+        ...state,
+        currentPage: action.payload
+      }
     default:
       return state;
   }

@@ -196,3 +196,4 @@ export const columns: Column[] = [
     className: "text-gray-500 text-sm text-left pl-4"
   }
 ]
+

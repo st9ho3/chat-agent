@@ -1,11 +1,18 @@
+"use client"
 import React from 'react'
 import { columns, recipes} from '@/app/constants/data'
+import { paginate } from '@/app/services/helpers'
+import { useHomeContext } from '@/app/context/homeContext/homeContext'
 
 const Table = () => {
+  const {state} = useHomeContext()
+  const paginateItems = paginate(4, state.currentPage, recipes)
+  const itemsToDisplay = paginateItems ? paginateItems : []
+  
   return (
-    <table className='w-full mb-3'>
+    <table className='w-full mb-3 '>
       <thead>
-        <tr >
+        <tr className='border-b-1 border-gray-200'>
             {columns.map((column) => (
                 <th
                 key={column.accessor}
@@ -18,7 +25,7 @@ const Table = () => {
       </thead>
       <tbody className='text-gray-500 text-md '>
             {
-                recipes.map((rec) =>
+                itemsToDisplay.map((rec) =>
                     <tr key={rec.id} className='border-b border-gray-200 h-13 text-sm'>
                         <td className='pl-4'>
                             <div className='flex items-center gap-2'>
