@@ -20,7 +20,7 @@ const ChatInput = () => {
   };
 
   return (
-    <form onSubmit={handleSend} className="border-1 w-full lg:h-1/8 h-1/6 min-h-26 p-3 rounded-2xl border-gray-300">
+    <form onSubmit={handleSend} className="border-1 w-full lg:h-1/8 h-1/6 min-h-26 p-3 rounded-2xl bg-white border-gray-300">
       <div className="flex">
         <input
           type="text"
