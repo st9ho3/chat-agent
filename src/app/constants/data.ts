@@ -173,7 +173,7 @@ export const recipes: Recipe[] = [
 export const columns: Column[] = [
   {header: 'Food Name',
    accessor: 'foodName',
-   className: " text-gray-500 text-sm text-left pl-4"
+   className: " text-gray-500 text-sm text-center md:text-left"
   },
   {
     header: 'Created By',
@@ -193,7 +193,7 @@ export const columns: Column[] = [
   {
     header: 'Cost',
     accessor: 'totalCost',
-    className: "text-gray-500 text-sm text-left pl-4"
+    className: "text-gray-500 text-sm text-center md:text-left "
   }
 ]
 

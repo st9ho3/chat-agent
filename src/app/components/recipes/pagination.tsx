@@ -3,15 +3,15 @@ import React, { use } from 'react'
 import Button from '../shared/sharedButton'
 import { paginationPages } from '@/app/services/helpers'
 import { useHomeContext } from '@/app/context/homeContext/homeContext'
-import { stat } from 'fs'
+
 
 const Pagination = ({items}: {items: Recipe[]}) => {
   const {state, dispatch} = useHomeContext()
-  const pages = paginationPages(items, 4)
-  
+  const pages = paginationPages(items, 10)
+  console.log(pages)
 
   return (
-    <div className='flex justify-center items-center mx-20'>
+    <div className='absolute bottom-5 left-0 right-0 flex justify-center items-center mx-20'>
       <Button text='Prev' />
       <div className=' mx-5'>
         {pages.map((page) => (

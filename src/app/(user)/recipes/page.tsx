@@ -7,8 +7,8 @@ import {Plus } from 'lucide-react'
 
 const RecipesPage = () => {
   return (
-    <div className=' w-full h-screen px-2 bg-white'>
-     <Header />
+    <div className='relative w-full h-screen px-2 bg-white'>
+      <Header />
       <Table />
       <Pagination items={recipes} />
      <div
