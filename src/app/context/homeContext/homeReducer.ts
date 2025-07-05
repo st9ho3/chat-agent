@@ -4,7 +4,7 @@ import { getInitialMessages } from '../../services/helpers';
 const initialState: HomeState = {
   dialogExists: false,
   chatOpen: false,
-  messages: getInitialMessages(),
+  messages: [], // getInitialMessages(),
   currentPage: 1,
   isModalOpen: false
 };

@@ -1,30 +1,68 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { Plus, Minus } from 'lucide-react'
 
 const Incremental = () => {
+  const [count, setCount] = useState<number>(0)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value === '' ? 0 : Number(e.target.value)
+    setCount(value)
+  }
+
+  const handleClick = (action: 'minus' | 'plus') => {
+    setIsEditing(false)             
+    if (action === 'plus') {
+      setCount(count + 1)
+    } else if (count > 0) {
+      setCount(count - 1)
+    }
+  }
+
+  const handleFocus = () => {
+    setIsEditing(true)
+  }
+
+  const handleBlur = () => {
+    if (count === 0) {
+      setIsEditing(false)
+    }
+  }
+
+  
+  const displayValue = isEditing && count === 0
+    ? ''
+    : count
+
   return (
-    <div className='flex items-center border border-gray-300 rounded-lg p-2 shadow-sm'>
-
-      <div
-        className='w-6 h-6 flex justify-center items-center border border-gray-400 rounded-full cursor-pointer
-                   hover:bg-gray-100 active:bg-gray-200 transition-colors duration-200' // Added hover and active classes
+    <div className="flex items-center ">
+      <button
+        type="button"
+        className="w-6 h-6 flex justify-center items-center bg-gray-100 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors duration-200"
         aria-label="Decrement count"
+        onClick={() => handleClick('minus')}
       >
-        <Minus color='gray' size={16} />
-      </div>
+        <Minus color="gray" size={16} />
+      </button>
 
-      
-      <div className='font-semibold text-2xl mx-2 text-gray-800'>
-        10
-      </div>
+      <input
+        type="number"
+        className="focus:outline-none px-2 w-18 text-center font-semibold text-2xl text-gray-800"
+        value={displayValue}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
 
-      <div
-        className='w-6 h-6 flex justify-center items-center border border-gray-400 rounded-full cursor-pointer
-                   hover:bg-gray-100 active:bg-gray-200 transition-colors duration-200' 
+      <button
+        type="button"
+        className="w-6 h-6 flex justify-center items-center bg-gray-100 rounded-full hover:bg-gray-200 active:bg-gray-300 transition-colors duration-200"
         aria-label="Increment count"
+        onClick={() => handleClick('plus')}
       >
-        <Plus color='gray' size={16} />
-      </div>
+        <Plus color="gray" size={16} />
+      </button>
     </div>
   )
 }

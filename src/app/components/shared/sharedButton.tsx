@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-const Button = ({text, action}: {text:string, action: any}) => {
+const Button = ({ text, action }: ButtonProps) => {
   return (
-    <div onClick={action} className="border-1 border-gray-400 text-gray-500 w-fit px-1 ml-1 rounded-md cursor-pointer">
+    <button
+      onClick={action}
+      className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-md font-medium text-gray-800 transition-colors hover:bg-gray-200 cursor-auto "
+    >
       {text}
-    </div>
-  )
-}
+    </button>
+  );
+};
 
-export default Button
+export default Button;

@@ -253,3 +253,47 @@ export const columns: Column[] = [
   }
 ]
 
+
+
+////////////////////////////
+
+
+export const ingredientsData = [
+  {
+    id: 1,
+    icon: '🍌',
+    iconBgColor: 'bg-yellow-100',
+    name: 'Organic Bananas',
+    
+    unitPrice: 2.99,
+    quantity: 1,
+  },
+  {
+    id: 2,
+    icon: '🍞',
+    iconBgColor: 'bg-orange-100',
+    name: 'Whole Wheat Bread',
+    
+    unitPrice: 2.99,
+    quantity: 1,
+  },
+  {
+    id: 3,
+    icon: '🥚',
+    iconBgColor: 'bg-amber-100',
+    name: 'Free-Range Eggs',
+    
+    unitPrice: 0.99,
+    quantity: 10,
+  },
+  {
+    id: 4,
+    icon: '🍃',
+    iconBgColor: 'bg-green-100',
+    name: 'Organic Baby Spinach',
+    
+    unitPrice: 4.45,
+    quantity: 2,
+  },
+];
+

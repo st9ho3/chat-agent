@@ -6,7 +6,7 @@ import ChatInput from './chatInput';
 import { useHomeContext } from '../../context/homeContext/homeContext';
 
 const ChatUI = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
-  const { state, dispatch } = useHomeContext();
+  const { state } = useHomeContext();
 
   const chatRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ const ChatUI = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
         }
 
   return (
-    <div ref={chatRef}  className="flex flex-col items-center justify-end w-full lg:w-1/2 border-l-1 bg-gray-50 border-gray-200 h-screen p-2">
+    <div ref={chatRef}  className="flex flex-col items-center justify-end w-full border-gray-300 h-screen p-2 md:h-120 md:border-1 md:shadow-2xl lg:w-1/3 rounded-t-2xl">
       {state.messages.length > 0 && <ChatDialog />}
       <ChatInput /> 
     </div>

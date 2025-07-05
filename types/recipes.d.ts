@@ -30,3 +30,12 @@ interface Column {
   accessor: string;
   className?: string;
 }
+
+interface IngredientItemProps {
+  id: number
+  icon: React.ReactNode; 
+  iconBgColor: string; 
+  name: string;
+  unitPrice: number;
+  quantity: number;
+}

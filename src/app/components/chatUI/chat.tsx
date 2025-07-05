@@ -28,7 +28,7 @@ const Chat = () => {
           >
             <X />
           </div>
-          <div className="fixed bottom-0 z-50 w-full m-auto lg:w-3/4 xl:left-297 md:left-198 md:w-3/4">
+          <div className="fixed bottom-0 z-50 w-full m-auto md:left-130 md:w-3/4 lg:w-3/4 xl:left-360 chat-ipad chat-laptop">
             <ChatUI isOpen={state.chatOpen} onClose={toggleChat} />
           </div>
           

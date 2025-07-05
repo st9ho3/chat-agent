@@ -25,3 +25,8 @@ type Action =
   onClose: () => void;
   children: ReactNode;
 }
+
+interface ButtonProps {
+  text: React.ReactNode;
+  action: () => void;
+}
