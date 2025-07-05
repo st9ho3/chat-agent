@@ -10,8 +10,9 @@ import Button from '../shared/sharedButton'
 
 
 const RecipeForm = () => {
+
   return (
-    <div className='w-70 h-120 md:w-200 md:h-130 md:flex '>
+    <div className='w-70 h-120 md:w-210 md:h-130 md:flex '>
       <form className='border-1 border-gray-300 rounded-lg flex flex-col'>
         <div className='flex items-center p-2 '>
           <NotepadText color='gray'/>
@@ -19,8 +20,9 @@ const RecipeForm = () => {
         </div>
         <Ingredient />
       </form>
-      <div className='flex flex-col border-1 border-gray-300 rounded-lg w-full p-2 ml-1'>
+      <div className='flex flex-col items-center border-1 border-gray-300 rounded-lg w-full p-2 ml-1'>
 
+      <div className='w-full h-2/3 overflow-y-scroll'>
         {ingredientsData.map((ing) => 
           <DisplayedIngredientItem 
             key={ing.id}
@@ -32,13 +34,16 @@ const RecipeForm = () => {
             quantity={ing.quantity}
             />
          )}
+      </div>
         
-          <OrderTotal 
+        <OrderTotal 
             ingredients={ingredientsData}
           />
-          <div className='flex items-center p-2 '>
+        
+          
+          <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
             <Check />
-            <Button text='Confirm recipe' action={() => console.log('Recipe added')} />
+            <button onClick={() => console.log('recipe added')}>Add recipe</button>
           </div>
         
       </div>

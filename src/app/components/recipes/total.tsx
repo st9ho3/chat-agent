@@ -9,7 +9,7 @@ const OrderTotal = ({ingredients}: {ingredients: IngredientItemProps[]}) => {
   const ingredientCount = ingredients.length;
 
   return (
-    <div className="mt-6 border-t border-dashed border-gray-300 flex items-center justify-between p-3">
+    <div className="mt-1 p-2 w-full border-t border-dashed border-gray-300 flex items-center justify-between ">
     
       <p className="text-lg font-semibold text-gray-900">
         Total

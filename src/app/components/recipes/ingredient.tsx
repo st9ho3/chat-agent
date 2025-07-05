@@ -33,7 +33,7 @@ const Ingredient = () => {
             placeholder="Ingredient"
             required
           />
-        <Button text={<Plus />} action={() => console.log('Button clicked') } />
+        <button className='border-gray-400 rounded-md w-fit p-1 hover:bg-green-50 transition-colors duration-200'><Plus /></button>
         </div>
         
     </div>

@@ -13,14 +13,14 @@ const DisplayedIngredientItem = ({
   const totalPrice = unitPrice * quantity;
 
   return (
-    <div className="flex w-full items-center py-3">
+    <div className="flex w-full items-center py-2">
       <div
         className={`flex h-9 w-9 mx-1 flex-shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
       >
         <span className="text-2xl">{icon}</span>
       </div>
 
-      <div className="flex-grow  w-9">
+      <div className="flex-grow  w-8">
         <p className="font-semibold text-sm text-gray-700">{name}</p>
       </div>
 
@@ -33,7 +33,7 @@ const DisplayedIngredientItem = ({
       <div className="w-13  text-left">
         <p className="font-semibold text-gray-900">€{totalPrice.toFixed(2)}</p>
       </div>
-      <Trash2 size="18px" className=' transition-colors duration-200 hover:text-red-500 '/>
+      <Trash2 size="18px" className=' transition-colors duration-200 hover:text-red-500 mr-1'/>
     </div>
   );
 };

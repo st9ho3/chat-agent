@@ -295,5 +295,41 @@ export const ingredientsData = [
     unitPrice: 4.45,
     quantity: 2,
   },
+  {
+    id: 5,
+    icon: '🍃',
+    iconBgColor: 'bg-green-100',
+    name: 'Organic Baby Spinach',
+    
+    unitPrice: 4.45,
+    quantity: 2,
+  },
+  {
+    id: 6,
+    icon: '🍃',
+    iconBgColor: 'bg-green-100',
+    name: 'Organic Baby Spinach',
+    
+    unitPrice: 4.45,
+    quantity: 2,
+  },
+  {
+    id: 7,
+    icon: '🥚',
+    iconBgColor: 'bg-amber-100',
+    name: 'Free-Range Eggs',
+    
+    unitPrice: 0.99,
+    quantity: 10,
+  },
+  {
+    id: 8,
+    icon: '🥚',
+    iconBgColor: 'bg-amber-100',
+    name: 'Free-Range Eggs',
+    
+    unitPrice: 0.99,
+    quantity: 10,
+  },
 ];
 
