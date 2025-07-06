@@ -38,7 +38,7 @@ const Table = () => {
             </td>
             <td className="hidden md:table-cell pl-4">{rec.createdBy}</td>
             <td className="hidden md:table-cell pl-4">
-              {new Date(rec.dateCreated).toLocaleDateString()}
+              {new Date(rec.dateCreated).toLocaleTimeString()}
             </td>
             <td className="hidden md:table-cell pl-4">{rec.category}</td>
             <td className="hidden md:table-cell align-middle text-center md:text-start md:pl-4">

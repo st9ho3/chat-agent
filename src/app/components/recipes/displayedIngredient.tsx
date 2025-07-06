@@ -6,8 +6,9 @@ const DisplayedIngredientItem = ({
   icon,
   iconBgColor,
   name,
-  unitPrice,
-  quantity,
+  unit,
+  unitPrice=10,
+  quantity
 }: IngredientItemProps) => {
 
   const totalPrice = unitPrice * quantity;
@@ -20,17 +21,17 @@ const DisplayedIngredientItem = ({
         <span className="text-2xl">{icon}</span>
       </div>
 
-      <div className="flex-grow  w-8">
+      <div className="min-w-fit w-25">
         <p className="font-semibold text-sm text-gray-700">{name}</p>
       </div>
 
-      <div className="w-22  px-3">
+      <div className="w-30  px-3">
         <p className="text-sm text-gray-600">
-          ${unitPrice.toFixed(2)} x{quantity}
+          ${unitPrice.toFixed(2)} x{quantity}{unit}
         </p>
       </div>
 
-      <div className="w-13  text-left">
+      <div className="w-19  text-left">
         <p className="font-semibold text-gray-900">€{totalPrice.toFixed(2)}</p>
       </div>
       <Trash2 size="18px" className=' transition-colors duration-200 hover:text-red-500 mr-1'/>

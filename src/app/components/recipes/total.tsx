@@ -3,7 +3,7 @@ import React from 'react';
 const OrderTotal = ({ingredients}: {ingredients: IngredientItemProps[]}) => {
   
   const totalPrice = ingredients.reduce((sum, item) => {
-    return sum + item.unitPrice * item.quantity;
+    return sum + /* item.unitPrice */ 10 * item.quantity;
   }, 0);
 
   const ingredientCount = ingredients.length;

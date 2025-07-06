@@ -7,15 +7,13 @@ interface Ingredient {
   unitMeasure: 'g' | 'ml' | 'kg' | 'L';
 }
 
-/**
- * Defines the structure for a Recipe.
- */
+
 interface Recipe {
   id: string; 
   title: string;
   totalCost: number;
   ingredients: Array<{
-    ingredient: string; // Refers to the title of an Ingredient
+    ingredient: string; 
     quantity: number;
     unit: 'g' | 'ml' | 'kg' | 'L';
   }>;
@@ -31,11 +29,15 @@ interface Column {
   className?: string;
 }
 
+type Unit =  'g' |'ml' |'kg' | 'L'
+
 interface IngredientItemProps {
-  id: number
-  icon: React.ReactNode; 
-  iconBgColor: string; 
+  id: string
+  icon?: React.ReactNode; 
+  iconBgColor?: string; 
   name: string;
-  unitPrice: number;
+  unit: string
+  unitPrice?: number;
   quantity: number;
 }
+

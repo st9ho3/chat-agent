@@ -2,22 +2,25 @@
 import React, { useState } from 'react'
 import { Plus, Minus } from 'lucide-react'
 
-const Incremental = () => {
-  const [count, setCount] = useState<number>(0)
-  const [isEditing, setIsEditing] = useState<boolean>(false)
+type IncrementalProps = {
+  onChange: (value: number) => void
+  count: number
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = e.target.value === '' ? 0 : Number(e.target.value)
-    setCount(value)
-  }
+const Incremental = ({onChange, count}: IncrementalProps) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const handleClick = (action: 'minus' | 'plus') => {
     setIsEditing(false)             
     if (action === 'plus') {
-      setCount(count + 1)
+      onChange(count + 1)
     } else if (count > 0) {
-      setCount(count - 1)
+      onChange(count - 1)
     }
+  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value === '' ? 0 : Number(e.target.value)
+    onChange(value)
   }
 
   const handleFocus = () => {

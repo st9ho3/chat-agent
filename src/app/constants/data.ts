@@ -15,7 +15,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Fresh Basil', quantity: 10, unit: 'g' }
     ],
     createdBy: 'Chef Maria',
-    dateCreated: new Date('2025-06-20'),
+    dateCreated: new Date('20-06-2025'),
     category: 'starter',
     imgPath: '/images/Classic Tomato Bruschetta.png'
   },
@@ -31,7 +31,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Black Pepper', quantity: 5, unit: 'g' }
     ],
     createdBy: 'Chef Antonio',
-    dateCreated: new Date('2025-06-22'),
+dateCreated: new Date('20-06-2025'),
     category: 'main',
     imgPath: '/images/Spaghetti Carbonara.png'
   },
@@ -48,7 +48,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Butter', quantity: 80, unit: 'g' }
     ],
     createdBy: 'Baker Emily',
-    dateCreated: new Date('2025-06-25'),
+    dateCreated: new Date('20-06-2025'),
     category: 'dessert',
     imgPath: '/images/New York Cheesecake.png'
   },
@@ -65,7 +65,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Rice', quantity: 300, unit: 'g' }
     ],
     createdBy: 'Chef David',
-    dateCreated: new Date('2025-06-28'),
+  dateCreated: new Date('20-06-2025'),
     category: 'main',
     imgPath: '/images/Chicken Stir-Fry.png'
   },
@@ -80,7 +80,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Balsamic Glaze', quantity: 30, unit: 'ml' }
     ],
     createdBy: 'Chef Sophia',
-    dateCreated: new Date('2025-07-01'),
+    dateCreated: new Date('20-06-2025'),
     category: 'starter',
     imgPath: '/images/Caprese Salad Skewers.png'
   },
@@ -97,7 +97,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Spinach', quantity: 100, unit: 'g' }
     ],
     createdBy: 'Chef Liam',
-    dateCreated: new Date('2025-07-02'),
+    dateCreated: new Date('20-06-2025'),
     category: 'main',
     imgPath: '/images/Lentil Soup.png'
   },
@@ -113,7 +113,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Flour', quantity: 30, unit: 'g' }
     ],
     createdBy: 'Baker Olivia',
-    dateCreated: new Date('2025-07-03'),
+    dateCreated: new Date('20-06-2025'),
     category: 'dessert',
     imgPath: '/images/Chocolate Lava Cakes.png'
   },
@@ -130,7 +130,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Parsley', quantity: 10, unit: 'g' }
     ],
     createdBy: 'Chef Noah',
-    dateCreated: new Date('2025-07-04'),
+    dateCreated: new Date('20-06-2025'),
     category: 'main',
     imgPath: '/images/Shrimp Scampi with Linguine.png'
   },
@@ -147,7 +147,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Red Wine Vinegar', quantity: 20, unit: 'ml' }
     ],
     createdBy: 'Chef Isabel',
-    dateCreated: new Date('2025-07-05'),
+    dateCreated: new Date('20-06-2025'),
     category: 'starter',
     imgPath: '/images/Gazpacho.png'
   },
@@ -164,7 +164,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Cinnamon', quantity: 5, unit: 'g' }
     ],
     createdBy: 'Baker James',
-    dateCreated: new Date('2025-07-06'),
+    dateCreated: new Date('20-06-2025'),
     category: 'dessert',
     imgPath: '/images/Apple Crumble.png'
   },
@@ -181,7 +181,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Parsley', quantity: 10, unit: 'g' }
     ],
     createdBy: 'Chef Noah',
-    dateCreated: new Date('2025-07-04'),
+    dateCreated: new Date('20-06-2025'),
     category: 'main',
     imgPath: '/images/Shrimp Scampi with Linguine.png'
   },
@@ -198,7 +198,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Red Wine Vinegar', quantity: 20, unit: 'ml' }
     ],
     createdBy: 'Chef Isabel',
-    dateCreated: new Date('2025-07-05'),
+    dateCreated: new Date('20-06-2025'),
     category: 'starter',
     imgPath: '/images/Gazpacho.png'
   },
@@ -215,7 +215,7 @@ export const recipes: Recipe[] = [
       { ingredient: 'Cinnamon', quantity: 5, unit: 'g' }
     ],
     createdBy: 'Baker James',
-    dateCreated: new Date('2025-07-06'),
+    dateCreated: new Date('20-06-2025'),
     category: 'dessert',
     imgPath: '/images/Apple Crumble.png'
   }
@@ -260,74 +260,74 @@ export const columns: Column[] = [
 
 export const ingredientsData = [
   {
-    id: 1,
+    id: "1",
     icon: '🍌',
     iconBgColor: 'bg-yellow-100',
     name: 'Organic Bananas',
-    
+    unit: 'kg',
     unitPrice: 2.99,
     quantity: 1,
   },
   {
-    id: 2,
+    id: "2",
     icon: '🍞',
     iconBgColor: 'bg-orange-100',
     name: 'Whole Wheat Bread',
-    
+    unit: 'kg',
     unitPrice: 2.99,
     quantity: 1,
   },
   {
-    id: 3,
+    id: "3",
     icon: '🥚',
     iconBgColor: 'bg-amber-100',
     name: 'Free-Range Eggs',
-    
+    unit: 'kg',
     unitPrice: 0.99,
     quantity: 10,
   },
   {
-    id: 4,
+    id: "4",
     icon: '🍃',
     iconBgColor: 'bg-green-100',
     name: 'Organic Baby Spinach',
-    
+    unit: 'kg',
     unitPrice: 4.45,
     quantity: 2,
   },
   {
-    id: 5,
+    id: "5",
     icon: '🍃',
     iconBgColor: 'bg-green-100',
     name: 'Organic Baby Spinach',
-    
+    unit: 'kg',
     unitPrice: 4.45,
     quantity: 2,
   },
   {
-    id: 6,
+    id: "6",
     icon: '🍃',
     iconBgColor: 'bg-green-100',
     name: 'Organic Baby Spinach',
-    
+    unit: 'kg',
     unitPrice: 4.45,
     quantity: 2,
   },
   {
-    id: 7,
+    id: "7",
     icon: '🥚',
     iconBgColor: 'bg-amber-100',
     name: 'Free-Range Eggs',
-    
+    unit: 'kg',
     unitPrice: 0.99,
     quantity: 10,
   },
   {
-    id: 8,
+    id: "8",
     icon: '🥚',
     iconBgColor: 'bg-amber-100',
     name: 'Free-Range Eggs',
-    
+    unit: 'kg',
     unitPrice: 0.99,
     quantity: 10,
   },
