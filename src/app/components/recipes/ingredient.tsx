@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Incremental from '../shared/incremental'
 import { Plus } from 'lucide-react'
-import { IngredientItemProps, Unit } from '@/shemas/recipe'
+import { IngredientItemProps, Unit, IngredientErrors } from '@/shemas/recipe'
 import { uid } from 'uid'
 
 const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemProps) => void} ) => {
@@ -9,33 +9,39 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
   const [quantity, setQuantity] = useState<number>(0)
   const [name, setName] = useState<string>('')
   const [unit, setUnit] = useState<Unit>('')
-  const [error, setError] = useState<string>('')
+  const [errors, setErrors] = useState<IngredientErrors>({})
 
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.target
     setName(value)
+    setErrors(prevErrors => ({...prevErrors, nameError: '' }))
   }
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {value} = e.target
     if (value === 'g' || value ==='ml' ||value ==='kg' ||value === 'L' ) {
       setUnit(value)
-      setError('')
+      setErrors(prevErrors => ({...prevErrors, unitError: '' }))
     }
   }
 
   const addIngredient = (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
     e.preventDefault()
      if (!name.trim()) {
+      const titleError = "Ingredient must have a title"
+      setErrors(prevErrors => ({...prevErrors, nameError: titleError }))
       return
     }
     
     if (quantity < 1) {
+      const quantityError = "Quantity can't be 0"
+      setErrors(prevErrors => ({...prevErrors, quantityError: quantityError }))
       return
     }
     const units = ['g', 'ml', 'kg', 'L']
     if (!units.includes(unit)) {
-      setError("Please pick a unit measure")
+      const unitError = "Please pick a unit measure"
+      setErrors(prevErrors => ({...prevErrors, unitError: unitError }))
       return
     }
     const id = uid()
@@ -51,7 +57,7 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
     setQuantity(0)
     setName('')
     setUnit('')
-    setError('')
+    setErrors({})
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
@@ -65,7 +71,7 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
      <div className="flex flex-col md:flex-row items-center space-x-3 p-2">
         <div className='flex items-center space-x-3 p-2' >
 
-          <Incremental onChange={setQuantity} count={quantity} onKeyDown={handleKeyDown} />
+          <Incremental onChange={setQuantity} count={quantity} onKeyDown={handleKeyDown} setErrors={setErrors} />
 
           <select
             name="unit"
@@ -99,7 +105,10 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
         </div>
          
     </div>
-    <p className='text-red-500 ml-3'> {error} </p>
+    <p className='text-red-500 ml-3'> {errors?.nameError} </p>
+    <p className='text-red-500 ml-3'> {errors?.unitError} </p>
+    <p className='text-red-500 ml-3'> {errors?.quantityError} </p>
+    
   </div>
   )
 }

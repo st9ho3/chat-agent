@@ -76,3 +76,12 @@ export const RecipeSchema = z.object({
 });
 
 export type Recipe = z.infer<typeof RecipeSchema>; // Inferred Type: Recipe
+
+
+const ingredientErrorsSchema = z.object({
+  unitError: z.string().optional(),
+  nameError: z.string().optional(),
+  quantityError: z.string().optional()
+})
+
+export type IngredientErrors = z.infer<typeof ingredientErrorsSchema>;
