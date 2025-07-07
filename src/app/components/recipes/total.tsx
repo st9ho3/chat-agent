@@ -1,13 +1,11 @@
 import React from 'react';
 import { IngredientItemProps } from '@/shemas/recipe';
+import { getTotalPrice } from '@/app/services/helpers';
 
 const OrderTotal = ({ingredients}: {ingredients: IngredientItemProps[]}) => {
   
-  const totalPrice = ingredients.reduce((sum, item) => {
-    return sum + /* item.unitPrice */ 10 * item.quantity;
-  }, 0);
-
-  const ingredientCount = ingredients.length;
+ const totalPrice = getTotalPrice(ingredients)
+ const ingredientCount = ingredients.length;
 
   return (
     <div className="mt-1 p-2 w-full border-t border-dashed border-gray-300 flex items-center justify-between ">

@@ -4,10 +4,11 @@ import { Plus, Minus } from 'lucide-react'
 
 type IncrementalProps = {
   onChange: (value: number) => void
-  count: number
+  count: number,
+  onKeyDown: (value: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
-const Incremental = ({onChange, count}: IncrementalProps) => {
+const Incremental = ({onChange, count, onKeyDown}: IncrementalProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const handleClick = (action: 'minus' | 'plus') => {
@@ -54,6 +55,7 @@ const Incremental = ({onChange, count}: IncrementalProps) => {
         className="focus:outline-none px-2 w-18 text-center font-semibold text-2xl text-gray-800"
         value={displayValue}
         onChange={handleChange}
+        onKeyDown={onKeyDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
       />

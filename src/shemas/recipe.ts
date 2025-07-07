@@ -8,7 +8,8 @@ export const UnitSchema = z.union([
   z.literal('g'),
   z.literal('ml'),
   z.literal('kg'),
-  z.literal('L')
+  z.literal('L'),
+  z.literal('')
 ], {
   errorMap: (issue, ctx) => {
     if (issue.code === z.ZodIssueCode.invalid_union) {
@@ -38,7 +39,7 @@ export type Column = z.infer<typeof ColumnSchema>; // Inferred Type: Column
 //    Representing `icon` as `z.any().optional()` as Zod won't validate a JSX element.
 // -----------------------------------------------------------------------------
 export const IngredientItemPropsSchema = z.object({
-  id: z.string().uuid("Invalid ID for ingredient item props"),
+  id: z.string(),
   icon: z.any().optional(), // For React.ReactNode, Zod just checks its presence/type at a basic level
   iconBgColor: z.string().optional(),
   name: z.string().min(1, "Name is required"),
@@ -60,8 +61,10 @@ export const RecipeCategorySchema = z.union([
   errorMap: (issue, ctx) => ({ message: "Invalid category. Must be 'starter', 'main', or 'dessert'." })
 });
 
+export type RecipeCategory = z.infer<typeof RecipeCategorySchema>
+
 export const RecipeSchema = z.object({
-  id: z.string().uuid("Invalid recipe ID format"),
+  id: z.string(),
   title: z.string().min(3, "Recipe title must be at least 3 characters").max(200, "Title cannot exceed 200 characters"),
   totalCost: z.number().min(0, "Total cost cannot be negative"),
   ingredients: z.array(IngredientItemPropsSchema).min(1, "Recipe must have at least one ingredient"),

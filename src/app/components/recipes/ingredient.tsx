@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Incremental from '../shared/incremental'
 import { Plus } from 'lucide-react'
-import { uid } from 'uid'
 import { IngredientItemProps, Unit } from '@/shemas/recipe'
-
+import { uid } from 'uid'
 
 const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemProps) => void} ) => {
 
   const [quantity, setQuantity] = useState<number>(0)
   const [name, setName] = useState<string>('')
-  const [unit, setUnit] = useState<Unit> ('g')
+  const [unit, setUnit] = useState<Unit>('')
+  const [error, setError] = useState<string>('')
+
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.target
@@ -19,11 +20,24 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
     const {value} = e.target
     if (value === 'g' || value ==='ml' ||value ==='kg' ||value === 'L' ) {
       setUnit(value)
+      setError('')
     }
   }
 
-  const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const addIngredient = (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
     e.preventDefault()
+     if (!name.trim()) {
+      return
+    }
+    
+    if (quantity < 1) {
+      return
+    }
+    const units = ['g', 'ml', 'kg', 'L']
+    if (!units.includes(unit)) {
+      setError("Please pick a unit measure")
+      return
+    }
     const id = uid()
     const ingredient: IngredientItemProps = {
       id: id,
@@ -33,19 +47,33 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
       quantity: quantity
     }
     onAddIngredient(ingredient)
+
+    setQuantity(0)
+    setName('')
+    setUnit('')
+    setError('')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
+    if (e.key === "Enter") {
+      addIngredient(e)
+    }
   }
 
   return (
+    <div>
      <div className="flex flex-col md:flex-row items-center space-x-3 p-2">
         <div className='flex items-center space-x-3 p-2' >
 
-          <Incremental onChange={setQuantity} count={quantity} />
+          <Incremental onChange={setQuantity} count={quantity} onKeyDown={handleKeyDown} />
 
           <select
             name="unit"
             id="unit"
+            value={unit}
             className="block w-20 h-10 px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none bg-white text-gray-800"
             onChange={handleUnit}
+            onKeyDown={handleKeyDown}
           >
             <option value="">Unit</option>
             <option value="kg">kg</option>
@@ -63,13 +91,16 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
             type="text"
             value={name}
             onChange={handleName}
+            onKeyDown={handleKeyDown}
             className="w-30 p-2 text-lg placeholder:text-gray-500 border-b-1 border-gray-300 focus:outline-none"
             placeholder="Ingredient"
           />
-        <button onClick={addIngredient} className='border-gray-400 rounded-md w-fit p-1 hover:bg-green-50 transition-colors duration-200'><Plus /></button>
+        <button type='button' onClick={addIngredient} className='border-gray-400 rounded-md w-fit p-1 hover:bg-green-50 transition-colors duration-200'><Plus /></button>
         </div>
-        
+         
     </div>
+    <p className='text-red-500 ml-3'> {error} </p>
+  </div>
   )
 }
 
