@@ -19,7 +19,7 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
   }
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {value} = e.target
-    if (value === 'g' || value ==='ml' ||value ==='kg' ||value === 'L' ) {
+    if (value === 'g' || value ==='ml' || value ==='kg' || value === 'L' ) {
       setUnit(value)
       setErrors(prevErrors => ({...prevErrors, unitError: '' }))
     }
