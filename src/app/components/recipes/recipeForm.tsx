@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react'
 import Ingredient from './ingredient'
 import { Check, NotepadText } from 'lucide-react'
@@ -18,24 +19,28 @@ type FormFields = {
 
 const RecipeForm = () => {
 
-  const {register, handleSubmit} = useForm<FormFields>()
+  const {register, handleSubmit, getValues, setValue} = useForm<FormFields>()
 
   const [tempIngredients, setTempIngredients] = useState<IngredientItemProps[]>([])
 
   const handleAddIngredient = ( ing: IngredientItemProps) => {
-
-    setTempIngredients([...tempIngredients, ing ])
+    const newIngredients = [...tempIngredients, ing ]
+    setTempIngredients(newIngredients)
+    setValue("ingredients", newIngredients)
   }
-  const handleRemoveIngredient = (e: React.MouseEvent<HTMLButtonElement>,id: string) => {
-    e.preventDefault()
-    setTempIngredients(tempIngredients.filter((ing) => ing.id !== id ))
+  const handleRemoveIngredient = (id: string) => {
+    const newIngredients = tempIngredients.filter((ing) => ing.id !== id )
+    setTempIngredients(newIngredients)
+    setValue("ingredients", newIngredients)
+    
   }
 
   const onSubmit = (data: FormFields) => {
+    
     console.log(data)
   }
 
-  const unitPrice = 10
+
   return (
     <div className='w-70 h-120 md:w-210 md:h-130 md:flex '>
       <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 rounded-lg flex flex-col'>
@@ -55,12 +60,13 @@ const RecipeForm = () => {
         {tempIngredients.length > 0 ? tempIngredients.map((ing) => 
           <DisplayedIngredientItem 
             key={ing.id}
+            onRemove={handleRemoveIngredient}
             id={ing.id}
             icon={ing.icon} 
             iconBgColor={ing.iconBgColor}
             name={ing.name}
             unit={ing.unit}
-            unitPrice={unitPrice}
+            unitPrice={10}
             quantity={ing.quantity}
             />
          ) : <h3>Empty</h3> }
@@ -70,8 +76,7 @@ const RecipeForm = () => {
             ingredients={ingredientsData}
           />
         
-          
-          
+
         
       </div>
     </div>

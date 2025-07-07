@@ -9,8 +9,18 @@ const DisplayedIngredientItem = ({
   name,
   unit,
   unitPrice=10,
-  quantity
-}: IngredientItemProps) => {
+  quantity,
+  onRemove
+}: {
+  id:string
+  icon?:string
+  iconBgColor?:string
+  name:string
+  unit:string
+  unitPrice:number
+  quantity:number
+  onRemove: (value: string) => void
+}) => {
 
   const totalPrice = unitPrice * quantity;
 
@@ -35,7 +45,7 @@ const DisplayedIngredientItem = ({
       <div className="w-19  text-left">
         <p className="font-semibold text-gray-900">€{totalPrice.toFixed(2)}</p>
       </div>
-      <Trash2 size="18px" className=' transition-colors duration-200 hover:text-red-500 mr-1'/>
+      <Trash2 onClick={() => onRemove(id)} size="18px" className=' transition-colors duration-200 hover:text-red-500 mr-1'/>
     </div>
   );
 };

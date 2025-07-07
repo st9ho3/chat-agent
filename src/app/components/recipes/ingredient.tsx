@@ -25,7 +25,7 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
   const addIngredient = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const id = uid()
-    const ingredient = {
+    const ingredient: IngredientItemProps = {
       id: id,
       iconBgColor: 'bg-yellow-100',
       name: name,
@@ -65,7 +65,6 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
             onChange={handleName}
             className="w-30 p-2 text-lg placeholder:text-gray-500 border-b-1 border-gray-300 focus:outline-none"
             placeholder="Ingredient"
-            required
           />
         <button onClick={addIngredient} className='border-gray-400 rounded-md w-fit p-1 hover:bg-green-50 transition-colors duration-200'><Plus /></button>
         </div>
