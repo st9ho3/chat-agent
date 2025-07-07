@@ -2,6 +2,7 @@
  * Defines the structure for an Ingredient.
  */
 interface Ingredient {
+  id: string
   title: string;
   price: number;
   unitMeasure: 'g' | 'ml' | 'kg' | 'L';

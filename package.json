@@ -14,7 +14,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.60.0",
-    "uid": "^2.0.2"
+    "uid": "^2.0.2",
+    "zod": "^3.25.75"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
