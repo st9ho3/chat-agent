@@ -1,4 +1,5 @@
 import React from 'react';
+import { IngredientItemProps } from '@/shemas/recipe';
 
 const OrderTotal = ({ingredients}: {ingredients: IngredientItemProps[]}) => {
   

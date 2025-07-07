@@ -5,6 +5,7 @@ import DisplayedIngredientItem from './displayedIngredient'
 import { ingredientsData } from '@/app/constants/data'
 import OrderTotal from './total'
 import { useForm } from 'react-hook-form'
+import { IngredientItemProps } from '@/shemas/recipe'
 
 type FormFields = {
   id: string; 

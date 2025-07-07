@@ -1,4 +1,4 @@
-
+import { Message } from "@/shemas/chat";
 interface HomeContextProps {
     state: typeof initialState,
     dispatch: React.Dispatch<Action>;

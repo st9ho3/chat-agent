@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
 import { Plus } from 'lucide-react'
 import { uid } from 'uid'
+import { IngredientItemProps, Unit } from '@/shemas/recipe'
 
 
 const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemProps) => void} ) => {

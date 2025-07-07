@@ -1,7 +1,5 @@
-/**
- * An array containing 10 example Recipe objects.
- * These recipes demonstrate various categories and ingredient combinations.
- */
+import { Column, Recipe } from "@/shemas/recipe";
+
 export const recipes: Recipe[] = [
   {
     id: 'R001',
@@ -252,11 +250,6 @@ export const columns: Column[] = [
     className: "text-gray-500 text-sm md:w-1/10 text-center md:text-left pl-4 "
   }
 ]
-
-
-
-////////////////////////////
-
 
 export const ingredientsData = [
   {

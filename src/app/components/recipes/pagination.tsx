@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '../shared/sharedButton';
 import { paginationPages } from '@/app/services/helpers';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
+import { Recipe } from '@/shemas/recipe';
 
 
 const Pagination = ({ items }: { items: Recipe[] }) => {
