@@ -24,7 +24,7 @@ const Chat = () => {
         <>
           <div
             onClick={toggleChat}
-            className="fixed bottom-0 right-0 z-51 m-4 p-2 bg-white rounded-full cursor-pointer shadow-lg transition-transform duration-300 hover:scale-110"
+            className="fixed bottom-0 right-0 z-55 m-4 p-2 bg-white rounded-full cursor-pointer shadow-lg transition-transform duration-300 hover:scale-110"
           >
             <X />
           </div>

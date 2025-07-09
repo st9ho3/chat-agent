@@ -55,7 +55,7 @@ const RecipeForm = () => {
   }
 
   const onSubmit = (data: FormFields) => {
-    console.log(data)
+    const res = fetch("")
     reset()
     setTempIngredients([])
   }

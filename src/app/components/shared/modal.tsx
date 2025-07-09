@@ -44,6 +44,11 @@ const Modal= ({ isOpen, onClose, children }: ModalProps) => {
     return null;
   }
 
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onClose()
+  }
+
   return (
     <div
       className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
@@ -52,8 +57,8 @@ const Modal= ({ isOpen, onClose, children }: ModalProps) => {
         className={`relative w-full max-w-fit p-9 mx-4 transform transition-all duration-300 bg-white rounded-2xl shadow-xl`} >
 
         <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-offset-2 transition-colors"
+          onClick={handleClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-offset-2 transition-colors"
           aria-label="Close modal" >
             <X />
         </button>
