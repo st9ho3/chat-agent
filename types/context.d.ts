@@ -20,7 +20,7 @@ type Action =
   | { type: "OPEN_MODAL"}
   | { type: "CLOSE_MODAL"}
 
-  interface ModalProps {
+interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;

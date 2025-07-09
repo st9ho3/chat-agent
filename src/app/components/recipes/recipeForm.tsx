@@ -9,6 +9,7 @@ import { IngredientItemProps, RecipeSchema, Recipe, RecipeCategory } from '@/she
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uid } from 'uid'
 import { getTotalPrice } from '@/app/services/helpers'
+import UploadFiles from '../shared/uploadFiles'
 
 
 type FormFields = {
@@ -62,20 +63,23 @@ const RecipeForm = () => {
 
   return (
     <div className='w-70 h-120 md:w-210 md:h-130 md:flex '>
-      <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 rounded-lg flex flex-col'>
-        <div className='flex items-center p-2 '>
+      <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col'>
+        <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg p-1 '>
           <NotepadText color='gray'/>
           <input {...register('title')} id='title' type="text" className=' p-4 placeholder:text-gray-500 text-2xl focus:outline-none ' placeholder="Recipe's name" required />
         </div>
         <p className='text-red-500 ml-3'> {errors.title?.message} </p>
         <Ingredient onAddIngredient={handleAddIngredient}  />
         <p className='text-red-500 ml-3'> {errors.ingredients?.message} </p>
-        <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
+        
+          <UploadFiles />
+
+          <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
             <Check />
             <button type='submit'>Add recipe</button>
           </div>
       </form>
-      <div className='flex flex-col items-center border-1 border-gray-300 rounded-lg w-full p-2 ml-1'>
+      <div className='flex flex-col items-center border-1 border-gray-300 border-dashed rounded-lg w-full p-2 ml-1'>
 
       <div className='w-full h-2/3 overflow-auto'>
         {tempIngredients.length > 0 ? tempIngredients.map((ing) => 

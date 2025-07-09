@@ -25,14 +25,14 @@ const DisplayedIngredientItem = ({
   const totalPrice = unitPrice * quantity;
 
   return (
-    <div className="flex w-full items-center py-2">
-      <div
+    <div className="flex w-full items-center p-2">
+      {/* <div
         className={`flex h-9 w-9 mx-1 flex-shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
       >
         <span className="text-2xl">{icon}</span>
-      </div>
+      </div> */}
 
-      <div className="min-w-fit w-25">
+      <div className="min-w-fit flex-grow">
         <p className="font-semibold text-sm text-gray-700">{name}</p>
       </div>
 

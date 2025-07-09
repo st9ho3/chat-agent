@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Incremental from '../shared/incremental'
-import { Plus } from 'lucide-react'
+import { Carrot, Plus, Ruler } from 'lucide-react'
 import { IngredientItemProps, Unit, IngredientErrors } from '@/shemas/recipe'
 import { uid } from 'uid'
 
@@ -68,16 +68,17 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
 
   return (
     <div>
-     <div className="flex flex-col md:flex-row items-center space-x-3 p-2">
+     <div className="flex flex-col md:flex-row items-center border-1 border-gray-300 border-dashed rounded-lg space-x-3 p-2 my-2">
         <div className='flex items-center space-x-3 p-2' >
 
           <Incremental onChange={setQuantity} count={quantity} onKeyDown={handleKeyDown} setErrors={setErrors} />
-
-          <select
+          <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg  space-x-3 p-1'> 
+            <Ruler />
+            <select
             name="unit"
             id="unit"
             value={unit}
-            className="block w-20 h-10 px-3 py-2 text-lg border border-gray-300 rounded-md shadow-sm focus:outline-none bg-white text-gray-800"
+            className="block w-20 p-2 text-lg focus:outline-none bg-white text-gray-800"
             onChange={handleUnit}
             onKeyDown={handleKeyDown}
           >
@@ -87,10 +88,14 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
             <option value="g">g</option>
             <option value="ml">ml</option>
           </select>
+          </div>
+          
  
           
         </div >
-        <div className='flex items-center space-x-3 p-2' >
+        <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg  space-x-3 p-1' >
+          
+            <Carrot />
           {/* Ingredient Name Input */}
           <input
             name="name"
@@ -98,11 +103,13 @@ const Ingredient = ({onAddIngredient}: {onAddIngredient: (value: IngredientItemP
             value={name}
             onChange={handleName}
             onKeyDown={handleKeyDown}
-            className="w-30 p-2 text-lg placeholder:text-gray-500 border-b-1 border-gray-300 focus:outline-none"
+            className="w-30 p-1 text-lg placeholder:text-gray-500 focus:outline-none"
             placeholder="Ingredient"
           />
-        <button type='button' onClick={addIngredient} className='border-gray-400 rounded-md w-fit p-1 hover:bg-green-50 transition-colors duration-200'><Plus /></button>
+  
+        
         </div>
+        <button type='button' onClick={addIngredient} className='border border-gray-400 border-dashed rounded-md w-fit p-2 hover:bg-green-50 transition-colors duration-200'><Plus /></button>
          
     </div>
     <p className='text-red-500 ml-3'> {errors?.nameError} </p>

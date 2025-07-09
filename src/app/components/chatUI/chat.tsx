@@ -16,7 +16,7 @@ const Chat = () => {
       {!state.chatOpen ? (
         <div
           onClick={toggleChat}
-          className="fixed bottom-0 right-0 z-50 m-4 p-3 bg-white rounded-full cursor-pointer shadow-lg"
+          className="fixed bottom-0 right-0 z-50 m-4 p-3 bg-white rounded-full border border-dashed border-gray-400 shadow-md"
         >
           <Bot />
         </div>
