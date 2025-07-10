@@ -17,8 +17,7 @@ export type FormFields = {
   id: string; 
   title: string;
   totalCost: number;
-  ingredients: Array<IngredientItemProps>;
-  category: RecipeCategory,
+  category: RecipeCategory;
   createdBy: string;
   dateCreated: Date;
 }
@@ -29,7 +28,6 @@ const RecipeForm = () => {
     defaultValues: {
       id: newId.toString(),
       title: '',
-      ingredients: [],
       category: 'starter',
       createdBy: 'User',
       dateCreated: new Date() 
@@ -46,18 +44,22 @@ const RecipeForm = () => {
     const newIngredients = [...tempIngredients, ing ]
     const totalPrice= getTotalPrice(newIngredients)
     setTempIngredients(newIngredients)
-    setValue("ingredients", newIngredients)
+    /* setValue("ingredients", newIngredients) */
     setValue("totalCost", totalPrice)
   }
   const handleRemoveIngredient = (id: string) => {
     const newIngredients = tempIngredients.filter((ing) => ing.id !== id )
     setTempIngredients(newIngredients)
-    setValue("ingredients", newIngredients)
+    /* setValue("ingredients", newIngredients) */
   }
 
   const onSubmit = async (data: FormFields) => {
     try {
-      createRecipe(data)
+      if (tempIngredients.length > 0) {
+        createRecipe(data)
+        console.log(data)
+      }
+      
     } catch(error) {
       console.log(error)
     } finally {

@@ -49,6 +49,20 @@ export const IngredientItemPropsSchema = z.object({
 });
 
 export type IngredientItemProps = z.infer<typeof IngredientItemPropsSchema>; // Inferred Type: IngredientItemProps
+// -----------------------------------------------------------------------------
+// 3. IngredientItemProps (interface IngredientItemProps)
+//    Note: React.ReactNode is a UI concept, Zod validates data.
+//    Representing `icon` as `z.any().optional()` as Zod won't validate a JSX element.
+// -----------------------------------------------------------------------------
+export const RecipeIngredientsSchema = z.object({
+  recipeId: z.string(),
+  ingredientId: z.string(),
+  unit: z.string().min(1, "Unit is required"), // Assuming this is the string representation, not necessarily constrained by `UnitSchema` here
+  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
+  quantity: z.number().min(1, "Quantity must be non-negative"),
+});
+
+export type RecipeIngredients = z.infer<typeof RecipeIngredientsSchema>; // Inferred Type: IngredientItemProps
 
 // -----------------------------------------------------------------------------
 // 4. Recipe (interface Recipe)
@@ -67,7 +81,7 @@ export const RecipeSchema = z.object({
   id: z.string(),
   title: z.string().min(3, "Recipe title must be at least 3 characters").max(200, "Title cannot exceed 200 characters"),
   totalCost: z.number().min(0, "Total cost cannot be negative"),
-  ingredients: z.array(IngredientItemPropsSchema).min(1, "Recipe must have at least one ingredient"),
+  
   createdBy: z.string().min(1, "Creator ID is required"),
   dateCreated: z.date(), 
   category: RecipeCategorySchema, // Reusing the category schema
