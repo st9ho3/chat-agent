@@ -16,19 +16,23 @@ export const createMessage = (text: string, user: string) => {
   return message;
 };
 
-export const createRecipe = async(data: FormFields) => {
+export const createRecipe = async (data: FormFields) => {
 
-  const res = await fetch("server/API/recipes", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
+    const res = await fetch("server/API/recipes", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }); 
+    
     if (!res.ok) {
-      console.log('Error 400, Please check your data')
+        console.log('Error 400, Please check your data');
+        // You might want to throw an error here or return something to indicate failure
+        // For example: throw new Error('Failed to create recipe');
     }
-    const response = await res.json()
 
-    console.log(response)
-}
+    const response = await res.json();
+
+    console.log(response);
+}; 

@@ -32,7 +32,7 @@ const RecipeForm = () => {
       ingredients: [],
       category: 'starter',
       createdBy: 'User',
-      dateCreated: new Date()
+      dateCreated: new Date() 
     },
     resolver: zodResolver(RecipeSchema)
   })

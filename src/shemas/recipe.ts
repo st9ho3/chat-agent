@@ -69,14 +69,13 @@ export const RecipeSchema = z.object({
   totalCost: z.number().min(0, "Total cost cannot be negative"),
   ingredients: z.array(IngredientItemPropsSchema).min(1, "Recipe must have at least one ingredient"),
   createdBy: z.string().min(1, "Creator ID is required"),
-  // dateCreated: Date; - Zod requires a specific type, preprocess helps parse various inputs to a Date object
-  dateCreated: z.date(),
+  dateCreated: z.date(), 
   category: RecipeCategorySchema, // Reusing the category schema
   imgPath: z.string().url("Image path must be a valid URL").optional(), // Assuming it might be optional or can be an empty string if allowed as input
 });
 
 export type Recipe = z.infer<typeof RecipeSchema>; // Inferred Type: Recipe
-
+export type FormFields = z.infer<typeof RecipeSchema>;
 
 const ingredientErrorsSchema = z.object({
   unitError: z.string().optional(),
