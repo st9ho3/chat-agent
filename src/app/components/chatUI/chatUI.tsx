@@ -49,7 +49,7 @@ const ChatUI = ({isOpen, onClose}: {isOpen: boolean, onClose: () => void}) => {
         }
 
   return (
-    <div ref={chatRef}  className="flex flex-col items-center justify-end w-full bg-white border-gray-300 h-screen p-2 md:h-120 md:border-1 md:shadow-2xl lg:w-1/3 rounded-t-2xl">
+    <div ref={chatRef}  className="flex flex-col items-center justify-end w-full bg-white border-gray-300 h-screen p-2 md:h-120 md:border-1 md:border-dashed md:shadow-2xl lg:w-1/3 rounded-t-2xl">
       {state.messages.length > 0 && <ChatDialog />}
       <ChatInput /> 
     </div>

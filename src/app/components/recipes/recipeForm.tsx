@@ -5,14 +5,15 @@ import { Check, NotepadText } from 'lucide-react'
 import DisplayedIngredientItem from './displayedIngredient'
 import OrderTotal from './total'
 import { useForm } from 'react-hook-form'
-import { IngredientItemProps, RecipeSchema, Recipe, RecipeCategory } from '@/shemas/recipe'
+import { IngredientItemProps, RecipeSchema, RecipeCategory } from '@/shemas/recipe'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uid } from 'uid'
 import { getTotalPrice } from '@/app/services/helpers'
 import UploadFiles from '../shared/uploadFiles'
+import { createRecipe } from '@/app/services/services'
 
 
-type FormFields = {
+export type FormFields = {
   id: string; 
   title: string;
   totalCost: number;
@@ -37,7 +38,7 @@ const RecipeForm = () => {
   })
 
   const {errors} = formState
-  console.log(errors.title?.message)
+  
 
   const [tempIngredients, setTempIngredients] = useState<IngredientItemProps[]>([])
 
@@ -54,10 +55,15 @@ const RecipeForm = () => {
     setValue("ingredients", newIngredients)
   }
 
-  const onSubmit = (data: FormFields) => {
-    const res = fetch("")
-    reset()
-    setTempIngredients([])
+  const onSubmit = async (data: FormFields) => {
+    try {
+      createRecipe(data)
+    } catch(error) {
+      console.log(error)
+    } finally {
+      reset()
+      setTempIngredients([])
+    }
   }
 
 
