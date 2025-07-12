@@ -1,9 +1,9 @@
 import React from 'react';
-import { IngredientItemProps } from '@/shemas/recipe';
+import { RecipeIngredients } from '@/shemas/recipe';
 import { getTotalPrice } from '@/app/services/helpers';
 import { CircleDollarSign, ShoppingBasket } from 'lucide-react';
 
-const OrderTotal = ({ ingredients }: { ingredients: IngredientItemProps[] }) => {
+const OrderTotal = ({ ingredients }: { ingredients: RecipeIngredients[] }) => {
 
   const totalPrice = getTotalPrice(ingredients);
   const ingredientCount = ingredients.length;

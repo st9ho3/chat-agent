@@ -1,9 +1,8 @@
 // src/schemas/appSchemas.ts
 import { z } from 'zod';
+import { string } from 'zod/v4-mini';
 
-// -----------------------------------------------------------------------------
-// 1. Unit (type Unit = 'g' | 'ml' | 'kg' | 'L')
-// -----------------------------------------------------------------------------
+// Schema for defining a valid unit of measurement (e.g., 'g', 'ml', 'kg', 'L')
 export const UnitSchema = z.union([
   z.literal('g'),
   z.literal('ml'),
@@ -19,54 +18,20 @@ export const UnitSchema = z.union([
   }
 });
 
-export type Unit = z.infer<typeof UnitSchema>; // Inferred Type: 'g' | 'ml' | 'kg' | 'L'
+export type Unit = z.infer<typeof UnitSchema>;
 
-// -----------------------------------------------------------------------------
-// 2. Column (interface Column)
-// -----------------------------------------------------------------------------
+
+// Schema for defining a table column's properties
 export const ColumnSchema = z.object({
   header: z.string().min(1, "Column header is required"),
   accessor: z.string().min(1, "Column accessor is required"),
-  className: z.string().optional(), // className is optional
+  className: z.string().optional(),
 });
 
-export type Column = z.infer<typeof ColumnSchema>; // Inferred Type: Column
+export type Column = z.infer<typeof ColumnSchema>;
 
 
-// -----------------------------------------------------------------------------
-// 3. IngredientItemProps (interface IngredientItemProps)
-//    Note: React.ReactNode is a UI concept, Zod validates data.
-//    Representing `icon` as `z.any().optional()` as Zod won't validate a JSX element.
-// -----------------------------------------------------------------------------
-export const IngredientItemPropsSchema = z.object({
-  id: z.string(),
-  icon: z.any().optional(), // For React.ReactNode, Zod just checks its presence/type at a basic level
-  iconBgColor: z.string().optional(),
-  name: z.string().min(1, "Name is required"),
-  unit: z.string().min(1, "Unit is required"), // Assuming this is the string representation, not necessarily constrained by `UnitSchema` here
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
-  quantity: z.number().min(1, "Quantity must be non-negative"),
-});
-
-export type IngredientItemProps = z.infer<typeof IngredientItemPropsSchema>; // Inferred Type: IngredientItemProps
-// -----------------------------------------------------------------------------
-// 3. IngredientItemProps (interface IngredientItemProps)
-//    Note: React.ReactNode is a UI concept, Zod validates data.
-//    Representing `icon` as `z.any().optional()` as Zod won't validate a JSX element.
-// -----------------------------------------------------------------------------
-export const RecipeIngredientsSchema = z.object({
-  recipeId: z.string(),
-  ingredientId: z.string(),
-  unit: z.string().min(1, "Unit is required"), // Assuming this is the string representation, not necessarily constrained by `UnitSchema` here
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
-  quantity: z.number().min(1, "Quantity must be non-negative"),
-});
-
-export type RecipeIngredients = z.infer<typeof RecipeIngredientsSchema>; // Inferred Type: IngredientItemProps
-
-// -----------------------------------------------------------------------------
-// 4. Recipe (interface Recipe)
-// -----------------------------------------------------------------------------
+// Schema for defining allowed recipe categories (e.g., 'starter', 'main', 'dessert')
 export const RecipeCategorySchema = z.union([
   z.literal('starter'),
   z.literal('main'),
@@ -75,26 +40,51 @@ export const RecipeCategorySchema = z.union([
   errorMap: (issue, ctx) => ({ message: "Invalid category. Must be 'starter', 'main', or 'dessert'." })
 });
 
-export type RecipeCategory = z.infer<typeof RecipeCategorySchema>
+export type RecipeCategory = z.infer<typeof RecipeCategorySchema>;
 
+
+// Schema for defining validation errors related to an ingredient
+const ingredientErrorsSchema = z.array(z.string());
+
+export type IngredientErrors = z.infer<typeof ingredientErrorsSchema>;
+
+
+// Schema for the core recipe object
 export const RecipeSchema = z.object({
   id: z.string(),
   title: z.string().min(3, "Recipe title must be at least 3 characters").max(200, "Title cannot exceed 200 characters"),
   totalCost: z.number().min(0, "Total cost cannot be negative"),
-  
   createdBy: z.string().min(1, "Creator ID is required"),
-  dateCreated: z.date(), 
-  category: RecipeCategorySchema, // Reusing the category schema
-  imgPath: z.string().url("Image path must be a valid URL").optional(), // Assuming it might be optional or can be an empty string if allowed as input
+  dateCreated: z.date(),
+  category: RecipeCategorySchema,
+  imgPath: z.string().url("Image path must be a valid URL").optional(),
 });
 
-export type Recipe = z.infer<typeof RecipeSchema>; // Inferred Type: Recipe
-export type FormFields = z.infer<typeof RecipeSchema>;
+export type Recipe = z.infer<typeof RecipeSchema>;
 
-const ingredientErrorsSchema = z.object({
-  unitError: z.string().optional(),
-  nameError: z.string().optional(),
-  quantityError: z.string().optional()
-})
 
-export type IngredientErrors = z.infer<typeof ingredientErrorsSchema>;
+// Schema for an ingredient item with UI-specific properties
+export const IngredientSchema = z.object({
+  id: z.string(),
+  icon: z.string().optional(),
+  name: z.string().min(1, "Name is required"),
+  unit: z.string().min(1, "Unit is required"),
+  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
+  quantity: z.number().min(1, "Quantity must be non-negative"),
+});
+
+export type Ingredient = z.infer<typeof IngredientSchema>;
+
+
+// Schema for the join table linking recipes to ingredients with specific quantities and units
+export const RecipeIngredientsSchema = z.object({
+  recipeId: z.string(),
+  ingredientId: z.string(),
+  name: z.string().min(1, "Name is required"),
+  iconBgColor: z.string().optional(),
+  unit: z.string().min(1, "Unit is required"),
+  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
+  quantity: z.number().min(1, "Quantity must be non-negative"),
+});
+
+export type RecipeIngredients = z.infer<typeof RecipeIngredientsSchema>;

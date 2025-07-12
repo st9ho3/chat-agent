@@ -1,11 +1,11 @@
 "use client"
 import React, { useState } from 'react'
-import Ingredient from './ingredient'
+import AddIngredient from './ingredient'
 import { Check, NotepadText } from 'lucide-react'
 import DisplayedIngredientItem from './displayedIngredient'
 import OrderTotal from './total'
 import { useForm } from 'react-hook-form'
-import { IngredientItemProps, RecipeSchema, RecipeCategory } from '@/shemas/recipe'
+import { Ingredient, RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uid } from 'uid'
 import { getTotalPrice } from '@/app/services/helpers'
@@ -38,9 +38,9 @@ const RecipeForm = () => {
   const {errors} = formState
   
 
-  const [tempIngredients, setTempIngredients] = useState<IngredientItemProps[]>([])
+  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([])
 
-  const handleAddIngredient = ( ing: IngredientItemProps) => {
+  const handleAddIngredient = ( ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing ]
     const totalPrice= getTotalPrice(newIngredients)
     setTempIngredients(newIngredients)
@@ -48,7 +48,7 @@ const RecipeForm = () => {
     setValue("totalCost", totalPrice)
   }
   const handleRemoveIngredient = (id: string) => {
-    const newIngredients = tempIngredients.filter((ing) => ing.id !== id )
+    const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id )
     setTempIngredients(newIngredients)
     /* setValue("ingredients", newIngredients) */
   }
@@ -77,8 +77,8 @@ const RecipeForm = () => {
           <input {...register('title')} id='title' type="text" className=' p-4 placeholder:text-gray-500 text-2xl focus:outline-none ' placeholder="Recipe's name" required />
         </div>
         <p className='text-red-500 ml-3'> {errors.title?.message} </p>
-        <Ingredient onAddIngredient={handleAddIngredient}  />
-        <p className='text-red-500 ml-3'> {errors.ingredients?.message} </p>
+        <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId}  />
+        {/* <p className='text-red-500 ml-3'> {errors.ingredients?.message} </p> */}
         
           <UploadFiles />
 
@@ -92,10 +92,9 @@ const RecipeForm = () => {
       <div className='w-full h-2/3 overflow-auto'>
         {tempIngredients.length > 0 ? tempIngredients.map((ing) => 
           <DisplayedIngredientItem 
-            key={ing.id}
+            key={ing.ingredientId}
             onRemove={handleRemoveIngredient}
-            id={ing.id}
-            icon={ing.icon} 
+            id={ing.ingredientId}
             iconBgColor={ing.iconBgColor}
             name={ing.name}
             unit={ing.unit}

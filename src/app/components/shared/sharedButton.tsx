@@ -1,4 +1,5 @@
 import React from 'react';
+import { ButtonProps } from '../../../../types/context';
 
 const Button = ({ text, action }: ButtonProps) => {
   return (

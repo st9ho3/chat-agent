@@ -6,11 +6,7 @@ type IncrementalProps = {
   onChange: (value: number) => void
   count: number,
   onKeyDown: (value: React.KeyboardEvent<HTMLInputElement>) => void,
-  setErrors:  (value: React.SetStateAction<{
-    unitError?: string | undefined;
-    nameError?: string | undefined;
-    quantityError?: string | undefined;
-}>) => void
+  setErrors:  (value: React.SetStateAction<string[]>) => void
 }
 
 const Incremental = ({onChange, count, onKeyDown, setErrors}: IncrementalProps) => {
@@ -23,12 +19,12 @@ const Incremental = ({onChange, count, onKeyDown, setErrors}: IncrementalProps) 
     } else if (count > 0) {
       onChange(count - 1)
     }
-    setErrors(prevErrors => ({...prevErrors, quantityError: '' }))
+    setErrors([])
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value === '' ? 0 : Number(e.target.value)
     onChange(value)
-    setErrors(prevErrors => ({...prevErrors, quantityError: '' }))
+    setErrors([])
   }
 
   const handleFocus = () => {

@@ -1,10 +1,9 @@
 import { Trash2 } from 'lucide-react';
 import React from 'react';
-import { IngredientItemProps } from '@/shemas/recipe';
 
 const DisplayedIngredientItem = ({
   id,
-  icon,
+ 
   iconBgColor,
   name,
   unit,

@@ -10,6 +10,7 @@ const Chat = () => {
       const toggleChat = (): void => {
         dispatch({ type: "TOGGLE_CHAT" });
       };
+    
       
   return (
      <div className="flex justify-end ">
