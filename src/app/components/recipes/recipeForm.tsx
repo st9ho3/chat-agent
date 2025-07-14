@@ -5,12 +5,13 @@ import { Check, NotepadText } from 'lucide-react'
 import DisplayedIngredientItem from './displayedIngredient'
 import OrderTotal from './total'
 import { useForm } from 'react-hook-form'
-import { Ingredient, RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe'
+import { RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { uid } from 'uid'
+import { v4 as uuidv4} from "uuid"
 import { getTotalPrice } from '@/app/services/helpers'
 import UploadFiles from '../shared/uploadFiles'
 import { createRecipe } from '@/app/services/services'
+import { ingredientsData } from '@/app/constants/data'
 
 
 export type FormFields = {
@@ -23,7 +24,9 @@ export type FormFields = {
 }
 
 const RecipeForm = () => {
-  const newId = uid()
+  const [newId, setNewId] = useState<string>(uuidv4())
+  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([])
+
   const {register, handleSubmit, setValue, reset, formState} = useForm<FormFields>({
     defaultValues: {
       id: newId.toString(),
@@ -37,9 +40,6 @@ const RecipeForm = () => {
 
   const {errors} = formState
   
-
-  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([])
-
   const handleAddIngredient = ( ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing ]
     const totalPrice= getTotalPrice(newIngredients)
@@ -56,8 +56,7 @@ const RecipeForm = () => {
   const onSubmit = async (data: FormFields) => {
     try {
       if (tempIngredients.length > 0) {
-        createRecipe(data)
-        console.log(data)
+        createRecipe(data, tempIngredients)
       }
       
     } catch(error) {
@@ -65,10 +64,11 @@ const RecipeForm = () => {
     } finally {
       reset()
       setTempIngredients([])
+      setNewId(uuidv4())
     }
   }
 
-
+  
   return (
     <div className='w-70 h-120 md:w-210 md:h-130 md:flex '>
       <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col'>
@@ -80,33 +80,33 @@ const RecipeForm = () => {
         <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId}  />
         {/* <p className='text-red-500 ml-3'> {errors.ingredients?.message} </p> */}
         
-          <UploadFiles />
+        <UploadFiles />
 
-          <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
-            <Check />
-            <button type='submit'>Add recipe</button>
-          </div>
+        <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
+          <Check />
+          <button type='submit'>Add recipe</button>
+        </div>
       </form>
       <div className='flex flex-col items-center border-1 border-gray-300 border-dashed rounded-lg w-full p-2 ml-1'>
 
-      <div className='w-full h-2/3 overflow-auto'>
-        {tempIngredients.length > 0 ? tempIngredients.map((ing) => 
-          <DisplayedIngredientItem 
-            key={ing.ingredientId}
-            onRemove={handleRemoveIngredient}
-            id={ing.ingredientId}
-            iconBgColor={ing.iconBgColor}
-            name={ing.name}
-            unit={ing.unit}
-            unitPrice={10}
-            quantity={ing.quantity}
-            />
-         ) : <h3>Empty</h3> }
-      </div>
+        <div className='w-full h-2/3 overflow-auto'>
+          {tempIngredients.length > 0 ? tempIngredients.map((ing) => 
+            <DisplayedIngredientItem 
+              key={ing.ingredientId}
+              onRemove={handleRemoveIngredient}
+              id={ing.ingredientId}
+              iconBgColor={ing.iconBgColor}
+              name={ing.name}
+              unit={ing.unit}
+              unitPrice={10}
+              quantity={ing.quantity}
+              />
+          ) : <h3>Empty</h3> }
+        </div>
         
         <OrderTotal 
-            ingredients={tempIngredients}
-          />
+          ingredients={tempIngredients}
+        />
         
       </div>
     </div>

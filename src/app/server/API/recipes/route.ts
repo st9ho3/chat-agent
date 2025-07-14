@@ -1,18 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { RecipeSchema } from "@/shemas/recipe";
+import { createRecipeToDatabase } from "@/db/crud";
 
 export const POST = async(req: NextRequest) => {
 
     try {
         const request = await req.json();
 
-        if (typeof request.dateCreated === 'string') {
-            request.dateCreated = new Date(request.dateCreated);
+        if (typeof request.recipe.dateCreated === 'string') {
+            request.recipe.dateCreated = new Date(request.recipe.dateCreated);
         }
+        
+        const validatedRequest = RecipeSchema.parse(request.recipe);
 
-        const validatedRequest = RecipeSchema.parse(request);
+        
 
         if (validatedRequest) {
+            
+            //Create the recipe with createRecipe()
+                createRecipeToDatabase(validatedRequest)
+
             if (validatedRequest.title === "cake") {
                 console.log('Thank you for the cake');
                 return NextResponse.json({

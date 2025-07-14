@@ -51,7 +51,7 @@ export type IngredientErrors = z.infer<typeof ingredientErrorsSchema>;
 
 // Schema for the core recipe object
 export const RecipeSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   title: z.string().min(3, "Recipe title must be at least 3 characters").max(200, "Title cannot exceed 200 characters"),
   totalCost: z.number().min(0, "Total cost cannot be negative"),
   createdBy: z.string().min(1, "Creator ID is required"),
@@ -65,12 +65,11 @@ export type Recipe = z.infer<typeof RecipeSchema>;
 
 // Schema for an ingredient item with UI-specific properties
 export const IngredientSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   icon: z.string().optional(),
   name: z.string().min(1, "Name is required"),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
-  quantity: z.number().min(1, "Quantity must be non-negative"),
+  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional()
 });
 
 export type Ingredient = z.infer<typeof IngredientSchema>;
@@ -78,8 +77,8 @@ export type Ingredient = z.infer<typeof IngredientSchema>;
 
 // Schema for the join table linking recipes to ingredients with specific quantities and units
 export const RecipeIngredientsSchema = z.object({
-  recipeId: z.string(),
-  ingredientId: z.string(),
+  recipeId: z.string().uuid(),
+  ingredientId: z.string().uuid(),
   name: z.string().min(1, "Name is required"),
   iconBgColor: z.string().optional(),
   unit: z.string().min(1, "Unit is required"),

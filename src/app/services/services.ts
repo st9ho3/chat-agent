@@ -1,6 +1,7 @@
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
 
+import { Ingredient, Recipe, RecipeIngredients } from "@/shemas/recipe";
 export const createMessage = (text: string, user: string) => {
   const message = {
     id: uid(),
@@ -16,14 +17,16 @@ export const createMessage = (text: string, user: string) => {
   return message;
 };
 
-export const createRecipe = async (data: FormFields) => {
-
+export const createRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
+  
+    const dataToSend = {recipe: data, ingredient: ing}
+    
     const res = await fetch("server/API/recipes", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(dataToSend)
     }); 
     
     if (!res.ok) {
@@ -36,3 +39,4 @@ export const createRecipe = async (data: FormFields) => {
 
     console.log(response);
 }; 
+
