@@ -1,7 +1,7 @@
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
-
-import { Ingredient, Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { RecipeIngredients, RecipeIngredientsSchema, RecipeSchema  } from "@/shemas/recipe";
+import { NextRequest } from "next/server";
 export const createMessage = (text: string, user: string) => {
   const message = {
     id: uid(),
@@ -17,7 +17,7 @@ export const createMessage = (text: string, user: string) => {
   return message;
 };
 
-export const createRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
+export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
   
     const dataToSend = {recipe: data, ingredients: ing}
     
@@ -37,6 +37,24 @@ export const createRecipe = async (data: FormFields, ing: RecipeIngredients[]) =
 
     const response = await res.json();
 
-    console.log(response);
 }; 
 
+export const zodValidateDataBeforeAddThemToDatabase = async(request: NextRequest) => {
+  const {recipe, ingredients} = await request.json();
+
+  if (typeof recipe.dateCreated === 'string') {
+      recipe.dateCreated = new Date(recipe.dateCreated);
+  }
+
+  const validatedRecipe = RecipeSchema.parse(recipe);
+
+  const validatedRecipeIngredients = ingredients.map((ingredient: RecipeIngredients) => {
+      const validatedIngredient = RecipeIngredientsSchema.parse(ingredient)
+      return validatedIngredient
+  });
+
+  return {
+    validatedRecipe: validatedRecipe,
+    validatedRecipeIngredients: validatedRecipeIngredients
+  }
+}

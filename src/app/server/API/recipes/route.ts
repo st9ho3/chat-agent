@@ -1,45 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
-import { createRecipeToDatabase } from "@/db/crud";
-
+import { createRecipeAndIngredients } from "@/db/crud";
+import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 
 export const POST = async(req: NextRequest) => {
 
     try {
-        const {recipe, ingredients} = await req.json();
 
-        if (typeof recipe.dateCreated === 'string') {
-            recipe.dateCreated = new Date(recipe.dateCreated);
-        }
-        console.log(recipe)
-        const validatedRecipe = RecipeSchema.parse(recipe);
-        
-        /* const validatedIngredient = ingredients.forEach(ingredient: RecipeIngredients => {
-            RecipeIngredientsSchema.parse(ingredient)
-        }); */
+        const {validatedRecipe, validatedRecipeIngredients, } = await zodValidateDataBeforeAddThemToDatabase(req)
 
-        
 
-        if (validatedRecipe) {
-            
-            //Create the recipe with createRecipe()
-                createRecipeToDatabase(validatedRecipe)
+        if (validatedRecipe && validatedRecipeIngredients) {
 
-            if (validatedRecipe.title === "cake") {
-                console.log('Thank you for the cake');
+            const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeIngredients )
+
+            console.log(res)
+            if  (res) {
                 return NextResponse.json({
-                    message: "You sent cake to the server",
-                    status: 201
-                });
-            } else {
-                return NextResponse.json({
-                    message: "You didn't send cake to the server",
-                    status: 400
-                });
+                message: "Recipe succesfully created!",
+                status: 201
+            })
             }
+
         } else {
             return NextResponse.json({
-                error: "Ivalid Data. You need to send something",
+                error: "Invalid Data.",
                 status: 422
             });
         }
@@ -50,7 +34,7 @@ export const POST = async(req: NextRequest) => {
         });
     }
 
-}; 
+};
 
 export const GET = async() => {
 

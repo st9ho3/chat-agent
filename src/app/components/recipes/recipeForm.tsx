@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
-import { createRecipe } from '@/app/services/services';
+import { sendRecipe } from '@/app/services/services';
 
 export type FormFields = {
   id: string;
@@ -56,7 +56,7 @@ const RecipeForm = () => {
       const updatedData = { ...data, id: newId };
 
       if (tempIngredients.length > 0) {
-        await createRecipe(updatedData, tempIngredients);
+        await sendRecipe(updatedData, tempIngredients);
       }
 
     } catch (error) {
