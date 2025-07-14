@@ -1,26 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
-import { RecipeSchema } from "@/shemas/recipe";
+import { RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { createRecipeToDatabase } from "@/db/crud";
+
 
 export const POST = async(req: NextRequest) => {
 
     try {
-        const request = await req.json();
+        const {recipe, ingredients} = await req.json();
 
-        if (typeof request.recipe.dateCreated === 'string') {
-            request.recipe.dateCreated = new Date(request.recipe.dateCreated);
+        if (typeof recipe.dateCreated === 'string') {
+            recipe.dateCreated = new Date(recipe.dateCreated);
         }
+        console.log(recipe)
+        const validatedRecipe = RecipeSchema.parse(recipe);
         
-        const validatedRequest = RecipeSchema.parse(request.recipe);
+        /* const validatedIngredient = ingredients.forEach(ingredient: RecipeIngredients => {
+            RecipeIngredientsSchema.parse(ingredient)
+        }); */
 
         
 
-        if (validatedRequest) {
+        if (validatedRecipe) {
             
             //Create the recipe with createRecipe()
-                createRecipeToDatabase(validatedRequest)
+                createRecipeToDatabase(validatedRecipe)
 
-            if (validatedRequest.title === "cake") {
+            if (validatedRecipe.title === "cake") {
                 console.log('Thank you for the cake');
                 return NextResponse.json({
                     message: "You sent cake to the server",

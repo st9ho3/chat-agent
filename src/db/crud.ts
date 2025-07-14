@@ -20,9 +20,9 @@ export const createRecipeToDatabase = async(r: Recipe) => {
   category: r.category,
   imgPath: r.imgPath,
  }).returning({
-    id:     recipesTable.id
+    returnedId: recipesTable.id
  })
- 
+
 }
 
 export const createIngredientsToDatabase = async(ingredient: Ingredient) => {

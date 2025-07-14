@@ -19,7 +19,7 @@ export const createMessage = (text: string, user: string) => {
 
 export const createRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
   
-    const dataToSend = {recipe: data, ingredient: ing}
+    const dataToSend = {recipe: data, ingredients: ing}
     
     const res = await fetch("server/API/recipes", {
         method: "POST",
