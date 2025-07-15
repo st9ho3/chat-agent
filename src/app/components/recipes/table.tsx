@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Recipe } from "@/shemas/recipe";
 import { deleteRecipesFromServer } from "@/app/services/services";
 import { useRouter } from "next/navigation";
+import Notification from '@/app/components/shared/notification'
 
 
 
@@ -25,6 +26,7 @@ const Table = ({items}: {items: Recipe[]}) => {
 
 
   return (
+    <div>
     <table className="w-full table-fixed mb-4 ">
       <thead>
         <tr className="border-b-1 border-gray-200">
@@ -79,6 +81,8 @@ const Table = ({items}: {items: Recipe[]}) => {
         ))}
       </tbody>
     </table>
+    {state.notification.isOpen && <Notification />}
+    </div>
   );
 };
 

@@ -4,7 +4,6 @@ import Table from '@/app/components/recipes/table'
 import { getRecipesFromServer } from '@/app/services/services';
 
 
-
 const RecipesPage = async() => {
 
   const recipes = await getRecipesFromServer()
