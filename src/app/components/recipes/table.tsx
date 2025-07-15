@@ -1,18 +1,27 @@
 "use client";
-import { columns, recipes } from "@/app/constants/data";
+import { columns } from "@/app/constants/data";
 import { paginate } from "@/app/services/helpers";
 import { useHomeContext } from "@/app/context/homeContext/homeContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Recipe } from "@/shemas/recipe";
+import { deleteRecipesFromServer } from "@/app/services/services";
+import { useRouter } from "next/navigation";
 
 
 
 const Table = ({items}: {items: Recipe[]}) => {
   const { state } = useHomeContext();
+  const router = useRouter()
   const paginateItems = paginate(10, state.currentPage, items);
   const itemsToDisplay = paginateItems ? paginateItems : [];
+
+  const handleDelete = async(rec: Recipe) => {
+    deleteRecipesFromServer(rec.id)
+
+    router.refresh()
+  }
 
 
   return (
@@ -59,6 +68,7 @@ const Table = ({items}: {items: Recipe[]}) => {
                 className="cursor-pointer"
               />
               <Trash2
+                onClick={() => handleDelete(rec)}
                 size="18px"
                 strokeWidth="1.5px"
                 color="red"

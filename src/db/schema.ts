@@ -25,7 +25,7 @@ export const ingredientsTable = pgTable('ingredients', {
 
 // Defines the 'recipeIngredients' table schema, linking recipes and ingredients.
 export const recipeIngredientsTable = pgTable("recipeIngredients", {
-recipeId: uuid("recipe_id").references(() =>  recipesTable.id),
+recipeId: uuid("recipe_id").references(() =>  recipesTable.id, {onDelete: 'cascade'}),
 ingredientId: uuid("ingredient_id").references(() =>  ingredientsTable.id),
 quantity: numeric("quantity").notNull()
 });

@@ -48,6 +48,20 @@ export const getRecipesFromServer = async () => {
   return recipes.body
 }
 
+export const deleteRecipesFromServer = async (recipeId: string) => {
+  const response = await fetch("server/API/recipes", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(recipeId)
+  })
+  
+  const resMessage = response.json()
+  const message = await resMessage
+  console.log(message.message)
+}
+
 export const zodValidateDataBeforeAddThemToDatabase = async(request: NextRequest) => {
   const {recipe, ingredients} = await request.json();
 

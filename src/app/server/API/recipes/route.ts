@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createRecipeAndIngredients } from "@/db/create";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import { getRecipes } from "@/db/read";
+import { deleteRecipe } from "@/db/delete";
 
 export const POST = async(req: NextRequest) => {
     try {
@@ -36,3 +37,11 @@ export const GET = async() => {
     // Correctly return a JSON response with the recipes array and a 200 status.
     return NextResponse.json( { status: 200, body: recipes });
 };
+
+export const DELETE = async(req: NextRequest) => {
+    
+    const recipeId = await req.json() 
+
+    const recipeDeleted = await deleteRecipe(recipeId)
+    return NextResponse.json({status: 200, message: "Recipe succesfully deleted"})
+}
