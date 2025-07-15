@@ -1,6 +1,5 @@
 // src/schemas/appSchemas.ts
 import { z } from 'zod';
-import { string } from 'zod/v4-mini';
 
 // Schema for defining a valid unit of measurement (e.g., 'g', 'ml', 'kg', 'L')
 export const UnitSchema = z.union([
@@ -37,16 +36,10 @@ export const RecipeCategorySchema = z.union([
   z.literal('main'),
   z.literal('dessert')
 ], {
-  errorMap: (issue, ctx) => ({ message: "Invalid category. Must be 'starter', 'main', or 'dessert'." })
+  errorMap: () => ({ message: "Invalid category. Must be 'starter', 'main', or 'dessert'." })
 });
 
 export type RecipeCategory = z.infer<typeof RecipeCategorySchema>;
-
-
-// Schema for defining validation errors related to an ingredient
-const ingredientErrorsSchema = z.array(z.string());
-
-export type IngredientErrors = z.infer<typeof ingredientErrorsSchema>;
 
 
 // Schema for the core recipe object

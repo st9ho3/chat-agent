@@ -37,6 +37,8 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
 
     const response = await res.json();
 
+    return response
+
 }; 
 
 export const zodValidateDataBeforeAddThemToDatabase = async(request: NextRequest) => {

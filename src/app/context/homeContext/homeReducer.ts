@@ -1,5 +1,4 @@
-import { getInitialMessages } from '../../services/helpers';
-
+import { HomeState, Action } from "@/types/context";
 // Initial state for the reducer
 const initialState: HomeState = {
   dialogExists: false,

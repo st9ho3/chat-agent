@@ -1,7 +1,8 @@
 import Header from '@/app/components/recipes/header'
 import Pagination from '@/app/components/recipes/pagination'
 import Table from '@/app/components/recipes/table'
-import { recipes } from '@/app/constants/data'
+import { recipes } from '@/app/constants/data';
+
 
 
 const RecipesPage = () => {

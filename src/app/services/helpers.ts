@@ -1,10 +1,4 @@
-import { IngredientItemProps, Recipe } from "@/shemas/recipe";
-// Function to safely get initial messages from localStorage
-export const getInitialMessages = (): any => {
-  const item = localStorage.getItem('messages');
-  const parsedItem = item ? JSON.parse(item) : [];
-  return parsedItem;
-};
+import { Recipe, RecipeIngredients } from "@/shemas/recipe";
 
 export const paginate = (itemsPerPage: number, page: number, items: Recipe[] ) => {
     if (items.length === 0) {
@@ -18,7 +12,7 @@ export const paginate = (itemsPerPage: number, page: number, items: Recipe[] ) =
     return currentItems
   } 
 
-  export const paginationPages = (items: any[], itemsPerPage: number ) => {
+  export const paginationPages = (items: Recipe[], itemsPerPage: number ) => {
    
   const pages = Math.ceil(items.length / itemsPerPage);
   const pageNumbers = Array.from({ length: pages }, (_, i) => i + 1);
@@ -26,7 +20,7 @@ export const paginate = (itemsPerPage: number, page: number, items: Recipe[] ) =
 
 }
 
-export const getTotalPrice = (ingredients: IngredientItemProps[]) => {
+export const getTotalPrice = (ingredients: RecipeIngredients[]) => {
   return ingredients.reduce((sum, item) => {
     return sum + /* item.unitPrice */ 10 * item.quantity;
   }, 0);

@@ -3,8 +3,6 @@ import React from 'react';
 
 const DisplayedIngredientItem = ({
   id,
- 
-  iconBgColor,
   name,
   unit,
   unitPrice=10,

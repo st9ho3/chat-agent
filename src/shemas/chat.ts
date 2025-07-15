@@ -12,4 +12,4 @@ export const MessageSchema = z.object({
   timestamp: z.string().datetime("Invalid ISO 8601 timestamp format"),
 });
 
-export type Message = z.infer<typeof MessageSchema>; // Inferred Type: Message
+export type MessageType = z.infer<typeof MessageSchema>; // Inferred Type: Message

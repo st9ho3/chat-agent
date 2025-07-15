@@ -2,8 +2,10 @@
 import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
 import { Carrot, Plus, Ruler } from 'lucide-react'
-import { Unit, IngredientErrors, RecipeIngredients, RecipeIngredientsSchema } from '@/shemas/recipe'
+import { Unit, RecipeIngredients, RecipeIngredientsSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
+
+type IngredientErrors = string[]
 
 type AddIngredientProps = {
   onAddIngredient: (value: RecipeIngredients) => void,

@@ -3,6 +3,7 @@ import { columns, recipes } from "@/app/constants/data";
 import { paginate } from "@/app/services/helpers";
 import { useHomeContext } from "@/app/context/homeContext/homeContext";
 import { Pencil, Trash2 } from "lucide-react";
+import Image from "next/image";
 
 const Table = () => {
   const { state } = useHomeContext();
@@ -28,9 +29,9 @@ const Table = () => {
           >
             <td className="pl-4 md:pl-0">
               <div className="flex items-center gap-2">
-                <img
+                <Image
                   className="w-8 h-8 rounded-full object-cover"
-                  src={rec.imgPath}
+                  src={rec.imgPath ? rec.imgPath : 'no image' }
                   alt={rec.title}
                 />
                 <p className="text-sm break-words">{rec.title}</p>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
-import { ModalProps } from '../../../../types/context';
+import { ModalProps } from '../../../types/context';
 
 const Modal= ({ isOpen, onClose, children }: ModalProps) => {
 

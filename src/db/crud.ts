@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from '../db/schema';
-import { Recipe, Ingredient, RecipeIngredients } from '../shemas/recipe';
+import { Recipe, RecipeIngredients } from '../shemas/recipe';
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is not set');

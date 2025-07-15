@@ -1,7 +1,8 @@
 "use client"
 
-import {createContext, useContext, useReducer} from 'react'
+import {createContext, useContext, useReducer, PropsWithChildren} from 'react'
 import {initialState, homeReducer} from './homeReducer'
+import { Action } from '@/types/context'
 
 interface HomeContextProps {
     state: typeof initialState,
@@ -10,7 +11,7 @@ interface HomeContextProps {
 
 const homeContext = createContext<HomeContextProps | undefined>(undefined)
 
-const HomeContextProvider = ({children}: any) => {
+const HomeContextProvider = ({children}: PropsWithChildren) => {
   const [state, dispatch] = useReducer(homeReducer, initialState)
 
   return (

@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useRef } from 'react'
-import Message from './message'
+import { MessageType } from '@/shemas/chat';
+import Message from './message';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 
 const ChatDialog = () => {
@@ -21,7 +22,7 @@ const ChatDialog = () => {
 
   return (
     <div className="flex flex-col w-full h-4/5 mb-1 p-3 overflow-y-auto">
-      {state.messages.map((message) => (
+      {state.messages.map((message: MessageType) => (
         <Message key={message.id} user={message.sender} text={message.message} />
       ))}
       <div ref={messageRef} />
