@@ -39,7 +39,14 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
 
     return response
 
-}; 
+};
+
+export const getRecipesFromServer = async () => {
+  const response = await fetch("http://localhost:3000/server/API/recipes")
+  const recipes = await response.json()
+  console.log("recipes in client", recipes.body)
+  return recipes.body
+}
 
 export const zodValidateDataBeforeAddThemToDatabase = async(request: NextRequest) => {
   const {recipe, ingredients} = await request.json();

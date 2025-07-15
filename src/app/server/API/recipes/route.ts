@@ -1,26 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createRecipeAndIngredients } from "@/db/crud";
+import { createRecipeAndIngredients } from "@/db/create";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
+import { getRecipes } from "@/db/read";
 
 export const POST = async(req: NextRequest) => {
-
     try {
-
-        const {validatedRecipe, validatedRecipeIngredients, } = await zodValidateDataBeforeAddThemToDatabase(req)
-
+        const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(req);
 
         if (validatedRecipe && validatedRecipeIngredients) {
+            const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeIngredients);
 
-            const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeIngredients )
-
-            console.log(res)
-            if  (res) {
+            if (res) {
                 return NextResponse.json({
-                message: "Recipe succesfully created!",
-                status: 201
-            })
+                    message: "Recipe succesfully created!",
+                    status: 201
+                });
             }
-
         } else {
             return NextResponse.json({
                 error: "Invalid Data.",
@@ -33,9 +28,11 @@ export const POST = async(req: NextRequest) => {
             status: 500
         });
     }
-
 };
 
 export const GET = async() => {
-
-}
+    const recipes = await getRecipes();
+    console.log("recipes in GET", recipes);
+    // Correctly return a JSON response with the recipes array and a 200 status.
+    return NextResponse.json( { status: 200, body: recipes });
+};

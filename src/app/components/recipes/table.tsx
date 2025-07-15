@@ -4,11 +4,16 @@ import { paginate } from "@/app/services/helpers";
 import { useHomeContext } from "@/app/context/homeContext/homeContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { Recipe } from "@/shemas/recipe";
 
-const Table = () => {
+
+
+const Table = ({items}: {items: Recipe[]}) => {
   const { state } = useHomeContext();
-  const paginateItems = paginate(10, state.currentPage, recipes);
+  const paginateItems = paginate(10, state.currentPage, items);
   const itemsToDisplay = paginateItems ? paginateItems : [];
+
 
   return (
     <table className="w-full table-fixed mb-4 ">
@@ -31,19 +36,21 @@ const Table = () => {
               <div className="flex items-center gap-2">
                 <Image
                   className="w-8 h-8 rounded-full object-cover"
-                  src={rec.imgPath ? rec.imgPath : 'no image' }
+                  src={rec.imgPath || '/images/placeholder-image.png'}
                   alt={rec.title}
+                  width={8}
+                  height={8}
                 />
                 <p className="text-sm break-words">{rec.title}</p>
               </div>
             </td>
             <td className="hidden md:table-cell pl-4">{rec.createdBy}</td>
             <td className="hidden md:table-cell pl-4">
-              {new Date(rec.dateCreated).toLocaleTimeString()}
+              <ClientOnlyTime date={rec.dateCreated} />
             </td>
             <td className="hidden md:table-cell pl-4">{rec.category}</td>
             <td className="hidden md:table-cell align-middle text-center md:text-start md:pl-4">
-              € {rec.totalCost.toFixed(2)}
+              € {Number(rec.totalCost).toFixed(2)}
             </td>
             <td className="align-middle text-center gap-5 flex justify-center md:text-start md:justify-start mt-4 md:pl-4">
               <Pencil
@@ -66,3 +73,13 @@ const Table = () => {
 };
 
 export default Table;
+
+const ClientOnlyTime = ({ date }: { date: string | number | Date }) => {
+  const [formattedTime, setFormattedTime] = useState('');
+
+  useEffect(() => {
+    setFormattedTime(new Date(date).toLocaleTimeString());
+  }, [date]);
+
+  return <>{formattedTime}</>;
+};
