@@ -8,6 +8,11 @@ if (!process.env.DATABASE_URL) {
 
 const db = drizzle(process.env.DATABASE_URL!);
 
+/**
+ * Inserts a new recipe into the database.
+ * @param r The recipe object to insert.
+ * @returns The ID of the newly created recipe.
+ */
 const createRecipeToDatabase = async(r: Recipe) => {
 
   const recipe = await db
@@ -25,10 +30,16 @@ const createRecipeToDatabase = async(r: Recipe) => {
       returnedId: recipesTable.id
     });
 
+    console.log('recipe pushed')
   return recipe[0].returnedId;
 
 };
 
+/**
+ * Inserts a new ingredient into the database.
+ * @param ingredient The ingredient object to insert.
+ * @returns The ID of the newly created ingredient.
+ */
 const createIngredientsToDatabase = async(ingredient: RecipeIngredients) => {
   const ing = await db
     .insert(ingredientsTable)
@@ -43,9 +54,16 @@ const createIngredientsToDatabase = async(ingredient: RecipeIngredients) => {
       ingredientId: ingredientsTable.id
     });
 
+    console.log('Ingredients pushed')
+
   return ing[0].ingredientId;
 };
 
+/**
+ * Inserts a new recipe-ingredient relationship into the database.
+ * @param recipeIngredient The recipe ingredient object to insert.
+ * @returns The ID of the newly created recipe ingredient.
+ */
 const createRecipeIngredientsToDatabase = async(recipeIngredient: RecipeIngredients) => {
   const ingredient = await db
     .insert(recipeIngredientsTable)
@@ -58,17 +76,24 @@ const createRecipeIngredientsToDatabase = async(recipeIngredient: RecipeIngredie
       ingredientId: recipeIngredientsTable.ingredientId
     });
 
+    console.log('RecipeIngredients pushed')
   return ingredient[0].ingredientId;
 };
 
+/**
+ * Creates a new recipe and its associated ingredients in the database.
+ * @param r The recipe object.
+ * @param recipeIngredients An array of recipe ingredient objects.
+ * @returns An object containing the response from creating the recipe and the first recipe ingredient, or undefined if an error occurs.
+ */
 export const createRecipeAndIngredients = async(r: Recipe, recipeIngredients: RecipeIngredients[]) => {
 
     try {
         const recipeResponse = await createRecipeToDatabase(r)
 
-        const ingredientsResponses = recipeIngredients.map(async(ingredient) => await createIngredientsToDatabase(ingredient))
+        const ingredientsResponses = await Promise.all(recipeIngredients.map(async(ingredient) => await createIngredientsToDatabase(ingredient))) 
 
-        const recipeIngredientsResponses = recipeIngredients.map(async(ingredient) => await createRecipeIngredientsToDatabase(ingredient))
+        const recipeIngredientsResponses = await Promise.all(recipeIngredients.map(async(ingredient) => await createRecipeIngredientsToDatabase(ingredient)))
         
         console.log('This is the response from ingredient', ingredientsResponses)
 
