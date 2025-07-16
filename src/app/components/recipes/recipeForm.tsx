@@ -12,6 +12,7 @@ import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
 import { sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
+import { useRouter } from 'next/navigation';
 
 export type FormFields = {
   id: string;
@@ -28,6 +29,7 @@ const RecipeForm = () => {
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
   const [isListVisible, setIsListVisible] = useState(false);
   const { dispatch} = useHomeContext()
+  const router = useRouter()
 
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
@@ -72,6 +74,7 @@ const RecipeForm = () => {
       setNewId(nextRecipeId);
       dispatch({type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully"})
       setValue("id", nextRecipeId);
+      router.replace("/recipes")
     }
   }
 
