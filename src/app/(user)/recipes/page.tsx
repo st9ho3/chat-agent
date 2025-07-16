@@ -3,6 +3,7 @@ import Pagination from '@/app/components/recipes/pagination'
 import Table from '@/app/components/recipes/table'
 import { getRecipes } from '@/db/read'
 
+export const dynamic = "force-dynamic"
 
 const RecipesPage = async() => {
 
