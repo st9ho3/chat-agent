@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
 import { sendRecipe } from '@/app/services/services';
+import { useHomeContext } from '@/app/context/homeContext/homeContext';
 
 export type FormFields = {
   id: string;
@@ -26,6 +27,7 @@ const RecipeForm = () => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
   const [isListVisible, setIsListVisible] = useState(false);
+  const { dispatch} = useHomeContext()
 
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
@@ -68,7 +70,7 @@ const RecipeForm = () => {
 
       const nextRecipeId = uuidv4();
       setNewId(nextRecipeId);
-
+      dispatch({type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully"})
       setValue("id", nextRecipeId);
     }
   }

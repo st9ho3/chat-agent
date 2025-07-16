@@ -42,6 +42,6 @@ export const DELETE = async(req: NextRequest) => {
     
     const recipeId = await req.json() 
 
-    const recipeDeleted = await deleteRecipe(recipeId)
+     await deleteRecipe(recipeId)
     return NextResponse.json({status: 200, message: "Recipe succesfully deleted"})
 }

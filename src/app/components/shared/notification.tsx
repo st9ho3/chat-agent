@@ -1,7 +1,7 @@
 "use client"
 
 import { useHomeContext } from "@/app/context/homeContext/homeContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Notification = () => {
 
@@ -14,9 +14,9 @@ const Notification = () => {
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, []);
+  });
   
-    const baseClass = "fixed bottom-5 left-5 flex items-center p-4 rounded-lg shadow-lg max-w-sm transition-transform duration-300 ease-in-out border-l-4";
+    const baseClass = "fixed z-60 bottom-5 left-5 flex items-center p-4 rounded-lg shadow-lg max-w-sm transition-transform duration-300 ease-in-out border-l-4";
   
   
 
