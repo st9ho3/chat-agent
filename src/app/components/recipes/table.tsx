@@ -20,7 +20,7 @@ const Table = ({items}: {items: Recipe[]}) => {
 
   const handleDelete = async(rec: Recipe) => {
     deleteRecipesFromServer(rec.id)
-
+    console.log('clicked')
     router.refresh()
   }
 

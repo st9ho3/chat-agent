@@ -1,6 +1,16 @@
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from './schema';
 import { Recipe, RecipeIngredients } from '../shemas/recipe';
 import { db } from './db';
+import { eq } from 'drizzle-orm';
+
+const checkIfRecipeExists= async (r: Recipe) => {
+  const recipe = await db
+  .select()
+  .from(recipesTable)
+  .where(eq(recipesTable.title, r.title))
+
+  return recipe
+}
 
 /**
  * Inserts a new recipe into the database.
@@ -8,8 +18,9 @@ import { db } from './db';
  * @returns The ID of the newly created recipe.
  */
 const createRecipeToDatabase = async(r: Recipe) => {
-
-  const recipe = await db
+  const foundRecipe = await checkIfRecipeExists(r)
+  if ( foundRecipe.length === 0) {
+    const recipe = await db
     .insert(recipesTable)
     .values({
       id: r.id,
@@ -26,6 +37,12 @@ const createRecipeToDatabase = async(r: Recipe) => {
 
     console.log('recipe pushed')
   return recipe[0].returnedId;
+  } else {
+    console.log("Recipe already exists")
+  }
+
+  return
+  
 
 };
 
