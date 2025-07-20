@@ -46,6 +46,13 @@ export const getRecipesFromServer = async () => {
   return recipes.body;
 };
 
+export const getRecipeFromServer = async (id: string) => {
+  const response = await fetch(`http://localhost:3000/server/API/edit/${id}`);
+  const recipe = await response.json();
+  return recipe.body;
+};
+
+
 export const deleteRecipesFromServer = async (recipeId: string) => {
   const response = await fetch("server/API/recipes", {
     method: "DELETE",

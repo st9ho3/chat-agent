@@ -6,14 +6,15 @@ import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Recipe } from "@/shemas/recipe";
-import { deleteRecipesFromServer } from "@/app/services/services";
+import { deleteRecipesFromServer, getRecipeFromServer } from "@/app/services/services";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 
 
 
+
 const Table = ({items}: {items: Recipe[]}) => {
-  const { state } = useHomeContext();
+  const { state, dispatch } = useHomeContext();
   const router = useRouter()
   const paginateItems = paginate(10, state.currentPage, items);
   const itemsToDisplay = paginateItems ? paginateItems : [];
@@ -24,6 +25,11 @@ const Table = ({items}: {items: Recipe[]}) => {
     router.refresh()
   }
 
+  const handleEdit = async (id: string, ) => {
+    dispatch({type: "OPEN_MODAL", payload: {type: "edit", id: id}})
+    const recipe = await getRecipeFromServer(id)
+    console.log(recipe)
+  }
 
   return (
     <div>
@@ -65,6 +71,10 @@ const Table = ({items}: {items: Recipe[]}) => {
             </td>
             <td className="align-middle text-center gap-5 flex justify-center md:text-start md:justify-start mt-4 md:pl-4">
               <Pencil
+              onClick={() => {
+              handleEdit(rec.id)
+              
+          } }
                 size="18px"
                 strokeWidth="1.5px"
                 className="cursor-pointer"

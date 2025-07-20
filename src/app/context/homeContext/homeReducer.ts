@@ -6,6 +6,10 @@ const initialState: HomeState = {
   messages: [], // getInitialMessages(),
   currentPage: 1,
   isModalOpen: false,
+  modalType: {
+    type: "",
+    id: ""
+  },
   notification: {isOpen:false, message: "no message"}
 };
 
@@ -32,7 +36,8 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
     case 'OPEN_MODAL':
       return {
         ...state,
-        isModalOpen: true
+        isModalOpen: true,
+        modalType: action.payload
       }
     case 'CLOSE_MODAL':
       return {

@@ -10,12 +10,18 @@ interface Notification {
   message: string
 }
 
+interface ModalType {
+  type: string,
+  id: string
+} 
+
 interface HomeState {
   dialogExists: boolean;
   chatOpen: boolean;
   messages: Message[];
   currentPage: number;
   isModalOpen: boolean;
+  modalType: ModalType;
   notification: Notification
 }
 
@@ -24,7 +30,7 @@ type Action =
   | { type: "TOGGLE_CHAT" }
   | { type: "UPDATE_MESSAGES"; payload: Message }
   | { type: "CHOOSE_PAGE"; payload: number }
-  | { type: "OPEN_MODAL"}
+  | { type: "OPEN_MODAL"; payload: ModalType}
   | { type: "CLOSE_MODAL"}
   | { type: "OPEN_NOTIFICATION"; payload: string}
   | { type: "CLOSE_NOTIFICATION"}
