@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "./db";
 import { recipesTable } from "./schema";
+import { revalidatePath } from "next/cache";
 
 
 
@@ -10,5 +11,7 @@ export const deleteRecipe = async (recipeId: string) => {
     .delete(recipesTable)
     .where(eq(recipesTable.id, recipeId))
     .returning()
+
+    revalidatePath("/recipes")
 
 }

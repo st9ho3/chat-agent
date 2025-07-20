@@ -1,25 +1,7 @@
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from './schema';
-import { Ingredient, Recipe, RecipeIngredients } from '../shemas/recipe';
+import { Recipe, RecipeIngredients } from '../shemas/recipe';
 import { db } from './db';
-import { eq } from 'drizzle-orm';
-
-const checkIfRecipeExists = async (title: string) => {
-  const recipes = await db
-    .select({ recipe: recipesTable.title })
-    .from(recipesTable)
-    .where(eq(recipesTable.title, title));
-
-  return recipes;
-};
-
-const checkIfIngredientExists = async (title: string) => {
-  const ingredients = await db
-    .select()
-    .from(ingredientsTable)
-    .where(eq(ingredientsTable.name, title));
-
-  return ingredients[0];
-};
+import { checkIfIngredientExists, checkIfRecipeExists } from '@/db/helpers';
 
 /**
  * Inserts a new recipe into the database.
