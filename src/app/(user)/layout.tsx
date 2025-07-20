@@ -3,6 +3,9 @@ import "../globals.css";
 import HomeContextProvider from "../context/homeContext/homeContext";
 import Chat from "../components/chatUI/chat";
 import CreateButton from "../components/recipes/createButton";
+import HomeButton from "../components/shared/homeButton";
+import RecipesButton from "../components/shared/recipesButton";
+
 
 
 
@@ -24,6 +27,8 @@ export default function RootLayout({
           {children}
           <CreateButton />
           <Chat />
+          <HomeButton />
+          <RecipesButton />
         </HomeContextProvider>
       </body>
     </html>
