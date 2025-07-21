@@ -54,7 +54,7 @@ export const getRecipeFromServer = async (id: string) => {
 
 
 export const deleteRecipesFromServer = async (recipeId: string) => {
-   await fetch("server/API/recipes", {
+   await fetch("api/recipes", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
