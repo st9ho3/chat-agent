@@ -41,29 +41,27 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
 };
 
 export const getRecipesFromServer = async () => {
-  const response = await fetch("http://localhost:3000/server/API/recipes");
+  const response = await fetch("http://localhost:3000/api/recipes");
   const recipes = await response.json();
   return recipes.body;
 };
 
 export const getRecipeFromServer = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/server/API/edit/${id}`);
+  const response = await fetch(`http://localhost:3000/api/edit/${id}`);
   const recipe = await response.json();
   return recipe.body;
 };
 
 
 export const deleteRecipesFromServer = async (recipeId: string) => {
-  const response = await fetch("server/API/recipes", {
+   await fetch("server/API/recipes", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(recipeId)
   });
-
-  const resMessage = response.json();
-  const message = await resMessage;
+   
 };
 
 export const zodValidateDataBeforeAddThemToDatabase = async (request: NextRequest) => {
