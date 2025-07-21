@@ -7,7 +7,6 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params;
-  console.log("Incoming request:", request);
   
   const recipe = await getRecipeById(id);
   console.log("Fetched recipe:", recipe);

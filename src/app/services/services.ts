@@ -39,6 +39,29 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
 
   return response;
 };
+export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[]) => {
+  const dataToSend = { recipe: data, ingredients: ing };
+
+  console.log("data to update", dataToSend)
+  const res = await fetch("api/recipes", {
+    method: "UPDATE",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(dataToSend)
+  });
+
+  if (!res.ok) {
+    console.log('Error 400, Please check your data');
+    // You might want to throw an error here or return something to indicate failure
+    // For example: throw new Error('Failed to create recipe');
+  }
+
+  const response = await res.json();
+
+  return response;
+};
+
 
 export const getRecipesFromServer = async () => {
   const response = await fetch("http://localhost:3000/api/recipes");
@@ -49,7 +72,7 @@ export const getRecipesFromServer = async () => {
 export const getRecipeFromServer = async (id: string) => {
   const response = await fetch(`http://localhost:3000/api/edit/${id}`);
   const recipe = await response.json();
-  return recipe.body;
+  return recipe;
 };
 
 

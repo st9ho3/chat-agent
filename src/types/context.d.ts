@@ -1,4 +1,5 @@
 import { Message } from "@/shemas/chat";
+import { Ingredient } from "@/shemas/recipe";
 
 interface HomeContextProps {
     state: typeof initialState,

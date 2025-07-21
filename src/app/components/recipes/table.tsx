@@ -9,8 +9,7 @@ import { Recipe } from "@/shemas/recipe";
 import { deleteRecipesFromServer, getRecipeFromServer } from "@/app/services/services";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
-
-
+import Link from "next/link";
 
 
 const Table = ({items}: {items: Recipe[]}) => {
@@ -21,14 +20,11 @@ const Table = ({items}: {items: Recipe[]}) => {
 
   const handleDelete = async(rec: Recipe) => {
     deleteRecipesFromServer(rec.id)
-    console.log('clicked')
-    router.refresh()
+    router.replace("recipes")
   }
 
   const handleEdit = async (id: string, ) => {
     dispatch({type: "OPEN_MODAL", payload: {type: "edit", id: id}})
-    const recipe = await getRecipeFromServer(id)
-    console.log(recipe)
   }
 
   return (
@@ -70,15 +66,14 @@ const Table = ({items}: {items: Recipe[]}) => {
               € {Number(rec.totalCost).toFixed(2)}
             </td>
             <td className="align-middle text-center gap-5 flex justify-center md:text-start md:justify-start mt-4 md:pl-4">
+              <Link href={`/recipes/edit/${rec.id}`}>
               <Pencil
-              onClick={() => {
-              handleEdit(rec.id)
-              
-          } }
                 size="18px"
                 strokeWidth="1.5px"
                 className="cursor-pointer"
               />
+              </Link>
+              
               <Trash2
                 onClick={() => handleDelete(rec)}
                 size="18px"

@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import { date, numeric, pgEnum, uuid, pgTable, varchar } from "drizzle-orm/pg-core";
+
 
 // Defines an enum for recipe categories.
 export const recipeCategoryEnum = pgEnum("recipe_category", ["starter", "main", "dessert"])
@@ -29,3 +31,22 @@ recipeId: uuid("recipe_id").references(() =>  recipesTable.id, {onDelete: 'casca
 ingredientId: uuid("ingredient_id").references(() =>  ingredientsTable.id),
 quantity: numeric("quantity").notNull()
 });
+
+export const recipeRelations = relations(recipesTable,({many}) => ({
+  recipeIngredients: many(recipeIngredientsTable)
+}))
+
+export const ingredientRelations = relations(ingredientsTable, ({many}) => ({
+  recipeIngredients: many(recipeIngredientsTable)
+}))
+
+export const recipeIngredientsRelations = relations(recipeIngredientsTable, ({one}) => ({
+  recipes: one(recipesTable, {
+    fields: [recipeIngredientsTable.recipeId],
+    references: [recipesTable.id]
+  }),
+  ingredients: one(ingredientsTable, {
+    fields: [recipeIngredientsTable.ingredientId],
+    references: [ingredientsTable.id]
+  })
+}))

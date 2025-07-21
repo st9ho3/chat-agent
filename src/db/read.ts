@@ -11,7 +11,7 @@ export const getRecipes = async () => {
     return recipes
 }
 
-export const getRecipeById = async (id: string) => {
+export const getRecipeByIdBetter = async (id: string) => {
     console.log("id that fetches the db is", id)
     try {
         const recipe = await db
@@ -23,6 +23,24 @@ export const getRecipeById = async (id: string) => {
         return recipe
     } catch(err) {
         console.log("error on fetching the recipe", err)
+    }
+}
+
+export const getRecipeById = async (id: string) => {
+    try {
+        const recipe = await db.query.recipesTable.findFirst({
+            where: eq(recipesTable.id, id),
+            with: {
+                recipeIngredients: {
+                    with: {
+                        ingredients: true
+                    }
+                }
+            }
+        })
+        return recipe
+    }catch(err) {
+        console.log("Error fetching recipe ------->", err)
     }
 }
 

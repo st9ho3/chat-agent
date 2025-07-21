@@ -1,18 +1,17 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AddIngredient from './ingredient';
 import { Check, NotepadText } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
-import { RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe';
+import { RecipeSchema, RecipeCategory, RecipeIngredients, Recipe, Ingredient } from '@/shemas/recipe';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
-import { getRecipeFromServer, sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
+import { sendRecipeToUpdate } from '@/app/services/services';
  
 
 export type FormFields = {
@@ -24,21 +23,21 @@ export type FormFields = {
   dateCreated: Date;
 }
 
-const RecipeForm = () => {
+const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIngredients[]}) => {
 
-  const [newId, setNewId] = useState<string>(() => uuidv4());
-  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
-  const [isListVisible, setIsListVisible] = useState(false);
-  const { dispatch} = useHomeContext()
-  const router = useRouter()
+    const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>(ingredients);
+    const [isListVisible, setIsListVisible] = useState(false);
+    const { dispatch} = useHomeContext()
+    const router = useRouter()
   
+
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
-      id: newId,
-      title: '',
-      category: 'starter',
-      createdBy: 'User',
-      dateCreated: new Date()
+      id: recipe.id,
+      title: recipe.title,
+      category: recipe.category,
+      createdBy: recipe.createdBy,
+      dateCreated: recipe.dateCreated
     },
     resolver: zodResolver(RecipeSchema)
   });
@@ -58,29 +57,15 @@ const RecipeForm = () => {
   }
 
   const onSubmit = async (data: FormFields) => {
-    try {
-      const updatedData = { ...data, id: newId };
+       console.log("clicked")
 
-      if (tempIngredients.length > 0) {
-        await sendRecipe(updatedData, tempIngredients);
-      }
+   await sendRecipeToUpdate(data, tempIngredients)
 
-    } catch (error) {
-      console.log(error);
-    } finally {
-      reset();
-      setTempIngredients([]);
-
-      const nextRecipeId = uuidv4();
-      setNewId(nextRecipeId);
-      dispatch({type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully"})
-      setValue("id", nextRecipeId);
-      router.replace("/recipes")
-    }
   }
 
+
   return (
-     <>
+    <>
     {/* Main container */}
     <div className='w-full md:w-210 md:h-130 md:flex'>
 
@@ -92,7 +77,7 @@ const RecipeForm = () => {
         </div>
         <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
-        <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId} />
+        <AddIngredient onAddIngredient={handleAddIngredient} recipesId={recipe.id} />
 
         <UploadFiles />
 
@@ -105,9 +90,9 @@ const RecipeForm = () => {
           View Ingredients ({tempIngredients.length})
         </button>
 
-        <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
+        <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-40 p-1 hover:bg-green-50 transition-colors duration-200 '>
           <Check />
-          <button type='submit'>Add recipe</button>
+          <button type='submit'>Update recipe</button>
         </div>
       </form>
 
@@ -161,4 +146,4 @@ const RecipeForm = () => {
   )
 }
 
-export default RecipeForm;
+export default EditForm
