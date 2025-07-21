@@ -21,7 +21,7 @@ export const createMessage = (text: string, user: string) => {
 export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
   const dataToSend = { recipe: data, ingredients: ing };
 
-  const res = await fetch("server/API/recipes", {
+  const res = await fetch("api/recipes", {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
