@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import AddIngredient from './ingredient';
-import { Check, NotepadText } from 'lucide-react';
+import { Check, NotepadText, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
@@ -12,6 +12,7 @@ import UploadFiles from '../shared/uploadFiles';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
+import Link from 'next/link';
  
 
 export type FormFields = {
@@ -69,6 +70,15 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
 
   return (
     <>
+    <Link href="/recipes">
+    <button
+          
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-offset-2 transition-colors"
+          aria-label="Close modal" >
+            <X />
+        </button>
+    </Link>
+    
     {/* Main container */}
     <div className='w-full md:w-210 md:h-130 md:flex'>
 
