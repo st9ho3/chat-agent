@@ -15,3 +15,4 @@ export const deleteRecipe = async (recipeId: string) => {
     revalidatePath("/recipes")
 
 }
+

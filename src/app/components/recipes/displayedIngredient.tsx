@@ -5,7 +5,7 @@ const DisplayedIngredientItem = ({
   id,
   name,
   unit,
-  unitPrice=10,
+  unitPrice,
   quantity,
   onRemove
 }: {
@@ -20,7 +20,6 @@ const DisplayedIngredientItem = ({
 }) => {
 
   const totalPrice = unitPrice * quantity;
-
   return (
     <div className="flex w-full items-center p-2">
       {/* <div

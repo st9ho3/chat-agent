@@ -17,7 +17,7 @@ const RecipesPage = async() => {
     imgPath: recipe.imgPath || undefined, 
   }})
 
-  
+
   return (
     <div className='relative w-full h-screen px-2 md:px-5 bg-white'>
       <Header />

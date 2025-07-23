@@ -44,6 +44,7 @@ const AddIngredient = ({onAddIngredient, recipesId}: AddIngredientProps) => {
       iconBgColor: 'bg-yellow-100',
       name: name,
       unit: unit,
+      unitPrice: 10,
       quantity: quantity
     }
     const validatedIngredient = RecipeIngredientsSchema.safeParse(ingredient)

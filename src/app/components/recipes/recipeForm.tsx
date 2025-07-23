@@ -43,6 +43,7 @@ const RecipeForm = () => {
     resolver: zodResolver(RecipeSchema)
   });
 
+  console.log(tempIngredients)
   const { errors } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
@@ -64,6 +65,7 @@ const RecipeForm = () => {
       if (tempIngredients.length > 0) {
         await sendRecipe(updatedData, tempIngredients);
       }
+      
 
     } catch (error) {
       console.log(error);
@@ -78,7 +80,7 @@ const RecipeForm = () => {
       router.replace("/recipes")
     }
   }
-
+  
   return (
      <>
     {/* Main container */}

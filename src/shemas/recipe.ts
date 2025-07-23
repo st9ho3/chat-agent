@@ -75,7 +75,7 @@ export const RecipeIngredientsSchema = z.object({
   name: z.string().min(1, "Name is required"),
   iconBgColor: z.string().optional(),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional(),
+  unitPrice: z.number().nonnegative("Unit price must be non-negative"),
   quantity: z.number().min(1, "Quantity must be non-negative"),
 });
 

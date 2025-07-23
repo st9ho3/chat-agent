@@ -42,6 +42,7 @@ const createRecipeToDatabase = async (r: Recipe) => {
  */
 const createIngredientsToDatabase = async (ingredient: RecipeIngredients) => {
   const foundIngredient = await checkIfIngredientExists(ingredient.name);
+  
   if (!foundIngredient) {
     const ing = await db
       .insert(ingredientsTable)
@@ -50,7 +51,7 @@ const createIngredientsToDatabase = async (ingredient: RecipeIngredients) => {
         icon: '',
         name: ingredient.name,
         unit: ingredient.unit,
-        unitPrice: ingredient.unitPrice?.toString()
+        unitPrice: ingredient.unitPrice.toString()
       })
       .returning({
         ingredientId: ingredientsTable.id

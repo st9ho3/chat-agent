@@ -22,7 +22,7 @@ export const paginate = (itemsPerPage: number, page: number, items: Recipe[] ) =
 
 export const getTotalPrice = (ingredients: RecipeIngredients[]) => {
   return ingredients.reduce((sum, item) => {
-    return sum + /* item.unitPrice */ 10 * item.quantity;
+    return sum + item.unitPrice * item.quantity;
   }, 0);
 
 

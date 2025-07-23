@@ -1,5 +1,6 @@
 // src/app/api/edit/[id]/route.ts
 import { getRecipeById } from "@/db/read";
+import { updateRecipe } from "@/db/update";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -16,4 +17,38 @@ export async function GET(
     recipe,
     { status: 200 }
   );
+}
+
+export const PATCH = async(req: NextRequest) => {
+
+    const request = await req.json()
+    const id = request.recipe.id
+    const recipe = request.recipe
+    const ingredients = request.ingredients
+
+    try {
+        const response = await updateRecipe(id, recipe)
+
+    if (response.length > 0) {
+      return NextResponse.json(
+      {
+        status: 200,
+        message: "Recipe updated succesfully"
+      }
+    )
+    } else {
+      return NextResponse.json(
+        {status: 404,
+          message: "somwthing went wrong with the data"
+        }
+      )
+    }
+    } catch(err) {
+      console.log("this is the UPDATE error: ", err)
+    }
+
+    
+    
+
+    /* const updatedRecipe = await updateRecipe() */
 }

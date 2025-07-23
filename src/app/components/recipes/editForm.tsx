@@ -37,7 +37,8 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
       title: recipe.title,
       category: recipe.category,
       createdBy: recipe.createdBy,
-      dateCreated: recipe.dateCreated
+      dateCreated: recipe.dateCreated,
+      totalCost: recipe.totalCost
     },
     resolver: zodResolver(RecipeSchema)
   });
@@ -58,10 +59,12 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
 
   const onSubmit = async (data: FormFields) => {
        console.log("clicked")
-
-   await sendRecipeToUpdate(data, tempIngredients)
-
+       sendRecipeToUpdate(data, tempIngredients)
+    
+   
+    router.replace("/recipes")
   }
+  
 
 
   return (
@@ -107,7 +110,7 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
               iconBgColor={ing.iconBgColor}
               name={ing.name}
               unit={ing.unit}
-              unitPrice={10}
+              unitPrice={ing.unitPrice}
               quantity={ing.quantity}
             />
           ) : <h3 className='text-center text-gray-500'>Empty</h3>}

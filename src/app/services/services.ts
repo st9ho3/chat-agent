@@ -20,7 +20,7 @@ export const createMessage = (text: string, user: string) => {
 
 export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
   const dataToSend = { recipe: data, ingredients: ing };
-
+  console.log(dataToSend)
   const res = await fetch("api/recipes", {
     method: "POST",
     headers: {
@@ -43,8 +43,8 @@ export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredient
   const dataToSend = { recipe: data, ingredients: ing };
 
   console.log("data to update", dataToSend)
-  const res = await fetch("api/recipes", {
-    method: "UPDATE",
+  const res = await fetch(`/api/edit/${data.id}`, {
+    method: "PATCH",
     headers: {
       'Content-Type': 'application/json'
     },

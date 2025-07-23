@@ -1,12 +1,21 @@
-/* import { eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { db } from './db';
 import { recipesTable } from './schema';
 import { Recipe } from '@/shemas/recipe';
 
-const updateRecipe = async (id: string, recipe: Recipe) => {
+
+
+export const updateRecipe = async (id: string, recipe: Recipe) => {
     
-    await db
+   const response = await db
     .update(recipesTable)
-    .set({})
+    .set({
+        title: recipe.title
+    })
     .where(eq(recipesTable.id, id))
-} */
+    .returning({
+        id: recipesTable.id
+    })
+
+    return response
+}

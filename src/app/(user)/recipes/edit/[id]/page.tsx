@@ -34,7 +34,7 @@ const EditPage = async(params: Promise<Params>) => {
   ingredientId: ingredient.ingredientId || '',
   name: ingredient.ingredients?.name || 'Unknown Ingredient',
   unit: ingredient.ingredients?.unit || 'unit', 
-  unitPrice: Number(ingredient.ingredients?.unitPrice) || 0, 
+  unitPrice: Number(ingredient.ingredients?.unitPrice), 
   quantity: Number(ingredient.quantity) || 0,
   iconBgColor: '', 
   recipeId: ingredient.recipeId || '' 

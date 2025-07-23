@@ -3,11 +3,12 @@ import { createRecipeAndIngredients } from "@/db/create";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import { getRecipes } from "@/db/read";
 import { deleteRecipe } from "@/db/delete";
+import { updateRecipe } from "@/db/update";
 
 export const POST = async(req: NextRequest) => {
     try {
         const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(req);
-
+        console.log(validatedRecipeIngredients)
         if (validatedRecipe && validatedRecipeIngredients) {
             const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeIngredients);
 
@@ -45,3 +46,4 @@ export const DELETE = async(req: NextRequest) => {
      await deleteRecipe(recipeId)
     return NextResponse.json({status: 200, message: "Recipe succesfully deleted"})
 }
+
