@@ -1,5 +1,6 @@
-import { Message } from "@/shemas/chat";
-import { Ingredient } from "@/shemas/recipe";
+import { MessageType } from "@/shemas/chat";
+import { initialState } from "@/app/context/homeContext/homeReducer";
+import { ReactNode } from "react";
 
 interface HomeContextProps {
     state: typeof initialState,
@@ -19,7 +20,7 @@ interface ModalType {
 interface HomeState {
   dialogExists: boolean;
   chatOpen: boolean;
-  messages: Message[];
+  messages: MessageType[];
   currentPage: number;
   isModalOpen: boolean;
   modalType: ModalType;
@@ -29,7 +30,7 @@ interface HomeState {
 // Discriminated union for actions for better type safety
 type Action =
   | { type: "TOGGLE_CHAT" }
-  | { type: "UPDATE_MESSAGES"; payload: Message }
+  | { type: "UPDATE_MESSAGES"; payload: MessageType }
   | { type: "CHOOSE_PAGE"; payload: number }
   | { type: "OPEN_MODAL"; payload: ModalType}
   | { type: "CLOSE_MODAL"}
@@ -45,4 +46,10 @@ interface ModalProps {
 interface ButtonProps {
   text: React.ReactNode;
   action: () => void;
+}
+
+export enum IngredientEditAction {
+  Delete = "delete",
+  Add = "add",
+  NoAction = "no action"
 }

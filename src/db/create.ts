@@ -40,7 +40,7 @@ const createRecipeToDatabase = async (r: Recipe) => {
  * @param ingredient The ingredient object to insert.
  * @returns The ID of the newly created ingredient.
  */
-const createIngredientsToDatabase = async (ingredient: RecipeIngredients) => {
+export const createIngredientsToDatabase = async (ingredient: RecipeIngredients) => {
   const foundIngredient = await checkIfIngredientExists(ingredient.name);
   
   if (!foundIngredient) {
@@ -66,7 +66,7 @@ const createIngredientsToDatabase = async (ingredient: RecipeIngredients) => {
  * @param recipeIngredient The recipe ingredient object to insert.
  * @returns The ID of the newly created recipe ingredient.
  */
-const createRecipeIngredientsToDatabase = async (recipeIngredient: RecipeIngredients) => {
+export const createRecipeIngredientsToDatabase = async (recipeIngredient: RecipeIngredients) => {
   const foundIngredient = await checkIfIngredientExists(recipeIngredient.name);
   let assignedId;
 

@@ -2,6 +2,7 @@ import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
 import { RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { NextRequest } from "next/server";
+import { IngredientEditAction } from "@/types/context";
 
 export const createMessage = (text: string, user: string) => {
   const message = {
@@ -39,8 +40,8 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
 
   return response;
 };
-export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[] | undefined) => {
-  const dataToSend = { recipe: data, ingredients: ing };
+export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[] | undefined, action: IngredientEditAction) => {
+  const dataToSend = { recipe: data, ingredients: ing, action: action };
 
   console.log("data to update", dataToSend)
   const res = await fetch(`/api/edit/${data.id}`, {
@@ -87,8 +88,8 @@ export const deleteRecipesFromServer = async (recipeId: string) => {
    
 };
 
-export const zodValidateDataBeforeAddThemToDatabase = async (request: NextRequest) => {
-  const { recipe, ingredients } = await request.json();
+export const zodValidateDataBeforeAddThemToDatabase = async (request: any) => {
+  const { recipe, ingredients } = await request
 
   if (typeof recipe.dateCreated === 'string') {
     recipe.dateCreated = new Date(recipe.dateCreated);

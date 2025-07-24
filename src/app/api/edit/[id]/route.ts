@@ -1,7 +1,12 @@
 // src/app/api/edit/[id]/route.ts
 import { getRecipeById } from "@/db/read";
 import { updateRecipe } from "@/db/update";
+import { IngredientEditAction } from "@/types/context";
 import { NextRequest, NextResponse } from "next/server";
+import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
+import { RecipeIngredients } from "@/shemas/recipe";
+import { createIngredientsToDatabase, createRecipeIngredientsToDatabase } from "@/db/create";
+
 
 export async function GET(
   request: NextRequest,
@@ -25,12 +30,21 @@ export const PATCH = async(req: NextRequest) => {
     const id = request.recipe.id
     const recipe = request.recipe
     const ingredients = request.ingredients
+    const action = request.action
+    console.log("ingredients before zod",ingredients)
+    console.log(request)
 
     try {
-        const response = await updateRecipe(id, recipe)
+        const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
+        const response = await updateRecipe(id, validatedRecipe)
+        console.log("Ingredients after zod",validatedRecipeIngredients)
 
         if (ingredients) {
-          console.log("got the ingredient")
+          if (action === "add") {
+            const id = await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createIngredientsToDatabase(ingredient)));
+            const recId = await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient)));
+            console.log("ID is ", id, "and RecId is ", recId)
+          }
         }
 
 

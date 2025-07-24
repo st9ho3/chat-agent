@@ -13,6 +13,7 @@ import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
 import Link from 'next/link';
+import { IngredientEditAction } from '@/types/context';
  
 
 export type FormFields = {
@@ -61,14 +62,24 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
   const onSubmit = async (data: FormFields) => {
 
     const diferrence = tempIngredients.length - ingredients.length
+    let action: IngredientEditAction
     let ingredientsChanged: RecipeIngredients[] | undefined
 
     if (diferrence !== 0) {
       ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !ingredients.includes(ing) ) : ingredients.filter((ing) => !tempIngredients.includes(ing))
     }
+
+    if (diferrence < 0) {
+      action = IngredientEditAction.Delete
+    }
+    if ( diferrence > 0) {
+      action = IngredientEditAction.Add
+    } else {
+      action = IngredientEditAction.NoAction
+    }
        
 
-     sendRecipeToUpdate(data, ingredientsChanged )  
+     sendRecipeToUpdate(data, ingredientsChanged, action )  
     
    
     router.replace("/recipes")
