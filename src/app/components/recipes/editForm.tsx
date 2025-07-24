@@ -59,8 +59,16 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
   }
 
   const onSubmit = async (data: FormFields) => {
-       console.log("clicked")
-       sendRecipeToUpdate(data, tempIngredients)
+
+    const diferrence = tempIngredients.length - ingredients.length
+    let ingredientsChanged: RecipeIngredients[] | undefined
+
+    if (diferrence !== 0) {
+      ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !ingredients.includes(ing) ) : ingredients.filter((ing) => !tempIngredients.includes(ing))
+    }
+       
+
+     sendRecipeToUpdate(data, ingredientsChanged )  
     
    
     router.replace("/recipes")

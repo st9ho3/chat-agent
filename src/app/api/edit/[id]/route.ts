@@ -29,6 +29,11 @@ export const PATCH = async(req: NextRequest) => {
     try {
         const response = await updateRecipe(id, recipe)
 
+        if (ingredients) {
+          console.log("got the ingredient")
+        }
+
+
     if (response.length > 0) {
       return NextResponse.json(
       {

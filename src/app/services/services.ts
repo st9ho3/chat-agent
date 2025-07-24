@@ -39,7 +39,7 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
 
   return response;
 };
-export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[]) => {
+export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[] | undefined) => {
   const dataToSend = { recipe: data, ingredients: ing };
 
   console.log("data to update", dataToSend)
