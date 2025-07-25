@@ -7,6 +7,7 @@ import { RecipeIngredients } from "@/shemas/recipe";
 import { createIngredientsToDatabase, createRecipeIngredientsToDatabase } from "@/db/create";
 import { IngredientEditAction } from "@/types/context";
 import { deleteIngredientsFromRecipe } from "@/db/delete";
+import { getTotalPrice } from "@/app/services/helpers";
 
 
 export async function GET(
@@ -31,11 +32,12 @@ export const PATCH = async(req: NextRequest) => {
     const id = request.recipe.id
     const ingredients = request.ingredients
     const action = request.action
-   
-  console.log(action)
+  
     try {
         const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
+        console.log(validatedRecipe)
         const response = await updateRecipe(id, validatedRecipe)
+
 
         if (ingredients) {
           if (action === IngredientEditAction.Add) {

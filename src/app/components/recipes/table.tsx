@@ -13,18 +13,14 @@ import Link from "next/link";
 
 
 const Table = ({items}: {items: Recipe[]}) => {
-  const { state, dispatch } = useHomeContext();
+  const { state } = useHomeContext();
   const router = useRouter()
   const paginateItems = paginate(10, state.currentPage, items);
   const itemsToDisplay = paginateItems ? paginateItems : [];
 
   const handleDelete = async(rec: Recipe) => {
-    deleteRecipesFromServer(rec.id)
+     await deleteRecipesFromServer(rec.id)
     router.replace("recipes")
-  }
-
-  const handleEdit = async (id: string, ) => {
-    dispatch({type: "OPEN_MODAL", payload: {type: "edit", id: id}})
   }
 
   return (

@@ -64,6 +64,8 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
     const diferrence = tempIngredients.length - ingredients.length
     let action: IngredientEditAction
     let ingredientsChanged: RecipeIngredients[] | undefined
+    
+    const newCost = getTotalPrice(tempIngredients)
 
     if (diferrence !== 0) {
       ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !ingredients.includes(ing) ) : ingredients.filter((ing) => !tempIngredients.includes(ing))
@@ -79,7 +81,10 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
       action = IngredientEditAction.Delete
     }
 
-     await sendRecipeToUpdate(data, ingredientsChanged, action )  
+    console.log(newCost)
+    const recipeToUpdate = {...data, totalCost: newCost}
+
+     await sendRecipeToUpdate(recipeToUpdate, ingredientsChanged, action )  
     
    
     router.replace("/recipes")

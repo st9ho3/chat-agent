@@ -3,6 +3,7 @@ import { FormFields } from "../components/recipes/recipeForm";
 import { RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { NextRequest } from "next/server";
 import { IngredientEditAction } from "@/types/context";
+import { getTotalPrice } from "./helpers";
 
 export const createMessage = (text: string, user: string) => {
   const message = {
@@ -41,7 +42,8 @@ export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => 
   return response;
 };
 export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[] | undefined, action: IngredientEditAction) => {
-  const dataToSend = { recipe: data, ingredients: ing, action: action };
+  
+  const dataToSend = { recipe: data, ingredients: ing, action: action } ;
 
   console.log("data to update", dataToSend)
   const res = await fetch(`/api/edit/${data.id}`, {

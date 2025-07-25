@@ -7,10 +7,13 @@ import { Recipe } from '@/shemas/recipe';
 
 export const updateRecipe = async (id: string, recipe: Recipe) => {
     
+    console.log("the cost is ", recipe)
+    
    const response = await db
     .update(recipesTable)
     .set({
-        title: recipe.title
+        title: recipe.title,
+        totalCost: String(recipe.totalCost)
     })
     .where(eq(recipesTable.id, id))
     .returning({
