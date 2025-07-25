@@ -6,7 +6,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Recipe } from "@/shemas/recipe";
-import { deleteRecipesFromServer, getRecipeFromServer } from "@/app/services/services";
+import { deleteRecipesFromServer } from "@/app/services/services";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";

@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AddIngredient from './ingredient';
 import { Check, NotepadText } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
-import { getRecipeFromServer, sendRecipe } from '@/app/services/services';
+import { sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
  

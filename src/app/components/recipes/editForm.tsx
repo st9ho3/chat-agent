@@ -5,11 +5,10 @@ import { Check, NotepadText, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
-import { RecipeSchema, RecipeCategory, RecipeIngredients, Recipe, Ingredient } from '@/shemas/recipe';
+import { RecipeSchema, RecipeCategory, RecipeIngredients, Recipe } from '@/shemas/recipe';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
-import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
 import Link from 'next/link';
@@ -29,11 +28,10 @@ const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: Recipe
 
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>(ingredients);
   const [isListVisible, setIsListVisible] = useState(false);
-  const { dispatch } = useHomeContext()
   const router = useRouter()
 
 
-  const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
+  const { register, handleSubmit, setValue, formState } = useForm<FormFields>({
     defaultValues: {
       id: recipe.id,
       title: recipe.title,

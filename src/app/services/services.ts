@@ -1,9 +1,7 @@
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
 import { RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
-import { NextRequest } from "next/server";
-import { IngredientEditAction } from "@/types/context";
-import { getTotalPrice } from "./helpers";
+import { IngredientEditAction, RecipeUpdatePayload } from "@/types/context";
 
 export const createMessage = (text: string, user: string) => {
   const message = {
@@ -80,7 +78,7 @@ export const deleteRecipesFromServer = async (recipeId: string) => {
   });
 };
 
-export const zodValidateDataBeforeAddThemToDatabase = async (request: any) => {
+export const zodValidateDataBeforeAddThemToDatabase = async (request: RecipeUpdatePayload) => {
   const { recipe, ingredients } = await request;
 
   if (typeof recipe.dateCreated === 'string') {

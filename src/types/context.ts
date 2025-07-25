@@ -2,7 +2,7 @@ import { MessageType } from "@/shemas/chat";
 import { initialState } from "@/app/context/homeContext/homeReducer";
 import { ReactNode } from "react";
 
-interface HomeContextProps {
+export interface HomeContextProps {
     state: typeof initialState,
     dispatch: React.Dispatch<Action>;
 }
@@ -12,12 +12,12 @@ interface Notification {
   message: string
 }
 
-interface ModalType {
+export interface ModalType {
   type: string,
   id: string
 } 
 
-interface HomeState {
+export interface HomeState {
   dialogExists: boolean;
   chatOpen: boolean;
   messages: MessageType[];
@@ -28,22 +28,22 @@ interface HomeState {
 }
 
 // Discriminated union for actions for better type safety
-type Action =
+ export type Action =
   | { type: "TOGGLE_CHAT" }
   | { type: "UPDATE_MESSAGES"; payload: MessageType }
   | { type: "CHOOSE_PAGE"; payload: number }
   | { type: "OPEN_MODAL"; payload: ModalType}
   | { type: "CLOSE_MODAL"}
   | { type: "OPEN_NOTIFICATION"; payload: string}
-  | { type: "CLOSE_NOTIFICATION"}
+  | { type: "CLOSE_NOTIFICATION"} 
 
-interface ModalProps {
+export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
 }
 
-interface ButtonProps {
+export interface ButtonProps {
   text: React.ReactNode;
   action: () => void;
 }
@@ -52,4 +52,29 @@ export enum IngredientEditAction {
   Delete = "delete",
   Add = "add",
   NoAction = "no action"
+}
+
+export interface Ingredient {
+  ingredientId: string;
+  name: string;
+  unit: string;
+  unitPrice: number;
+  quantity: number;
+  iconBgColor: string;
+  recipeId: string;
+}
+
+export interface Recipe {
+  id: string;
+  title: string;
+  totalCost: number;
+  createdBy: string;
+  dateCreated: Date; // Or Date if you parse it
+  category: string;   // Or a specific literal type like 'starter'
+}
+
+export interface RecipeUpdatePayload {
+  recipe: Recipe;
+  ingredients: Ingredient[];
+  action: string; // Or a specific literal type like 'add' | 'delete' | 'update'
 }

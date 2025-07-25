@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import { RecipeIngredients } from "@/shemas/recipe";
 import { createIngredientsToDatabase, createRecipeIngredientsToDatabase } from "@/db/create";
-import { IngredientEditAction } from "@/types/context";
+import { IngredientEditAction, RecipeUpdatePayload } from "@/types/context";
 import { deleteIngredientsFromRecipe } from "@/db/delete";
 
 export async function GET(
@@ -25,11 +25,11 @@ export async function GET(
 
 export const PATCH = async (req: NextRequest) => {
   try {
-    const request = await req.json();
+    const request: RecipeUpdatePayload = await req.json();
     const id = request.recipe.id;
     const ingredients = request.ingredients;
     const action = request.action;
-
+    console.log(request)
     const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
     const response = await updateRecipe(id, validatedRecipe);
 
