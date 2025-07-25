@@ -69,17 +69,17 @@ const EditForm = ({recipe, ingredients}: {recipe: Recipe, ingredients: RecipeIng
       ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !ingredients.includes(ing) ) : ingredients.filter((ing) => !tempIngredients.includes(ing))
     }
 
-    if (diferrence < 0) {
-      action = IngredientEditAction.Delete
-    }
     if ( diferrence > 0) {
       action = IngredientEditAction.Add
     } else {
       action = IngredientEditAction.NoAction
     }
-       
 
-     sendRecipeToUpdate(data, ingredientsChanged, action )  
+    if (diferrence < 0) {
+      action = IngredientEditAction.Delete
+    }
+
+     await sendRecipeToUpdate(data, ingredientsChanged, action )  
     
    
     router.replace("/recipes")
