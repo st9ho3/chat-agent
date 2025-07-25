@@ -7,7 +7,8 @@ import { updateRecipe } from "@/db/update";
 
 export const POST = async(req: NextRequest) => {
     try {
-        const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(req);
+        const request = await req.json()
+        const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
         console.log(validatedRecipeIngredients)
         if (validatedRecipe && validatedRecipeIngredients) {
             const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeIngredients);

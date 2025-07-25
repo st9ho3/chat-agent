@@ -36,10 +36,12 @@ export const PATCH = async(req: NextRequest) => {
 
     try {
         const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
+        console.log("Recipe after zod",validatedRecipe)
         const response = await updateRecipe(id, validatedRecipe)
         console.log("Ingredients after zod",validatedRecipeIngredients)
 
         if (ingredients) {
+          console.log("ingredients update")
           if (action === "add") {
             const id = await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createIngredientsToDatabase(ingredient)));
             const recId = await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient)));

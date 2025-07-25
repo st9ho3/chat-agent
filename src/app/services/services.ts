@@ -22,7 +22,7 @@ export const createMessage = (text: string, user: string) => {
 export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
   const dataToSend = { recipe: data, ingredients: ing };
   console.log(dataToSend)
-  const res = await fetch("api/recipes", {
+  const res = await fetch("/api/recipes", {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
@@ -90,20 +90,24 @@ export const deleteRecipesFromServer = async (recipeId: string) => {
 
 export const zodValidateDataBeforeAddThemToDatabase = async (request: any) => {
   const { recipe, ingredients } = await request
-
+  console.log(ingredients)
   if (typeof recipe.dateCreated === 'string') {
     recipe.dateCreated = new Date(recipe.dateCreated);
   }
 
   const validatedRecipe = RecipeSchema.parse(recipe);
-
-  const validatedRecipeIngredients = ingredients.map((ingredient: RecipeIngredients) => {
+  let validatedIngredients
+  if (ingredients) {
+    const validatedRecipeIngredients = ingredients.map((ingredient: RecipeIngredients) => {
     const validatedIngredient = RecipeIngredientsSchema.parse(ingredient);
     return validatedIngredient;
   });
+  validatedIngredients = validatedRecipeIngredients
+  }
+  
 
   return {
     validatedRecipe: validatedRecipe,
-    validatedRecipeIngredients: validatedRecipeIngredients
+    validatedRecipeIngredients: validatedIngredients
   };
 };
