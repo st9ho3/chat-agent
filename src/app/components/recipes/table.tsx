@@ -93,8 +93,9 @@ const ClientOnlyTime = ({ date }: { date: string | number | Date }) => {
   const [formattedTime, setFormattedTime] = useState('');
 
   useEffect(() => {
-    setFormattedTime(new Date(date).toLocaleTimeString());
+    setFormattedTime(new Date(date).toLocaleDateString());
   }, [date]);
+ 
 
   return <>{formattedTime}</>;
 };
