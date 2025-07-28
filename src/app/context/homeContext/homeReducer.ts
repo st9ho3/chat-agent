@@ -10,7 +10,8 @@ const initialState: HomeState = {
     type: "",
     id: ""
   },
-  notification: {isOpen:false, message: "no message"}
+  notification: {isOpen:false, message: "no message"},
+  file: null
 };
 
 // The reducer function
@@ -59,6 +60,11 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
           isOpen: false,
           message: ""
          }
+      }
+    case 'SET_FILE':
+      return {
+        ...state,
+        file: action.payload
       }
     default:
       return state;

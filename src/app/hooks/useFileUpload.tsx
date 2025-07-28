@@ -1,0 +1,49 @@
+import { useState } from 'react';
+import type { PutBlobResult } from '@vercel/blob';
+
+export const useFileUpload = () => {
+  const [blob, setBlob] = useState<PutBlobResult | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  /**
+   * Uploads a file to the server.
+   * @param {File} file - The file to upload.
+   * @returns {Promise<void>}
+   */
+
+  const uploadFile = async (file: File) => {
+    setIsLoading(true);
+    setError(null);
+    setBlob(null);
+    
+    try {
+      if (!file) {
+        throw new Error('No file selected.');
+      }
+
+      const response = await fetch(`/api/upload?filename=${file.name}`, {
+        method: 'POST',
+        body: file,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload file.');
+      }
+
+      const newBlob = (await response.json()) as PutBlobResult;
+      setBlob(newBlob);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    uploadFile,
+    blob,
+    isLoading,
+    error,
+  };
+};

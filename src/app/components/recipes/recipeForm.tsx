@@ -13,6 +13,7 @@ import UploadFiles from '../shared/uploadFiles';
 import { sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
+import { useFileUpload } from '@/app/hooks/useFileUpload';
  
 
 export type FormFields = {
@@ -29,8 +30,10 @@ const RecipeForm = () => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
   const [isListVisible, setIsListVisible] = useState(false);
-  const { dispatch} = useHomeContext()
+  const { state,dispatch} = useHomeContext()
   const router = useRouter()
+  const { uploadFile, blob, isLoading, error } = useFileUpload();
+  
   
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
@@ -43,7 +46,6 @@ const RecipeForm = () => {
     resolver: zodResolver(RecipeSchema)
   });
 
-  console.log(tempIngredients)
   const { errors } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
@@ -58,12 +60,29 @@ const RecipeForm = () => {
     setTempIngredients(newIngredients);
   }
 
+  const handleFileUpload = async (file: File) => {
+    if (file) {
+      try {
+        await uploadFile(file)
+        console.log(state.file)
+        console.log("File uploaded successfully:", blob)
+      } catch (err) {
+        console.log("An error occured while uploading the file:", err)
+        console.log("Error message:", error)
+      }
+    }
+  }
+
   const onSubmit = async (data: FormFields) => {
     try {
       const updatedData = { ...data, id: newId };
 
       if (tempIngredients.length > 0) {
         await sendRecipe(updatedData, tempIngredients);
+        if (state.file) {
+          await handleFileUpload(state.file)
+        }
+        
       }
       
 

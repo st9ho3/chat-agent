@@ -1,9 +1,23 @@
-import React from 'react'
+"use client"
+import { useRef } from 'react';
 import { UploadCloudIcon } from 'lucide-react'
+import { useFileUpload } from '@/app/hooks/useFileUpload';
+import { useHomeContext } from '@/app/context/homeContext/homeContext';
+
 
 const UploadFiles = () => {
-  return (
-    <div className="mb-6">
+const {dispatch} = useHomeContext()
+const inputFileRef = useRef<HTMLInputElement>(null);
+
+const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = inputFileRef.current?.files
+    if (files) {
+        dispatch({ type: "SET_FILE", payload: files[0] });
+    }
+}
+
+    return (
+        <div className="mb-6">
             <label
                 htmlFor="file-upload"
                 className="flex flex-col items-center justify-center w-full h-32 border-1 border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition duration-300 ease-in-out"
@@ -19,6 +33,8 @@ const UploadFiles = () => {
                 </div>
                 
                 <input
+                    onChange={handleInputChange}
+                    ref={inputFileRef}
                     id="file-upload"
                     type="file"
                     className="hidden"

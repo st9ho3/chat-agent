@@ -1,6 +1,6 @@
 import { MessageType } from "@/shemas/chat";
 import { initialState } from "@/app/context/homeContext/homeReducer";
-import { ReactNode } from "react";
+import { ReactNode, RefObject } from "react";
 
 export interface HomeContextProps {
     state: typeof initialState,
@@ -24,7 +24,8 @@ export interface HomeState {
   currentPage: number;
   isModalOpen: boolean;
   modalType: ModalType;
-  notification: Notification
+  notification: Notification,
+  file: File | null
 }
 
 // Discriminated union for actions for better type safety
@@ -36,6 +37,7 @@ export interface HomeState {
   | { type: "CLOSE_MODAL"}
   | { type: "OPEN_NOTIFICATION"; payload: string}
   | { type: "CLOSE_NOTIFICATION"} 
+  | { type: "SET_FILE"; payload: File | null}
 
 export interface ModalProps {
   isOpen: boolean;
