@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import AddIngredient from './ingredient';
-import { Check, NotepadText } from 'lucide-react';
+import { Check, NotepadText, Image, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
@@ -14,7 +14,7 @@ import { sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
- 
+
 
 export type FormFields = {
   id: string;
@@ -28,14 +28,13 @@ export type FormFields = {
 const RecipeForm = () => {
 
   const [newId, setNewId] = useState<string>(() => uuidv4());
-  const [url, setUrl] = useState<string>("")
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
   const [isListVisible, setIsListVisible] = useState(false);
-  const { state,dispatch} = useHomeContext()
+  const { state, dispatch } = useHomeContext()
   const router = useRouter()
-  const { uploadFile, isLoading, error } = useFileUpload();
-  
-  
+  const { uploadFile, error } = useFileUpload();
+
+
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
       id: newId,
@@ -43,8 +42,8 @@ const RecipeForm = () => {
       category: 'starter',
       createdBy: 'User',
       dateCreated: new Date()
-      
-      },
+
+    },
     resolver: zodResolver(RecipeSchema)
   });
 
@@ -66,7 +65,6 @@ const RecipeForm = () => {
     if (file) {
       try {
         const url = await uploadFile(file)
-        console.log("File uploaded successfully:", url)
         return url
       } catch (err) {
         console.log("An error occured while uploading the file:", err)
@@ -78,18 +76,18 @@ const RecipeForm = () => {
   const onSubmit = async (data: FormFields) => {
     try {
       if (state.file) {
-          const url = await handleFileUpload(state.file)
+        const url = await handleFileUpload(state.file)
 
-          const updatedData = { ...data, id: newId, imgPath: url};
-          if (tempIngredients.length > 0) {
-        await sendRecipe(updatedData, tempIngredients); 
-      }
-        } else {
-          const updatedData = { ...data, id: newId };
-          if (tempIngredients.length > 0) {
-        await sendRecipe(updatedData, tempIngredients); 
-      }
+        const updatedData = { ...data, id: newId, imgPath: url };
+        if (tempIngredients.length > 0) {
+          await sendRecipe(updatedData, tempIngredients);
         }
+      } else {
+        const updatedData = { ...data, id: newId };
+        if (tempIngredients.length > 0) {
+          await sendRecipe(updatedData, tempIngredients);
+        }
+      }
 
     } catch (error) {
       console.log(error);
@@ -99,91 +97,100 @@ const RecipeForm = () => {
 
       const nextRecipeId = uuidv4();
       setNewId(nextRecipeId);
-      dispatch({type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully"})
+      dispatch({ type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully" })
+      dispatch({type: "RESET_FILE"})
       setValue("id", nextRecipeId);
       router.replace("/recipes")
     }
   }
-  
+
   return (
-     <>
-    {/* Main container */}
-    <div className='w-full md:w-210 md:h-130 md:flex'>
+    <>
+      {/* Main container */}
+      <div className='w-full md:w-210 md:h-130 md:flex'>
 
-      {/* Form Section (Left) */}
-      <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col gap-y-4'>
-        <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg p-1'>
-          <NotepadText color='gray' />
-          <input {...register('title')} id='title' type="text" className='p-4 placeholder:text-gray-500 text-2xl focus:outline-none w-full' placeholder="Recipe's name" required />
+        {/* Form Section (Left) */}
+        <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col  gap-y-4'>
+          <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg p-1'>
+            <NotepadText color='gray' />
+            <input {...register('title')} id='title' type="text" className='p-4 placeholder:text-gray-500 text-2xl focus:outline-none w-full' placeholder="Recipe's name" required />
+          </div>
+          <p className='text-red-500 ml-3'> {errors.title?.message} </p>
+
+          <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId} />
+
+          <UploadFiles />
+
+          {/* --- Button to show ingredients on mobile --- */}
+          <button
+            type='button'
+            onClick={() => setIsListVisible(true)}
+            className='md:hidden border border-gray-400 rounded-lg p-2 text-center hover:bg-gray-100 transition-colors duration-200'
+          >
+            View Ingredients ({tempIngredients.length})
+          </button>
+
+          {state.file && <div className='flex flex-col h-17 pl-2'>
+            <Image size="40px" color="#a8c6fe" />
+            <p className='text-gray-500'>{state.file?.name}</p>
+            <X onClick={() => dispatch({type: "RESET_FILE"})} />
+          </div>}
+          <div className='flex justify-center'>
+            <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
+              <Check />
+              <button type='submit'>Add recipe</button>
+            </div>
+          </div>
+
+        </form>
+
+        {/* Displayed Ingredients Section (Right side, hidden on mobile) */}
+        <div className='hidden md:flex flex-col items-center border-1 border-gray-300 border-dashed rounded-lg w-full p-2 md:ml-1 mt-4 md:mt-0'>
+          <div className='w-full h-2/3 overflow-auto'>
+            {tempIngredients.length > 0 ? tempIngredients.map((ing) =>
+              <DisplayedIngredientItem
+                key={ing.ingredientId}
+                onRemove={handleRemoveIngredient}
+                id={ing.ingredientId}
+                iconBgColor={ing.iconBgColor}
+                name={ing.name}
+                unit={ing.unit}
+                unitPrice={10}
+                quantity={ing.quantity}
+              />
+            ) : <h3 className='text-center text-gray-500'>Empty</h3>}
+          </div>
+          <OrderTotal ingredients={tempIngredients} />
         </div>
-        <p className='text-red-500 ml-3'> {errors.title?.message} </p>
-
-        <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId} />
-
-        <UploadFiles />
-
-        {/* --- Button to show ingredients on mobile --- */}
-        <button
-          type='button'
-          onClick={() => setIsListVisible(true)}
-          className='md:hidden border border-gray-400 rounded-lg p-2 text-center hover:bg-gray-100 transition-colors duration-200'
-        >
-          View Ingredients ({tempIngredients.length})
-        </button>
-
-        <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
-          <Check />
-          <button type='submit'>Add recipe</button>
-        </div>
-      </form>
-
-      {/* Displayed Ingredients Section (Right side, hidden on mobile) */}
-      <div className='hidden md:flex flex-col items-center border-1 border-gray-300 border-dashed rounded-lg w-full p-2 md:ml-1 mt-4 md:mt-0'>
-        <div className='w-full h-2/3 overflow-auto'>
-          {tempIngredients.length > 0 ? tempIngredients.map((ing) =>
-            <DisplayedIngredientItem
-              key={ing.ingredientId}
-              onRemove={handleRemoveIngredient}
-              id={ing.ingredientId}
-              iconBgColor={ing.iconBgColor}
-              name={ing.name}
-              unit={ing.unit}
-              unitPrice={10}
-              quantity={ing.quantity}
-            />
-          ) : <h3 className='text-center text-gray-500'>Empty</h3>}
-        </div>
-        <OrderTotal ingredients={tempIngredients} />
       </div>
-    </div>
 
-    {/* --- Full-screen ingredient list for mobile --- */}
-    {isListVisible && (
-      <div className="fixed inset-0 bg-white z-50 p-4 flex flex-col md:hidden">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Ingredients</h2>
-          <button onClick={() => setIsListVisible(false)} className="text-2xl font-bold">&times;</button>
+      {/* --- Full-screen ingredient list for mobile --- */}
+      {isListVisible && (
+        <div className="fixed inset-0 bg-white z-50 p-4 flex flex-col md:hidden">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Ingredients</h2>
+            <button onClick={() => setIsListVisible(false)} className="text-2xl font-bold">&times;</button>
+          </div>
+
+          <div className='flex-grow w-full h-2/3 overflow-auto mb-4'>
+            {tempIngredients.length > 0 ? tempIngredients.map((ing) =>
+              <DisplayedIngredientItem
+                key={ing.ingredientId}
+                onRemove={handleRemoveIngredient}
+                id={ing.ingredientId}
+                iconBgColor={ing.iconBgColor}
+                name={ing.name}
+                unit={ing.unit}
+                unitPrice={10}
+                quantity={ing.quantity}
+              />
+            ) : <h3 className='text-center text-gray-500'>Empty</h3>}
+          </div>
+
+          <OrderTotal ingredients={tempIngredients} />
         </div>
-
-        <div className='flex-grow w-full h-2/3 overflow-auto mb-4'>
-          {tempIngredients.length > 0 ? tempIngredients.map((ing) =>
-            <DisplayedIngredientItem
-              key={ing.ingredientId}
-              onRemove={handleRemoveIngredient}
-              id={ing.ingredientId}
-              iconBgColor={ing.iconBgColor}
-              name={ing.name}
-              unit={ing.unit}
-              unitPrice={10}
-              quantity={ing.quantity}
-            />
-          ) : <h3 className='text-center text-gray-500'>Empty</h3>}
-        </div>
-
-        <OrderTotal ingredients={tempIngredients} />
-      </div>
-    )}
-  </>
+      )}
+    </>
   )
 }
 

@@ -33,8 +33,10 @@ export const useFileUpload = () => {
 
       const newBlob = (await response.json()) as PutBlobResult;
       return newBlob.url;
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown ) {
+      if (e instanceof Error) {
+        setError(e.message)
+      }
     } finally {
       setIsLoading(false);
     }

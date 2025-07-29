@@ -1,6 +1,6 @@
 import { MessageType } from "@/shemas/chat";
 import { initialState } from "@/app/context/homeContext/homeReducer";
-import { ReactNode, RefObject } from "react";
+import { ReactNode } from "react";
 
 export interface HomeContextProps {
     state: typeof initialState,
@@ -38,6 +38,7 @@ export interface HomeState {
   | { type: "OPEN_NOTIFICATION"; payload: string}
   | { type: "CLOSE_NOTIFICATION"} 
   | { type: "SET_FILE"; payload: File | null}
+  | { type: "RESET_FILE"}
 
 export interface ModalProps {
   isOpen: boolean;

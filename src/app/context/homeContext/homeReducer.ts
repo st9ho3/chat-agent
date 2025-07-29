@@ -66,6 +66,11 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
         ...state,
         file: action.payload
       }
+    case "RESET_FILE":
+      return {
+        ...state,
+        file: null
+      }
     default:
       return state;
   }
