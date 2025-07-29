@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import AddIngredient from './ingredient';
-import { Check, NotepadText, Image, X } from 'lucide-react';
+import { Check, NotepadText, File, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
@@ -47,7 +47,7 @@ const RecipeForm = () => {
     resolver: zodResolver(RecipeSchema)
   });
 
-  const { errors } = formState;
+  const { errors, isSubmitting, isSubmitted } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing];
@@ -88,10 +88,11 @@ const RecipeForm = () => {
           await sendRecipe(updatedData, tempIngredients);
         }
       }
-
+      console.log(isSubmitted)
     } catch (error) {
       console.log(error);
     } finally {
+     console.log(isSubmitted)
       reset();
       setTempIngredients([]);
 
@@ -103,6 +104,7 @@ const RecipeForm = () => {
       router.replace("/recipes")
     }
   }
+  console.log(state.file)
 
   return (
     <>
@@ -130,15 +132,25 @@ const RecipeForm = () => {
             View Ingredients ({tempIngredients.length})
           </button>
 
-          {state.file && <div className='flex flex-col h-17 pl-2'>
-            <Image size="40px" color="#a8c6fe" />
-            <p className='text-gray-500'>{state.file?.name}</p>
-            <X onClick={() => dispatch({type: "RESET_FILE"})} />
-          </div>}
+          {state.file && (
+  <div className="flex items-center justify-between w-1/2 py-1.5 px-2 group">
+    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+      <File size={18} className="text-slate-400" />
+      <span className="truncate">{state.file?.name}</span>
+    </div>
+    <button
+      onClick={() => dispatch({ type: "RESET_FILE" })}
+      className="p-1 rounded-full text-slate-400 opacity-0 group-hover:opacity-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-opacity"
+      aria-label="Remove file"
+    >
+      <X size={18} />
+    </button>
+  </div>
+)}
           <div className='flex justify-center'>
-            <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 '>
-              <Check />
-              <button type='submit'>Add recipe</button>
+            <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 ' >
+              {!isSubmitting && <Check />}
+              <button type='submit' disabled={isSubmitting}  > {isSubmitting ? "Submitting..." : "Add recipe"}</button>
             </div>
           </div>
 

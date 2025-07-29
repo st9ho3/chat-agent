@@ -44,11 +44,11 @@ const Table = ({items}: {items: Recipe[]}) => {
             <td className="pl-4 md:pl-0">
               <div className="flex items-center gap-2">
                 <Image
-                  className="w-8 h-8 rounded-full object-cover"
+                  className="w-9 h-9 rounded-full object-cover"
                   src={rec.imgPath || '/images/placeholder-image.png'}
                   alt={rec.title}
-                  width={8}
-                  height={8}
+                  width={1200}
+                  height={800}
                 />
                 <p className="text-sm break-words">{rec.title}</p>
               </div>

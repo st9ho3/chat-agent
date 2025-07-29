@@ -18,7 +18,7 @@ const {state, dispatch} = useHomeContext()
         >
           <Plus />
           <div>
-            <Modal isOpen={state.isModalOpen} onClose={() => dispatch({type: "CLOSE_MODAL"})}>
+            <Modal isOpen={state.isModalOpen} onClose={() => { dispatch({type: "CLOSE_MODAL"}); dispatch({type: "RESET_FILE"})}}>
             <RecipeForm />
             </Modal>
           </div>

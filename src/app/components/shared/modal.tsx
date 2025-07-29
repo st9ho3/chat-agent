@@ -45,6 +45,7 @@ const Modal= ({ isOpen, onClose, children }: ModalProps) => {
   }
 
   const handleClose = (e: React.MouseEvent) => {
+    
     e.stopPropagation()
     onClose()
   }
