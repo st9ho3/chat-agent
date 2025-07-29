@@ -28,11 +28,12 @@ export type FormFields = {
 const RecipeForm = () => {
 
   const [newId, setNewId] = useState<string>(() => uuidv4());
+  const [url, setUrl] = useState<string>("")
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
   const [isListVisible, setIsListVisible] = useState(false);
   const { state,dispatch} = useHomeContext()
   const router = useRouter()
-  const { uploadFile, blob, isLoading, error } = useFileUpload();
+  const { uploadFile, isLoading, error } = useFileUpload();
   
   
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
@@ -42,7 +43,8 @@ const RecipeForm = () => {
       category: 'starter',
       createdBy: 'User',
       dateCreated: new Date()
-    },
+      
+      },
     resolver: zodResolver(RecipeSchema)
   });
 
@@ -63,9 +65,9 @@ const RecipeForm = () => {
   const handleFileUpload = async (file: File) => {
     if (file) {
       try {
-        await uploadFile(file)
-        console.log(state.file)
-        console.log("File uploaded successfully:", blob)
+        const url = await uploadFile(file)
+        console.log("File uploaded successfully:", url)
+        return url
       } catch (err) {
         console.log("An error occured while uploading the file:", err)
         console.log("Error message:", error)
@@ -75,16 +77,19 @@ const RecipeForm = () => {
 
   const onSubmit = async (data: FormFields) => {
     try {
-      const updatedData = { ...data, id: newId };
+      if (state.file) {
+          const url = await handleFileUpload(state.file)
 
-      if (tempIngredients.length > 0) {
-        await sendRecipe(updatedData, tempIngredients);
-        if (state.file) {
-          await handleFileUpload(state.file)
-        }
-        
+          const updatedData = { ...data, id: newId, imgPath: url};
+          if (tempIngredients.length > 0) {
+        await sendRecipe(updatedData, tempIngredients); 
       }
-      
+        } else {
+          const updatedData = { ...data, id: newId };
+          if (tempIngredients.length > 0) {
+        await sendRecipe(updatedData, tempIngredients); 
+      }
+        }
 
     } catch (error) {
       console.log(error);

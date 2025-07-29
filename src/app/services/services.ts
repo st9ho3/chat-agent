@@ -1,6 +1,6 @@
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
-import { RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
+import { Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { IngredientEditAction, RecipeUpdatePayload } from "@/types/context";
 
 export const createMessage = (text: string, user: string) => {
@@ -18,7 +18,7 @@ export const createMessage = (text: string, user: string) => {
   return message;
 };
 
-export const sendRecipe = async (data: FormFields, ing: RecipeIngredients[]) => {
+export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
   const dataToSend = { recipe: data, ingredients: ing };
   const res = await fetch("/api/recipes", {
     method: "POST",

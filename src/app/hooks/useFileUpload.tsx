@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { PutBlobResult } from '@vercel/blob';
 
 export const useFileUpload = () => {
-  const [blob, setBlob] = useState<PutBlobResult | null>(null);
+ 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +15,7 @@ export const useFileUpload = () => {
   const uploadFile = async (file: File) => {
     setIsLoading(true);
     setError(null);
-    setBlob(null);
+    
     
     try {
       if (!file) {
@@ -32,7 +32,7 @@ export const useFileUpload = () => {
       }
 
       const newBlob = (await response.json()) as PutBlobResult;
-      setBlob(newBlob);
+      return newBlob.url;
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -42,7 +42,6 @@ export const useFileUpload = () => {
 
   return {
     uploadFile,
-    blob,
     isLoading,
     error,
   };
