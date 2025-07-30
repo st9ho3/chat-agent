@@ -5,6 +5,7 @@ import Chat from "../components/chatUI/chat";
 import CreateButton from "../components/recipes/createButton";
 import HomeButton from "../components/shared/homeButton";
 import RecipesButton from "../components/shared/recipesButton";
+import IngredientsButton from "../components/shared/ingredientsButton";
 
 export const metadata: Metadata = {
   title: "Recipes App",
@@ -30,7 +31,9 @@ export default function RootLayout({
               <nav className="flex flex-col space-y-2">
                 <HomeButton />
                 <RecipesButton />
+                <IngredientsButton />
                 <CreateButton />
+
               </nav>
             </aside>
 

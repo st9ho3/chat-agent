@@ -9,11 +9,12 @@ import { RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe
 import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
-import UploadFiles from '../shared/uploadFiles';
+
 import { sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
+import AdditionalCosts from './additionalCosts';
 
 
 export type FormFields = {
@@ -55,6 +56,7 @@ const RecipeForm = () => {
     setTempIngredients(newIngredients);
     setValue("totalCost", totalPrice);
   }
+  console.log(tempIngredients)
 
   const handleRemoveIngredient = (id: string) => {
     const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id);
@@ -112,7 +114,7 @@ const RecipeForm = () => {
       <div className='w-full md:w-210 md:h-130 md:flex'>
 
         {/* Form Section (Left) */}
-        <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col  gap-y-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col  gap-y-2'>
           <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg p-1'>
             <NotepadText color='gray' />
             <input {...register('title')} id='title' type="text" className='p-4 placeholder:text-gray-500 text-2xl focus:outline-none w-full' placeholder="Recipe's name" required />
@@ -120,8 +122,9 @@ const RecipeForm = () => {
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
           <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId} />
+          <AdditionalCosts />
 
-          <UploadFiles />
+          
 
           {/* --- Button to show ingredients on mobile --- */}
           <button
@@ -167,7 +170,7 @@ const RecipeForm = () => {
                 iconBgColor={ing.iconBgColor}
                 name={ing.name}
                 unit={ing.unit}
-                unitPrice={10}
+                unitPrice={ing.unitPrice}
                 quantity={ing.quantity}
               />
             ) : <h3 className='text-center text-gray-500'>Empty</h3>}

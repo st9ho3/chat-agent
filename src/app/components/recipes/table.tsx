@@ -41,7 +41,9 @@ const Table = ({items}: {items: Recipe[]}) => {
             key={rec.id}
             className="border-b h-12.5 border-gray-200 text-sm"
           >
-            <td className="pl-4 md:pl-0">
+            
+            <td className="pl-4 md:pl-0 pt-2">
+              <Link href={`/recipes/${rec.id}`}>
               <div className="flex items-center gap-2">
                 <Image
                   className="w-9 h-9 rounded-full object-cover"
@@ -50,9 +52,13 @@ const Table = ({items}: {items: Recipe[]}) => {
                   width={1200}
                   height={800}
                 />
-                <p className="text-sm break-words">{rec.title}</p>
+                <p className="text-sm break-words transition-colors duration-300 ease-in-out hover:text-gray-400">
+  {rec.title}
+</p>
               </div>
+              </Link>
             </td>
+            
             <td className="hidden md:table-cell pl-4">{rec.createdBy}</td>
             <td className="hidden md:table-cell pl-4">
               <ClientOnlyTime date={rec.dateCreated} />
