@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
 import { Carrot, Plus, Scale, Euro } from 'lucide-react'
-import { Unit, RecipeIngredients, RecipeIngredientsSchema, Ingredient, IngredientSchema } from '@/shemas/recipe'
+import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
 
 type IngredientErrors = string[]
@@ -16,7 +16,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
   const [quantity, setQuantity] = useState<number>(0)
   const [name, setName] = useState<string>('')
   const [unit, setUnit] = useState<Unit>('')
-  const [price, setPrice] = useState<number>(0)
+  const [price, setPrice] = useState<string>("0")
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
@@ -28,21 +28,25 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
     setName(value)
     setErrors([])
   }
+  
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.target
-    setPrice(Number(value))
+    if (value === '' || /^(\d*\.?\d*)$/.test(value)) {
+      setPrice(value)
+    }
     setErrors([])
   }
 
   const handleFocus = () => {
     setIsEditing(true)
   }
+  
   const handleBlur = () => {
-    if (price === 0) {
-      setIsEditing(false)
-    }
+    setIsEditing(false)
   }
-  const displayedPrice = isEditing && price === 0 ? " " : price
+  
+  // Fixed displayedPrice logic - show empty string when editing and price is "0"
+  const displayedPrice = isEditing && price === "0" ? "" : price
 
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {value} = e.target
@@ -52,7 +56,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
     }
   }
 
-  const addIngredient = (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
+  const addIngredient = async (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
     e.preventDefault()
 
     const id = uuidv4()
@@ -62,11 +66,12 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
       icon: 'bg-yellow-100',
       name: name,
       unit: unit,
-      unitPrice: price,
+      unitPrice: Number(price),
+      quantity: quantity,
       usage: "0"
     }
     const validatedIngredient = IngredientSchema.safeParse(ingredient)
-    
+    console.log("Validated ingredient on the form: ", validatedIngredient)
     if (!validatedIngredient.success) {
 
       setErrors([])
@@ -75,13 +80,14 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
     } else {
       
-      onAddIngredient(validatedIngredient.data)
+    await onAddIngredient(validatedIngredient.data)
 
       setQuantity(0)
       setName('')
       setUnit('')
-      setPrice(0)
+      setPrice("0") // Fixed: should be string "0", not number 0
       setErrors([])
+      setIsEditing(false) // Reset editing state
     }
   }
   
@@ -115,13 +121,15 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
           <Euro />
           <input
             name='price'
-            type='number'
+            type="text"
             value={displayedPrice}
             className="p-1 text-lg placeholder:text-gray-500 w-20 focus:outline-none"
             placeholder="Price"
+            onKeyDown={handleKeyDown}
             onChange={handlePrice}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            pattern="[0-9]*[.]?[0-9]*"
           />
         </div>
         
@@ -144,6 +152,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
             <option value="L">L</option>
             <option value="g">g</option>
             <option value="ml">ml</option>
+            <option value="piece">piece</option>
           </select>
         </div>
 
@@ -159,6 +168,13 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
           <Plus size={20} /> Add Ingredient
         </button>
       </div>
+      
+      <div className="w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 mt-3 text-center text-gray-600">
+      <p className="text-lg">
+        {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-gray-800">{price}€</span>
+      </p>
+    </div>
+      
 
       {/* Error messages */}
       <div className="mt-2 text-center">

@@ -7,6 +7,7 @@ export const UnitSchema = z.union([
   z.literal('ml'),
   z.literal('kg'),
   z.literal('L'),
+  z.literal('piece'),
   z.literal('')
 ], {
   errorMap: (issue, ctx) => {
@@ -62,7 +63,8 @@ export const IngredientSchema = z.object({
   icon: z.string().optional().nullable(),
   name: z.string().min(1, "Name is required"),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional().nullable(),
+  unitPrice: z.number().min(0, "Unit price must be non-negative"),
+  quantity: z.number().min(1, "Quantity must be non-negative"),
   usage: z.string()
 });
 

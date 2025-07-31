@@ -1,5 +1,5 @@
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from './schema';
-import { Recipe, RecipeIngredients } from '../shemas/recipe';
+import { Ingredient, Recipe, RecipeIngredients } from '../shemas/recipe';
 import { db } from './db';
 import { checkIfIngredientExists, checkIfRecipeExists } from '@/db/helpers';
 
@@ -40,18 +40,20 @@ const createRecipeToDatabase = async (r: Recipe) => {
  * @param ingredient The ingredient object to insert.
  * @returns The ID of the newly created ingredient.
  */
-export const createIngredientsToDatabase = async (ingredient: RecipeIngredients) => {
+export const createIngredientsToDatabase = async (ingredient: Ingredient) => {
   const foundIngredient = await checkIfIngredientExists(ingredient.name);
-  console.log(foundIngredient.usage)
+  
   if (!foundIngredient) {
     const ing = await db
       .insert(ingredientsTable)
       .values({
-        id: ingredient.ingredientId,
+        id: ingredient.id,
         icon: '',
         name: ingredient.name,
         unit: ingredient.unit,
         unitPrice: ingredient.unitPrice.toString(),
+        quantity: ingredient.quantity.toString(),
+        usage: ingredient.usage
       })
       .returning({
         ingredientId: ingredientsTable.id

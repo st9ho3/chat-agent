@@ -9,12 +9,13 @@ import { RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe
 import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
-
 import { sendRecipe } from '@/app/services/services';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
 import AdditionalCosts from './additionalCosts';
+import UploadFiles from '../shared/uploadFiles';
+
 
 
 export type FormFields = {
@@ -35,7 +36,6 @@ const RecipeForm = () => {
   const router = useRouter()
   const { uploadFile, error } = useFileUpload();
 
-
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
       id: newId,
@@ -43,7 +43,6 @@ const RecipeForm = () => {
       category: 'starter',
       createdBy: 'User',
       dateCreated: new Date()
-
     },
     resolver: zodResolver(RecipeSchema)
   });
@@ -79,7 +78,6 @@ const RecipeForm = () => {
     try {
       if (state.file) {
         const url = await handleFileUpload(state.file)
-
         const updatedData = { ...data, id: newId, imgPath: url };
         if (tempIngredients.length > 0) {
           await sendRecipe(updatedData, tempIngredients);
@@ -94,14 +92,13 @@ const RecipeForm = () => {
     } catch (error) {
       console.log(error);
     } finally {
-     console.log(isSubmitted)
+      console.log(isSubmitted)
       reset();
       setTempIngredients([]);
-
       const nextRecipeId = uuidv4();
       setNewId(nextRecipeId);
       dispatch({ type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully" })
-      dispatch({type: "RESET_FILE"})
+      dispatch({ type: "RESET_FILE" })
       setValue("id", nextRecipeId);
       router.replace("/recipes")
     }
@@ -121,10 +118,11 @@ const RecipeForm = () => {
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
-          
+
           <AdditionalCosts />
 
-          
+          <UploadFiles />
+
 
           {/* --- Button to show ingredients on mobile --- */}
           <button
@@ -136,20 +134,20 @@ const RecipeForm = () => {
           </button>
 
           {state.file && (
-  <div className="flex items-center justify-between w-1/2 py-1.5 px-2 group">
-    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-      <File size={18} className="text-slate-400" />
-      <span className="truncate">{state.file?.name}</span>
-    </div>
-    <button
-      onClick={() => dispatch({ type: "RESET_FILE" })}
-      className="p-1 rounded-full text-slate-400 opacity-0 group-hover:opacity-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-opacity"
-      aria-label="Remove file"
-    >
-      <X size={18} />
-    </button>
-  </div>
-)}
+            <div className="flex items-center justify-between w-1/2 py-1.5 px-2 group">
+              <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                <File size={18} className="text-slate-400" />
+                <span className="truncate">{state.file?.name}</span>
+              </div>
+              <button
+                onClick={() => dispatch({ type: "RESET_FILE" })}
+                className="p-1 rounded-full text-slate-400 opacity-0 group-hover:opacity-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-opacity"
+                aria-label="Remove file"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          )}
           <div className='flex justify-center'>
             <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 ' >
               {!isSubmitting && <Check />}

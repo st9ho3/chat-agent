@@ -1,6 +1,6 @@
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
-import { Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
+import { Ingredient, IngredientSchema, Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { IngredientEditAction, RecipeUpdatePayload } from "@/types/context";
 
 export const createMessage = (text: string, user: string) => {
@@ -78,6 +78,18 @@ export const deleteRecipesFromServer = async (recipeId: string) => {
   });
 };
 
+export const sendIngredient = async (ingredient: Ingredient) => {
+  const res = await fetch("/api/ingredients", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(ingredient)
+  })
+  const response = await res.json()
+  console.log("This is the respons on the sendIngredient",response)
+}
+
 export const zodValidateDataBeforeAddThemToDatabase = async (request: RecipeUpdatePayload) => {
   const { recipe, ingredients } = await request;
 
@@ -100,4 +112,14 @@ export const zodValidateDataBeforeAddThemToDatabase = async (request: RecipeUpda
     validatedRecipe: validatedRecipe,
     validatedRecipeIngredients: validatedIngredients
   };
+};
+
+export const zodValidateIngredientBeforeAddItToDatabase = async (request: Ingredient) => {
+  const ingredient = await request
+
+  if (ingredient) {
+      const validatedIngredient = IngredientSchema.parse(ingredient)
+      console.log("Zod validated ingredient: ",validatedIngredient)
+      return validatedIngredient;
+    }
 };
