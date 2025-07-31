@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import AddIngredient from './ingredient';
+import AddIngredient from '../ingredients/ingredient';
 import { Check, NotepadText, File, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
@@ -121,7 +121,7 @@ const RecipeForm = () => {
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
-          <AddIngredient onAddIngredient={handleAddIngredient} recipesId={newId} />
+          
           <AdditionalCosts />
 
           

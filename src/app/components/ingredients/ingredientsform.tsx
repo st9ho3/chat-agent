@@ -1,11 +1,13 @@
 import React from 'react'
+import AddIngredient from './ingredient'
 
-const Ingredientsform = () => {
+const IngredientsForm = () => {
   return (
     <div>
-      
+      ingredient
+      <AddIngredient onAddIngredient={() => console.log("Ingredient added")}/>
     </div>
   )
 }
 
-export default Ingredientsform
+export default IngredientsForm

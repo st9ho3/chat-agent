@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import AddIngredient from './ingredient';
+import AddIngredient from '../ingredients/ingredient';
 import { Check, NotepadText, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';

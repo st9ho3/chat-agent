@@ -8,7 +8,7 @@ const OptionsModal = () => {
 
   return (
    // Main container with dashed border and padding, similar to the reference
-    <div className="w-full max-w-xs rounded-lg ">
+    <div className=" w-full md:w-100 max-w-xs rounded-lg ">
       <div className="flex flex-col gap-y-2">
         
         <h3 className="px-2 py-1 text-sm font-semibold text-gray-500">Create New</h3>

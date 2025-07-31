@@ -22,7 +22,8 @@ export const ingredientsTable = pgTable('ingredients', {
   icon: varchar('icon'), 
   name: varchar('name', { length: 255 }).notNull(), 
   unit: varchar('unit', { length: 50 }).notNull(), 
-  unitPrice: numeric('unit_price', { precision: 10, scale: 2 }), 
+  unitPrice: numeric('unit_price', { precision: 10, scale: 2 }),
+  usage: numeric('usage').notNull().default('1') 
 });
 
 // Defines the 'recipeIngredients' table schema, linking recipes and ingredients.

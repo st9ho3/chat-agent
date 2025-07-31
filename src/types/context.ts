@@ -33,7 +33,7 @@ export interface HomeState {
   | { type: "UPDATE_MESSAGES"; payload: MessageType }
   | { type: "CHOOSE_PAGE"; payload: number }
   | { type: "OPEN_MODAL"; payload: ModalType}
-  | { type: "CLOSE_MODAL"; payload: ModalType}
+  | { type: "CLOSE_MODAL";}
   | { type: "OPEN_NOTIFICATION"; payload: string}
   | { type: "CLOSE_NOTIFICATION"} 
   | { type: "SET_FILE"; payload: File | null}

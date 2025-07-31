@@ -42,8 +42,7 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
     case 'CLOSE_MODAL':
       return {
         ...state,
-        isModalOpen: false,
-        modalType: {type: ""}
+        isModalOpen: false
       }
     case 'OPEN_NOTIFICATION':
       return {

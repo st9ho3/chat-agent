@@ -20,3 +20,4 @@ export const checkIfIngredientExists = async (title: string) => {
 
   return ingredients[0];
 };
+

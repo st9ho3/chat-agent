@@ -2,17 +2,16 @@
 import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
 import { Carrot, Plus, Scale, Euro } from 'lucide-react'
-import { Unit, RecipeIngredients, RecipeIngredientsSchema } from '@/shemas/recipe'
+import { Unit, RecipeIngredients, RecipeIngredientsSchema, Ingredient, IngredientSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
 
 type IngredientErrors = string[]
 
 type AddIngredientProps = {
-  onAddIngredient: (value: RecipeIngredients) => void,
-  recipesId: string
+  onAddIngredient: (value: Ingredient) => void,
 }
 
-const AddIngredient = ({onAddIngredient, recipesId}: AddIngredientProps) => {
+const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
   const [quantity, setQuantity] = useState<number>(0)
   const [name, setName] = useState<string>('')
@@ -58,16 +57,15 @@ const AddIngredient = ({onAddIngredient, recipesId}: AddIngredientProps) => {
 
     const id = uuidv4()
 
-    const ingredient: RecipeIngredients = {
-      recipeId: recipesId.toString(),
-      ingredientId: id,
-      iconBgColor: 'bg-yellow-100',
+    const ingredient: Ingredient = {
+      id: id,
+      icon: 'bg-yellow-100',
       name: name,
       unit: unit,
       unitPrice: price,
-      quantity: quantity
+      usage: "0"
     }
-    const validatedIngredient = RecipeIngredientsSchema.safeParse(ingredient)
+    const validatedIngredient = IngredientSchema.safeParse(ingredient)
     
     if (!validatedIngredient.success) {
 

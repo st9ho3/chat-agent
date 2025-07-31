@@ -20,3 +20,7 @@ export const updateRecipe = async (id: string, recipe: Recipe) => {
 
     return response
 }
+
+export const updateIngredientsUsage = async (id:string) => {
+    
+}
