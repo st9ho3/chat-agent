@@ -63,17 +63,17 @@ export const ingredientColumns: Column[] = [
     {
         header: 'Price per Unit',
         accessor: 'pricePerUnit',
-        className: "text-gray-500 w-1/6 md:w-2/10 text-sm text-center"
+        className: "text-gray-500 w-1/6 md:w-2/10 text-sm text-center md: text-start pl-4"
     },
     {
         header: 'Usage',
         accessor: 'usage',
-        className: "hidden md:table-cell md:w-2/10 text-gray-500 text-sm text-center"
+        className: "hidden md:table-cell md:w-2/10 text-gray-500 text-sm text-center md: text-start pl-4"
     },
     {
         header: 'Actions',
         accessor: 'actions',
-        className: "text-gray-500 w-2/6 md:w-2/10 text-sm text-center"
+        className: "text-gray-500 w-2/6 md:w-2/10 text-sm text-center md:text-start pl-4"
     }
 ];
 

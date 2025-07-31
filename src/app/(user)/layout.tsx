@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import HomeContextProvider from "../context/homeContext/homeContext";
 import Chat from "../components/chatUI/chat";
-import CreateButton from "../components/recipes/createButton";
+import CreateButton from "../components/shared/createButton";
 import HomeButton from "../components/shared/homeButton";
 import RecipesButton from "../components/shared/recipesButton";
 import IngredientsButton from "../components/shared/ingredientsButton";

@@ -23,6 +23,8 @@ const RecipesTable = ({items}: {items: Recipe[]}) => {
     router.replace("recipes")
   }
 
+  console.log(state.isModalOpen, state.modalType.type)
+
   return (
     <div>
       <table className="w-full table-fixed mb-4 ">

@@ -29,6 +29,14 @@ export const ColumnSchema = z.object({
 
 export type Column = z.infer<typeof ColumnSchema>;
 
+export const UsageSchema = z.union([
+  z.literal("low"),
+  z.literal("medium"),
+  z.literal("high")
+], {
+  errorMap: () => ({message: "Usage must be 'low', 'medium', or 'high'."})
+})
+
 
 // Schema for defining allowed recipe categories (e.g., 'starter', 'main', 'dessert')
 export const RecipeCategorySchema = z.union([
@@ -62,7 +70,8 @@ export const IngredientSchema = z.object({
   icon: z.string().optional().nullable(),
   name: z.string().min(1, "Name is required"),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional().nullable()
+  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional().nullable(),
+  usage: UsageSchema
 });
 
 export type Ingredient = z.infer<typeof IngredientSchema>;

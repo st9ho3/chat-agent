@@ -6,7 +6,6 @@ import { useHomeContext } from "@/app/context/homeContext/homeContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Ingredient, Recipe } from "@/shemas/recipe";
-import { deleteRecipesFromServer } from "@/app/services/services";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
@@ -14,14 +13,14 @@ import Link from "next/link";
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();
   const router = useRouter()
-  const paginateItems = paginate(10, state.currentPage, items);
+  const paginateItems= paginate(10, state.currentPage, items);
   console.log(paginateItems)
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 
-  const handleDelete = async(rec: Recipe) => {
+  /* const handleDelete = async(rec: Recipe) => {
     await deleteRecipesFromServer(rec.id)
     router.replace("recipes")
-  }
+  } */
 
   return (
     <div>
@@ -41,7 +40,7 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
               key={item.id}
               className="border-b h-12.5 border-gray-200 text-sm"
             >
-
+              {/* Cell 1: Name and Image */}
               <td className="pl-4 md:pl-0 pt-2">
                 <Link href={`/ingredients/${item.id}`}>
                   <div className="flex items-center gap-2">
@@ -58,15 +57,19 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
                   </div>
                 </Link>
               </td>
-
               
-              
+               {/* Cell 2: Price */}
               <td className="hidden md:table-cell align-middle text-center md:text-start md:pl-4">
                 € {Number(item.unitPrice).toFixed(2)} / {item.unit}
               </td>
-              <td className="hidden md:table-cell pl-4">{item.usage} Medium</td>
+              
+
+              {/* Cell 3: Usage */}
+              {<td className="hidden md:table-cell pl-4">{item.usage} Medium</td>}
+
+              {/* Cell 4: Actions */}
               <td className="align-middle text-center gap-5 flex justify-center md:text-start md:justify-start mt-4 md:pl-4">
-                <Link href={`/recipes/edit/${item.id}`}>
+                <Link href={`/ingredients/edit/${item.id}`}>
                   <Pencil
                     size="18px"
                     strokeWidth="1.5px"
@@ -75,7 +78,7 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
                 </Link>
 
                 <Trash2
-                  onClick={() => handleDelete(item)}
+                  
                   size="18px"
                   strokeWidth="1.5px"
                   color="red"

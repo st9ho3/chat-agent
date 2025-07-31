@@ -7,8 +7,7 @@ const initialState: HomeState = {
   currentPage: 1,
   isModalOpen: false,
   modalType: {
-    type: "",
-    id: ""
+    type: ""
   },
   notification: {isOpen:false, message: "no message"},
   file: null
@@ -43,7 +42,8 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
     case 'CLOSE_MODAL':
       return {
         ...state,
-        isModalOpen: false
+        isModalOpen: false,
+        modalType: {type: ""}
       }
     case 'OPEN_NOTIFICATION':
       return {

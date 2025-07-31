@@ -1,9 +1,9 @@
 import { Ingredient, Recipe, RecipeIngredients } from "@/shemas/recipe";
 
-export const paginate = (itemsPerPage: number, page: number, items: Recipe[] | Ingredient[] ) => {
+export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {
     if (items.length === 0) {
       console.log('No items to display')
-      return
+      return []
     }
     const indexOfFirstItem = itemsPerPage * (page - 1) 
     const indexOfLastItem = itemsPerPage * page - 1 
@@ -12,7 +12,7 @@ export const paginate = (itemsPerPage: number, page: number, items: Recipe[] | I
     return currentItems
   } 
 
-  export const paginationPages = (items: Recipe[], itemsPerPage: number ) => {
+  export const paginationPages = (items: Recipe[] | Ingredient[], itemsPerPage: number ) => {
    
   const pages = Math.ceil(items.length / itemsPerPage);
   const pageNumbers = Array.from({ length: pages }, (_, i) => i + 1);
