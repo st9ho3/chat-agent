@@ -3,10 +3,10 @@ import React from 'react';
 import Button from '../shared/sharedButton';
 import { paginationPages } from '@/app/services/helpers';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
-import { Recipe } from '@/shemas/recipe';
+import { Ingredient, Recipe } from '@/shemas/recipe';
 
 
-const Pagination = ({ items }: { items: Recipe[] }) => {
+const Pagination = ({ items }: { items: Recipe[] | Ingredient[] }) => {
   const { state, dispatch } = useHomeContext();
   const pages = paginationPages(items, 10);
 

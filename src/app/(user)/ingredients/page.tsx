@@ -1,11 +1,25 @@
+import IngredientsTable from '@/app/components/ingredients/ingredientsTable'
+import Pagination from '@/app/components/recipes/pagination'
+import { getIngredients } from '@/db/read'
 import React from 'react'
 
-const page = () => {
+const ingredientsPage = async() => {
+
+  const rawIngredients = await getIngredients()
+  const ingredients = rawIngredients.map((ingredient) => {
+    return {
+      ...ingredient,
+      unitPrice: ingredient.unitPrice ? Number(ingredient.unitPrice) : null
+    }
+  })
+
+
   return (
-    <div>
-      Ingredients
+    <div className='relative w-full h-screen px-2 md:px-5 bg-white'>
+      <IngredientsTable items={ingredients} />
+      <Pagination items={ingredients} />
     </div>
   )
 }
 
-export default page
+export default ingredientsPage

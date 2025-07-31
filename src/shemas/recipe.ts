@@ -59,10 +59,10 @@ export type Recipe = z.infer<typeof RecipeSchema>;
 // Schema for an ingredient item with UI-specific properties
 export const IngredientSchema = z.object({
   id: z.string().uuid(),
-  icon: z.string().optional(),
+  icon: z.string().optional().nullable(),
   name: z.string().min(1, "Name is required"),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional()
+  unitPrice: z.number().nonnegative("Unit price must be non-negative").optional().nullable()
 });
 
 export type Ingredient = z.infer<typeof IngredientSchema>;

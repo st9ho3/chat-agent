@@ -10,6 +10,13 @@ export const getRecipes = async () => {
 
     return recipes
 }
+export const getIngredients = async () => {
+    const ingredients = await db
+    .select()
+    .from(ingredientsTable)
+
+    return ingredients
+}
 
 export const getRecipeByIdBetter = async (id: string) => {
     console.log("id that fetches the db is", id)

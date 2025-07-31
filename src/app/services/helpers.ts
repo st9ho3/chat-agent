@@ -1,6 +1,6 @@
-import { Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { Ingredient, Recipe, RecipeIngredients } from "@/shemas/recipe";
 
-export const paginate = (itemsPerPage: number, page: number, items: Recipe[] ) => {
+export const paginate = (itemsPerPage: number, page: number, items: Recipe[] | Ingredient[] ) => {
     if (items.length === 0) {
       console.log('No items to display')
       return
