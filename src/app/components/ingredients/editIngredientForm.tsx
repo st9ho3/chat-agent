@@ -62,10 +62,8 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
   const addIngredient = async (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
     e.preventDefault()
 
-    const id = uuidv4()
-
-    const ingredient: Ingredient = {
-      id: id,
+    const updatedIngredient: Ingredient = {
+      id: ingredient.id,
       icon: 'bg-yellow-100',
       name: name,
       unit: unit,
@@ -73,7 +71,7 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
       quantity: quantity,
       usage: "0"
     }
-    const validatedIngredient = IngredientSchema.safeParse(ingredient)
+    const validatedIngredient = IngredientSchema.safeParse(updatedIngredient)
     console.log("Validated ingredient on the form: ", validatedIngredient)
     if (!validatedIngredient.success) {
 
