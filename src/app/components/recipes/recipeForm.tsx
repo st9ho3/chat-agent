@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
 import AdditionalCosts from './additionalCosts';
 import UploadFiles from '../shared/uploadFiles';
+import RecipeIngredient from './recipeIngredients';
 
 
 
@@ -118,6 +119,7 @@ const RecipeForm = () => {
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
+          <RecipeIngredient />
 
           <AdditionalCosts />
 

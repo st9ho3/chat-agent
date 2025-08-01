@@ -99,9 +99,9 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
   return (
     <div className="p-2">
+      
       {/* Container for all inputs on one line */}
       <div className="flex flex-wrap items-center justify-center gap-4 rounded-lg">
-        
         {/* Ingredient Name */}
         <div className='flex items-center p-1 space-x-3 border-dashed rounded-lg border-1 border-gray-300' >
           <Carrot />
@@ -174,7 +174,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
         {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-gray-800">{price}€</span>
       </p>
     </div>
-      
+
 
       {/* Error messages */}
       <div className="mt-2 text-center">

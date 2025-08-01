@@ -1,20 +1,20 @@
 "use client"
 import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
-import { Carrot, Plus, Scale, Euro, Pencil } from 'lucide-react'
+import { Carrot, Plus, Scale, Euro, Pencil, X } from 'lucide-react'
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
 import { updateIngredient } from '@/app/services/services'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 type IngredientErrors = string[]
 
 type AddIngredientProps = {
- 
   ingredient: Ingredient
 }
 
-const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
+const EditIngredientForm = ({ ingredient }: AddIngredientProps) => {
 
   const [quantity, setQuantity] = useState<number>(ingredient.quantity)
   const [name, setName] = useState<string>(ingredient.name)
@@ -27,13 +27,13 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
   const router = useRouter()
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target
+    const { value } = e.target
     setName(value)
     setErrors([])
   }
-  
+
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target
+    const { value } = e.target
     if (value === '' || /^(\d*\.?\d*)$/.test(value)) {
       setPrice(value)
     }
@@ -43,18 +43,18 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
   const handleFocus = () => {
     setIsEditing(true)
   }
-  
+
   const handleBlur = () => {
     setIsEditing(false)
   }
-  
+
   // Fixed displayedPrice logic - show empty string when editing and price is "0"
   const displayedPrice = isEditing && price === "0" ? "" : price
 
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const {value} = e.target
-    if (value === 'g' || value ==='ml' || value ==='kg' || value === 'L' ) {
-      setUnit(value)
+    const { value } = e.target
+    if (value === 'g' || value === 'ml' || value === 'kg' || value === 'L') {
+      setUnit(value as Unit) // Cast value to Unit type
       setErrors([])
     }
   }
@@ -64,12 +64,12 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
 
     const updatedIngredient: Ingredient = {
       id: ingredient.id,
-      icon: 'bg-yellow-100',
+      icon: 'bg-yellow-100', // Assuming a default icon or it comes from `ingredient` prop
       name: name,
-      unit: unit,
+      unit: unit as Unit, // Cast unit to Unit type
       unitPrice: Number(price),
       quantity: quantity,
-      usage: "0"
+      usage: "0" // Assuming default usage or it comes from `ingredient` prop
     }
     const validatedIngredient = IngredientSchema.safeParse(updatedIngredient)
     console.log("Validated ingredient on the form: ", validatedIngredient)
@@ -80,14 +80,14 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
       zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]))
 
     } else {
-      
-     await updateIngredient(validatedIngredient.data)
 
-     router.replace("/ingredients")
-    
+      await updateIngredient(validatedIngredient.data)
+
+      router.replace("/ingredients")
+
     }
   }
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
     if (e.key === "Enter") {
       addIngredient(e)
@@ -96,9 +96,18 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
 
   return (
     <div className="p-2">
+
+      <Link href="/ingredients">
+
+        <button
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-offset-2 transition-colors"
+          aria-label="Close modal" >
+          <X />
+        </button>
+      </Link>
       {/* Container for all inputs on one line */}
       <div className="flex flex-wrap items-center justify-center gap-4 rounded-lg">
-        
+
         {/* Ingredient Name */}
         <div className='flex items-center p-1 space-x-3 border-dashed rounded-lg border-1 border-gray-300' >
           <Carrot />
@@ -129,7 +138,7 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
             pattern="[0-9]*[.]?[0-9]*"
           />
         </div>
-        
+
         {/* Quantity */}
         <Incremental onChange={setQuantity} count={quantity} onKeyDown={handleKeyDown} setErrors={setErrors} />
 
@@ -157,25 +166,25 @@ const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
 
       {/* Add Ingredient Button on its own line */}
       <div className="flex justify-center mt-4">
-        <button 
-          type='button' 
-          onClick={addIngredient} 
+        <button
+          type='button'
+          onClick={addIngredient}
           className='flex items-center gap-2 px-4 py-2 transition-colors duration-200 border border-gray-400 border-dashed rounded-md bg-green-100 w-fit hover:bg-green-50'
         >
           <Pencil size={20} /> Update Ingredient
         </button>
       </div>
-      
+
       <div className="w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 mt-3 text-center text-gray-600">
-      <p className="text-lg">
-        {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-gray-800">{price}€</span>
-      </p>
-    </div>
-      
+        <p className="text-lg">
+          {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-gray-800">{price}€</span>
+        </p>
+      </div>
+
 
       {/* Error messages */}
       <div className="mt-2 text-center">
-        {errors.length > 0 && errors.map((err) => <p key={err} className='text-red-500'> {err} </p> )}
+        {errors.length > 0 && errors.map((err) => <p key={err} className='text-red-500'> {err} </p>)}
       </div>
 
     </div>

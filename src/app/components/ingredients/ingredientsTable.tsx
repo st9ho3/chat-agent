@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
 import Label from "../shared/label";
+import { deleteIngredient } from "@/app/services/services";
 
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();
@@ -18,10 +19,10 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 
-  /* const handleDelete = async(rec: Recipe) => {
-    await deleteRecipesFromServer(rec.id)
-    router.replace("recipes")
-  } */
+  const handleDelete = async(id: string) => {
+    await deleteIngredient(id)
+    router.replace("ingredients")
+  }
 
   return (
     <div>
@@ -78,7 +79,7 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
                 </Link>
 
                 <Trash2
-                  
+                  onClick={() => handleDelete(item.id)}
                   size="18px"
                   strokeWidth="1.5px"
                   color="red"

@@ -1,5 +1,6 @@
 import { zodValidateIngredientBeforeAddItToDatabase } from "@/app/services/services";
 import { createIngredientsToDatabase } from "@/db/create";
+import { deleteIngredient } from "@/db/delete";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -27,3 +28,16 @@ export const POST = async (req: NextRequest) => {
         })
     }
 }
+
+export const DELETE = async (req: NextRequest) => {
+    const request = await req.json()
+    console.log(request)
+    try {
+        await deleteIngredient(request)
+        return NextResponse.json({ status: 200, message: "Recipe succesfully deleted" });
+    }catch(err) {
+        console.log(err)
+    }
+
+}
+

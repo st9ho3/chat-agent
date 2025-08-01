@@ -91,11 +91,10 @@ export const sendIngredient = async (ingredient: Ingredient) => {
 }
 
 export const updateIngredient = async (ingredient: Ingredient) => {
-  console.log("starting th PATCH")
   const res = await fetch(`/api/ingredients/edit/${ingredient.id}`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "aaplication/json"
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(ingredient)
   })
@@ -108,6 +107,17 @@ export const updateIngredient = async (ingredient: Ingredient) => {
     console.log("The response from updating the ingredient on the client, ", response)
     return response
   }
+}
+
+export const deleteIngredient = async (id: string) => {
+  console.log(id)
+  await fetch("/api/ingredients", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(id)
+  })
 }
 
 export const zodValidateDataBeforeAddThemToDatabase = async (request: RecipeUpdatePayload) => {
