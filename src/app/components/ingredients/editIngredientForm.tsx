@@ -4,15 +4,17 @@ import Incremental from '../shared/incremental'
 import { Carrot, Plus, Scale, Euro, Pencil } from 'lucide-react'
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
+import { updateIngredient } from '@/app/services/services'
+import { useRouter } from 'next/navigation'
 
 type IngredientErrors = string[]
 
 type AddIngredientProps = {
-  onAddIngredient: (value: Ingredient) => void,
+ 
   ingredient: Ingredient
 }
 
-const EditIngredientForm = ({onAddIngredient, ingredient}: AddIngredientProps) => {
+const EditIngredientForm = ({ingredient}: AddIngredientProps) => {
 
   const [quantity, setQuantity] = useState<number>(ingredient.quantity)
   const [name, setName] = useState<string>(ingredient.name)
@@ -22,7 +24,7 @@ const EditIngredientForm = ({onAddIngredient, ingredient}: AddIngredientProps) =
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const [errors, setErrors] = useState<IngredientErrors>([])
-
+  const router = useRouter()
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.target
@@ -81,14 +83,10 @@ const EditIngredientForm = ({onAddIngredient, ingredient}: AddIngredientProps) =
 
     } else {
       
-    await onAddIngredient(validatedIngredient.data)
+     await updateIngredient(validatedIngredient.data)
 
-      setQuantity(0)
-      setName('')
-      setUnit('')
-      setPrice("0") // Fixed: should be string "0", not number 0
-      setErrors([])
-      setIsEditing(false) // Reset editing state
+     router.replace("/ingredients")
+    
     }
   }
   

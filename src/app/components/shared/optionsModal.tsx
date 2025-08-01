@@ -23,7 +23,7 @@ const OptionsModal = () => {
             e.stopPropagation()}}
         >
           <UtensilsCrossed className="h-5 w-5 text-gray-400" />
-          <span className="text-md text-gray-700">Recipe</span>
+          <span className="text-md text-gray-700">Create a recipe</span>
         </div>
 
         
@@ -34,7 +34,7 @@ const OptionsModal = () => {
             e.stopPropagation()}}
         >
           <Carrot className="h-5 w-5 text-gray-400" />
-          <span className="text-md text-gray-700">Ingredient</span>
+          <span className="text-md text-gray-700">Add an ingredient</span>
         </div>
 
       </div>

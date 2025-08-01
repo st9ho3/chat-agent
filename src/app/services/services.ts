@@ -90,6 +90,26 @@ export const sendIngredient = async (ingredient: Ingredient) => {
   console.log("This is the respons on the sendIngredient",response)
 }
 
+export const updateIngredient = async (ingredient: Ingredient) => {
+  console.log("starting th PATCH")
+  const res = await fetch(`/api/ingredients/edit/${ingredient.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "aaplication/json"
+    },
+    body: JSON.stringify(ingredient)
+  })
+
+  if (!res.ok) {
+    console.log("An error occured, ", res.status, res.statusText);
+    
+  } else {
+    const response = await res.json()
+    console.log("The response from updating the ingredient on the client, ", response)
+    return response
+  }
+}
+
 export const zodValidateDataBeforeAddThemToDatabase = async (request: RecipeUpdatePayload) => {
   const { recipe, ingredients } = await request;
 

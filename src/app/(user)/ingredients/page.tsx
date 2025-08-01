@@ -10,7 +10,8 @@ const ingredientsPage = async() => {
   const ingredients = rawIngredients.map((ingredient) => {
     return {
       ...ingredient,
-      unitPrice: ingredient.unitPrice ? Number(ingredient.unitPrice) : null
+      unitPrice: Number(ingredient.unitPrice),
+      quantity: Number(ingredient.quantity)
     }
   })
 
