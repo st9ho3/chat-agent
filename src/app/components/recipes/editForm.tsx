@@ -106,7 +106,6 @@ const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: Recipe
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
-          <AddIngredient onAddIngredient={handleAddIngredient} recipesId={recipe.id} />
 
           <UploadFiles />
 

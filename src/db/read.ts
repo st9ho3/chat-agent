@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm"
 import { db } from "./db"
 import { ingredientsTable, recipeIngredientsTable, recipesTable } from "./schema"
+import { Ingredient } from "@/shemas/recipe"
 
 
 export const getRecipes = async () => {
@@ -48,6 +49,18 @@ export const getRecipeById = async (id: string) => {
         return recipe
     }catch(err) {
         console.log("Error fetching recipe ------->", err)
+    }
+}
+
+export const getIngredientById = async (id: string) => {
+    try {
+        const ingredient = await db
+        .select()
+        .from(ingredientsTable)
+        .where(eq(ingredientsTable.id, id))
+        return ingredient
+    } catch (err) {
+        console.error("An error occured",err)
     }
 }
 

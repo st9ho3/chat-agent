@@ -9,12 +9,13 @@ import { Ingredient, Recipe } from "@/shemas/recipe";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
+import Label from "../shared/label";
 
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();
   const router = useRouter()
   const paginateItems= paginate(10, state.currentPage, items);
-  console.log(paginateItems)
+  
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 
   /* const handleDelete = async(rec: Recipe) => {
@@ -44,13 +45,9 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
               <td className="pl-4 md:pl-0 pt-2">
                 <Link href={`/ingredients/${item.id}`}>
                   <div className="flex items-center gap-2">
-                    <Image
-                      className="w-9 h-9 rounded-full object-cover"
-                      src={item.icon || '/images/placeholder-image.png'}
-                      alt={item.name}
-                      width={1200}
-                      height={800}
-                    />
+                    <div
+                      className="flex justify-center items-center w-9 h-9 text-xl bg-yellow-100 rounded-full object-cover"
+                    >{item.icon}</div>
                     <p className="text-sm break-words transition-colors duration-300 ease-in-out hover:text-gray-400">
                       {item.name ? item.name : "NaN"}
                     </p>
@@ -60,12 +57,15 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
               
                {/* Cell 2: Price */}
               <td className="hidden md:table-cell align-middle text-center md:text-start md:pl-4">
-                € {Number(item.unitPrice).toFixed(2)} / {item.unit}
+                € {Number(item.unitPrice).toFixed(2)} / <span className="font-bold">{item.unit}</span> 
               </td>
               
 
               {/* Cell 3: Usage */}
-              {<td className="hidden md:table-cell pl-4">{item.usage} Medium</td>}
+              {<td className="hidden md:table-cell pl-4">
+                
+                <Label text={Number(item.usage) < 5 ? "low" : 'medium' } type={Number(item.usage) < 5 ? "low" : 'medium' } /> 
+                </td>}
 
               {/* Cell 4: Actions */}
               <td className="align-middle text-center gap-5 flex justify-center md:text-start md:justify-start mt-4 md:pl-4">

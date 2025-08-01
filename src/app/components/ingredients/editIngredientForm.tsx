@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
-import { Carrot, Plus, Scale, Euro } from 'lucide-react'
+import { Carrot, Plus, Scale, Euro, Pencil } from 'lucide-react'
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,14 +9,15 @@ type IngredientErrors = string[]
 
 type AddIngredientProps = {
   onAddIngredient: (value: Ingredient) => void,
+  ingredient: Ingredient
 }
 
-const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
+const EditIngredientForm = ({onAddIngredient, ingredient}: AddIngredientProps) => {
 
-  const [quantity, setQuantity] = useState<number>(0)
-  const [name, setName] = useState<string>('')
-  const [unit, setUnit] = useState<Unit>('')
-  const [price, setPrice] = useState<string>("0")
+  const [quantity, setQuantity] = useState<number>(ingredient.quantity)
+  const [name, setName] = useState<string>(ingredient.name)
+  const [unit, setUnit] = useState<string>(ingredient.unit)
+  const [price, setPrice] = useState<string>(ingredient.unitPrice.toString())
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
@@ -25,7 +26,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = e.target
-    setName(value.toLowerCase())
+    setName(value)
     setErrors([])
   }
   
@@ -63,7 +64,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
     const ingredient: Ingredient = {
       id: id,
-      icon: '🥑',
+      icon: 'bg-yellow-100',
       name: name,
       unit: unit,
       unitPrice: Number(price),
@@ -79,7 +80,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
       zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]))
 
     } else {
-      console.log(validatedIngredient.data)
+      
     await onAddIngredient(validatedIngredient.data)
 
       setQuantity(0)
@@ -165,7 +166,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
           onClick={addIngredient} 
           className='flex items-center gap-2 px-4 py-2 transition-colors duration-200 border border-gray-400 border-dashed rounded-md bg-green-100 w-fit hover:bg-green-50'
         >
-          <Plus size={20} /> Add Ingredient
+          <Pencil size={20} /> Update Ingredient
         </button>
       </div>
       
@@ -184,4 +185,4 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
     </div>
   )
 }
-export default AddIngredient
+export default EditIngredientForm

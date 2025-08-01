@@ -48,7 +48,7 @@ export const createIngredientsToDatabase = async (ingredient: Ingredient) => {
       .insert(ingredientsTable)
       .values({
         id: ingredient.id,
-        icon: '',
+        icon: ingredient.icon,
         name: ingredient.name,
         unit: ingredient.unit,
         unitPrice: ingredient.unitPrice.toString(),

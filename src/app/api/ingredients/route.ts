@@ -5,9 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
     const request = await req.json()
     const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(request)
-
-    console.log(request, " request in the POST")
-    console.log(validatedIngredient, " validatedIngredient in the POST")
+    console.log("validated ingredient in the POST",validatedIngredient)
 
     try{
         const response = await createIngredientsToDatabase(request)

@@ -10,6 +10,7 @@ const IngredientsForm = () => {
   const router = useRouter()
 
     const addIngredient = async (ingredient: Ingredient) => {
+      console.log("addIngredient: ", ingredient)
       await sendIngredient(ingredient)
       router.replace("/ingredients")
     }
