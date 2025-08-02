@@ -98,7 +98,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
   }
 
   return (
-    <div className="p-2">
+    <form className="p-2">
       
       {/* Container for all inputs on one line */}
       <div className="flex flex-wrap items-center justify-center gap-4 rounded-lg">
@@ -181,7 +181,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
         {errors.length > 0 && errors.map((err) => <p key={err} className='text-red-500'> {err} </p> )}
       </div>
 
-    </div>
+    </form>
   )
 }
 export default AddIngredient

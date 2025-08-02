@@ -5,7 +5,7 @@ import { Check, NotepadText, File, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
-import { RecipeSchema, RecipeCategory, RecipeIngredients } from '@/shemas/recipe';
+import { RecipeSchema, RecipeCategory, RecipeIngredients, Ingredient } from '@/shemas/recipe';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
@@ -16,7 +16,6 @@ import { useFileUpload } from '@/app/hooks/useFileUpload';
 import AdditionalCosts from './additionalCosts';
 import UploadFiles from '../shared/uploadFiles';
 import RecipeIngredient from './recipeIngredients';
-import Link from 'next/link';
 
 
 
@@ -29,10 +28,11 @@ export type FormFields = {
   dateCreated: Date;
 }
 
-const RecipeForm = () => {
-
+const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
+  console.log(ingredients)
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
+  const [ingredientsToDisplay, setIngredientsToDisplay ] = useState<Ingredient[]>(ingredients)
   const [isListVisible, setIsListVisible] = useState(false);
   const { state, dispatch } = useHomeContext()
   const router = useRouter()
@@ -110,7 +110,7 @@ const RecipeForm = () => {
   return (
     <>
       {/* Main container */}
-      <div className='w-full md:w-210 md:h-130 md:flex'>
+      <div className='w-full md:w-250 md:h-130 md:flex'>
 
       
               <button
@@ -129,7 +129,7 @@ const RecipeForm = () => {
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
-          <RecipeIngredient />
+          <RecipeIngredient ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient}/>
 
           <AdditionalCosts />
 
