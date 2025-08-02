@@ -7,6 +7,18 @@ import Link from 'next/link';
 const OptionsModal = () => {
     const {state, dispatch} = useHomeContext()
 
+    const closeAfterDelay = (dispatch: React.Dispatch<{type: string}>) => (e: React.MouseEvent ) => {
+  e.stopPropagation();
+  setTimeout(() => {
+    dispatch({ type: "CLOSE_MODAL" });
+  }, 1000);
+};
+
+// How you would use it:
+// <button onClick={closeAfterDelay(dispatch)}>Close</button>
+
+    
+
   return (
    // Main container with dashed border and padding, similar to the reference
     <div className=" w-full md:w-100 max-w-xs rounded-lg ">
@@ -19,9 +31,12 @@ const OptionsModal = () => {
         */}
         <Link href="/recipes/create">
         <div
-          onClick={(e) => 
-            {dispatch({type: "CLOSE_MODAL" })
-            e.stopPropagation()}}
+          onClick={((e) => {
+  setTimeout(() => {
+    dispatch({ type: "CLOSE_MODAL" });
+  }, 1000);
+  e.stopPropagation();
+})}
           className="flex items-center gap-x-3 rounded-lg p-2 border-1 border-dashed border-gray-300 transition-colors duration-200 hover:bg-gray-100 cursor-default ">
           <UtensilsCrossed className="h-5 w-5 text-gray-400" />
           <span className="text-md text-gray-700">Create a recipe</span>
@@ -32,9 +47,12 @@ const OptionsModal = () => {
         
         <div
           className="flex items-center gap-x-3 rounded-lg p-2 border-1 border-dashed border-gray-300 transition-colors duration-200 hover:bg-gray-100 cursor-default"
-          onClick={(e) => 
-            {(dispatch({type: "CLOSE_MODAL" }))
-            e.stopPropagation()}}
+          onClick={((e) => {
+  setTimeout(() => {
+    dispatch({ type: "CLOSE_MODAL" });
+  }, 1000); 
+  e.stopPropagation();
+})}
         >
           <Carrot className="h-5 w-5 text-gray-400" />
           <span className="text-md text-gray-700">Add an ingredient</span>

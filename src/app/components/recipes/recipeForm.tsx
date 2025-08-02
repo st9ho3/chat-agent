@@ -16,6 +16,7 @@ import { useFileUpload } from '@/app/hooks/useFileUpload';
 import AdditionalCosts from './additionalCosts';
 import UploadFiles from '../shared/uploadFiles';
 import RecipeIngredient from './recipeIngredients';
+import Link from 'next/link';
 
 
 
@@ -110,6 +111,15 @@ const RecipeForm = () => {
     <>
       {/* Main container */}
       <div className='w-full md:w-210 md:h-130 md:flex'>
+
+      
+              <button
+              onClick={() => router.back()}
+                className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-offset-2 transition-colors"
+                aria-label="Close modal" >
+                <X />
+              </button>
+            
 
         {/* Form Section (Left) */}
         <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col  gap-y-2'>
