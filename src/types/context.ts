@@ -1,6 +1,7 @@
 import { MessageType } from "@/shemas/chat";
 import { initialState } from "@/app/context/homeContext/homeReducer";
 import { ReactNode } from "react";
+import { RecipeIngredients } from "@/shemas/recipe";
 
 export interface HomeContextProps {
     state: typeof initialState,
@@ -77,6 +78,6 @@ export interface Recipe {
 
 export interface RecipeUpdatePayload {
   recipe: Recipe;
-  ingredients: Ingredient[];
+  ingredients: RecipeIngredients[];
   action: string; // Or a specific literal type like 'add' | 'delete' | 'update'
 }

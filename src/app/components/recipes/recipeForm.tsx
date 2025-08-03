@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import AddIngredient from '../ingredients/ingredient';
-import { Check, NotepadText, File, X } from 'lucide-react';
+import { Check, NotepadText, File, X, Plus, Trash2 } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
@@ -17,8 +16,6 @@ import AdditionalCosts from './additionalCosts';
 import UploadFiles from '../shared/uploadFiles';
 import RecipeIngredient from './recipeIngredients';
 
-
-
 export type FormFields = {
   id: string;
   title: string;
@@ -29,14 +26,13 @@ export type FormFields = {
 }
 
 const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
-  console.log(ingredients)
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
   const [ingredientsToDisplay, setIngredientsToDisplay ] = useState<Ingredient[]>(ingredients)
   const [isListVisible, setIsListVisible] = useState(false);
   const { state, dispatch } = useHomeContext()
   const router = useRouter()
-  const { uploadFile, error } = useFileUpload();
+  const { handleFileUpload, error } = useFileUpload();
 
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
@@ -52,34 +48,15 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const { errors, isSubmitting, isSubmitted } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
-    
-      const newIngredients = [...tempIngredients, ing];
-      const totalPrice = getTotalPrice(newIngredients);
-  
-      setTempIngredients(newIngredients);
-      setValue("totalCost", totalPrice);
-    
-    
-    
-
-   
+    const newIngredients = [...tempIngredients, ing];
+    const totalPrice = getTotalPrice(newIngredients);
+    setTempIngredients(newIngredients);
+    setValue("totalCost", totalPrice);
   }
-  
+
   const handleRemoveIngredient = (id: string) => {
     const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id);
     setTempIngredients(newIngredients);
-  }
-
-  const handleFileUpload = async (file: File) => {
-    if (file) {
-      try {
-        const url = await uploadFile(file)
-        return url
-      } catch (err) {
-        console.log("An error occured while uploading the file:", err)
-        console.log("Error message:", error)
-      }
-    }
   }
 
   const onSubmit = async (data: FormFields) => {
@@ -96,11 +73,9 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
           await sendRecipe(updatedData, tempIngredients);
         }
       }
-      console.log(isSubmitted)
     } catch (error) {
       console.log(error);
     } finally {
-      console.log(isSubmitted)
       reset();
       setTempIngredients([]);
       const nextRecipeId = uuidv4();
@@ -111,7 +86,6 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
       router.replace("/recipes")
     }
   }
-  console.log(state.file)
 
   return (
     <>
@@ -140,7 +114,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
           <AdditionalCosts />
 
           <UploadFiles />
-
+          {error && <p className='text-red-500 ml-3'> {error} </p> }
 
           {/* --- Button to show ingredients on mobile --- */}
           <button

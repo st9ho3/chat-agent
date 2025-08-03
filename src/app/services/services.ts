@@ -39,7 +39,8 @@ export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
 
 export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[] | undefined, action: IngredientEditAction) => {
   const dataToSend = { recipe: data, ingredients: ing, action: action };
-  const res = await fetch(`/api/edit/${data.id}`, {
+  console.log("services patch", dataToSend)
+  const res = await fetch(`/api/recipes/edit/${data.id}`, {
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json'
@@ -48,11 +49,13 @@ export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredient
   });
 
   if (!res.ok) {
-     // You might want to throw an error here or return something to indicate failure
-    // For example: throw new Error('Failed to update recipe');
+    const response = await res.json();
+     console.log(response)
   }
 
   const response = await res.json();
+    console.log(response)
+
   return response;
 };
 

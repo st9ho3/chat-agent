@@ -24,18 +24,19 @@ export async function GET(
 }
 
 export const PATCH = async (req: NextRequest) => {
+  
   try {
     const request: RecipeUpdatePayload = await req.json();
+    console.log(request)
     const id = request.recipe.id;
     const ingredients = request.ingredients;
     const action = request.action;
-    console.log(request)
     const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
+    console.log("recipe after validation and before updating",validatedRecipe)
     const response = await updateRecipe(id, validatedRecipe);
 
     if (ingredients && validatedRecipeIngredients) {
       if (action === IngredientEditAction.Add) {
-        await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createIngredientsToDatabase(ingredient)));
         await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient)));
       }
       if (action === IngredientEditAction.Delete) {

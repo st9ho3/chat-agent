@@ -1,5 +1,5 @@
 import EditForm from '@/app/components/recipes/editForm'
-import { getRecipeById } from '@/db/read'
+import { getIngredients, getRecipeById } from '@/db/read'
 import { Recipe } from '@/shemas/recipe'
 import React from 'react'
 
@@ -17,6 +17,7 @@ const EditPage = async ({params}: Params ) => {
   
   
   const recipeRaw = await getRecipeById(id)
+  const rawIngredients = await getIngredients()
 
   if (!recipeRaw) {
     return <div>Recipe not found</div>
@@ -33,20 +34,27 @@ const EditPage = async ({params}: Params ) => {
     totalCost: Number(recipeRaw.totalCost)
   }
 
-  const ingredients = recipeRaw.recipeIngredients?.map((ingredient) => ({
+  const recipeIngredients = recipeRaw.recipeIngredients?.map((ingredient) => ({
     ingredientId: ingredient.ingredientId || '',
     name: ingredient.ingredients?.name || 'Unknown Ingredient',
     unit: ingredient.ingredients?.unit || 'unit',
     unitPrice: Number(ingredient.ingredients?.unitPrice),
     quantity: Number(ingredient.quantity) || 0,
     iconBgColor: '',
-    recipeId: ingredient.recipeId || ''
+    recipeId: ingredient.recipeId || '',
+    
   })) || []
+
+  const ingredients = rawIngredients.map((ingredient) => ({
+    ...ingredient,
+    unitPrice: Number(ingredient.unitPrice),
+    quantity: Number(ingredient.quantity)
+  }))
 
   return (
     <div className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
       <div className={`relative w-full max-w-fit p-9 mx-4 transform transition-all duration-300 bg-white rounded-2xl shadow-xl`}>
-        <EditForm recipe={recipe} ingredients={ingredients} />
+        <EditForm recipe={recipe} recipeIngredients={recipeIngredients} ingredients={ingredients} />
       </div>
     </div>
   )

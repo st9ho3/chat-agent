@@ -16,12 +16,11 @@ export const useFileUpload = () => {
     setIsLoading(true);
     setError(null);
     
-    
     try {
       if (!file) {
         throw new Error('No file selected.');
       }
-
+      
       const response = await fetch(`/api/upload?filename=${file.name}`, {
         method: 'POST',
         body: file,
@@ -42,9 +41,22 @@ export const useFileUpload = () => {
     }
   };
 
+  const handleFileUpload = async (file: File) => {
+      if (file) {
+        try {
+          const url = await uploadFile(file)
+          return url
+        } catch (err) {
+          console.log("An error occured while uploading the file:", err)
+          console.log("Error message:", error)
+        }
+      }
+    }
+
   return {
     uploadFile,
     isLoading,
     error,
+    handleFileUpload
   };
 };

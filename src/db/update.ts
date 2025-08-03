@@ -9,7 +9,8 @@ export const updateRecipe = async (id: string, recipe: Recipe) => {
             .update(recipesTable)
             .set({
                 title: recipe.title,
-                totalCost: String(recipe.totalCost)
+                totalCost: String(recipe.totalCost),
+                imgPath: recipe.imgPath
             })
             .where(eq(recipesTable.id, id))
             .returning({

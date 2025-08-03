@@ -1,11 +1,10 @@
 "use client"
 import React, { useState } from 'react';
-import AddIngredient from '../ingredients/ingredient';
-import { Check, NotepadText, X } from 'lucide-react';
+import { Check, File, NotepadText, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
-import { RecipeSchema, RecipeCategory, RecipeIngredients, Recipe } from '@/shemas/recipe';
+import { RecipeSchema, RecipeCategory, RecipeIngredients, Recipe, Ingredient } from '@/shemas/recipe';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getTotalPrice } from '@/app/services/helpers';
 import UploadFiles from '../shared/uploadFiles';
@@ -13,7 +12,9 @@ import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
 import Link from 'next/link';
 import { IngredientEditAction } from '@/types/context';
-
+import RecipeIngredient from './recipeIngredients';
+import { useHomeContext } from '@/app/context/homeContext/homeContext';
+import { useFileUpload } from '@/app/hooks/useFileUpload';
 
 export type FormFields = {
   id: string;
@@ -24,14 +25,14 @@ export type FormFields = {
   dateCreated: Date;
 }
 
-const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: RecipeIngredients[] }) => {
-
-  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>(ingredients);
+const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, recipeIngredients: RecipeIngredients[], ingredients: Ingredient[] }) => {
+  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>(recipeIngredients);
   const [isListVisible, setIsListVisible] = useState(false);
-  const router = useRouter()
+  const { state, dispatch } = useHomeContext();
+  const { handleFileUpload, error } = useFileUpload();
+  const router = useRouter();
 
-
-  const { register, handleSubmit, setValue, formState } = useForm<FormFields>({
+  const { register, handleSubmit, setValue, formState, reset } = useForm<FormFields>({
     defaultValues: {
       id: recipe.id,
       title: recipe.title,
@@ -58,31 +59,46 @@ const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: Recipe
   }
 
   const onSubmit = async (data: FormFields) => {
-    const diferrence = tempIngredients.length - ingredients.length
-    let action: IngredientEditAction
-    let ingredientsChanged: RecipeIngredients[] | undefined
+    const diferrence = tempIngredients.length - recipeIngredients.length;
+    let action: IngredientEditAction;
+    let ingredientsChanged: RecipeIngredients[] | undefined;
 
-    const newCost = getTotalPrice(tempIngredients)
+    const newCost = getTotalPrice(tempIngredients);
 
     if (diferrence !== 0) {
-      ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !ingredients.includes(ing)) : ingredients.filter((ing) => !tempIngredients.includes(ing))
+      ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !recipeIngredients.includes(ing)) : recipeIngredients.filter((ing) => !tempIngredients.includes(ing));
     }
 
     if (diferrence > 0) {
-      action = IngredientEditAction.Add
+      action = IngredientEditAction.Add;
     } else {
-      action = IngredientEditAction.NoAction
+      action = IngredientEditAction.NoAction;
     }
 
     if (diferrence < 0) {
-      action = IngredientEditAction.Delete
+      action = IngredientEditAction.Delete;
     }
 
-    const recipeToUpdate = { ...data, totalCost: newCost }
-
-    await sendRecipeToUpdate(recipeToUpdate, ingredientsChanged, action)
-
-    router.replace("/recipes")
+    try {
+      if (state.file) {
+        const url = await handleFileUpload(state.file);
+        console.log(url)
+        const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url };
+        await sendRecipeToUpdate(recipeToUpdate, ingredientsChanged, action);
+      } else {
+        const recipeToUpdate = { ...data, totalCost: newCost };
+        await sendRecipeToUpdate(recipeToUpdate, ingredientsChanged, action);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setTimeout(() => { dispatch({ type: "RESET_FILE" }) }, 1000);
+      reset();
+      setTempIngredients([]);
+      dispatch({ type: "OPEN_NOTIFICATION", payload: "Recipe updated succesfully" });
+      dispatch({ type: "RESET_FILE" });
+      router.replace("/recipes");
+    }
   }
 
   return (
@@ -96,7 +112,7 @@ const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: Recipe
       </Link>
 
       {/* Main container */}
-      <div className='w-full md:w-210 md:h-130 md:flex'>
+      <div className='w-full md:w-250 md:h-130 md:flex'>
 
         {/* Form Section (Left) */}
         <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col gap-y-4'>
@@ -106,6 +122,7 @@ const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: Recipe
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
+          <RecipeIngredient ingredients={ingredients} recipeId={recipe.id} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
           <UploadFiles />
 
@@ -117,6 +134,22 @@ const EditForm = ({ recipe, ingredients }: { recipe: Recipe, ingredients: Recipe
           >
             View Ingredients ({tempIngredients.length})
           </button>
+
+          {state.file && (
+            <div className="flex items-center justify-between w-1/2 py-1.5 px-2 group">
+              <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                <File size={18} className="text-slate-400" />
+                <span className="truncate">{state.file?.name}</span>
+              </div>
+              <button
+                onClick={() => dispatch({ type: "RESET_FILE" })}
+                className="p-1 rounded-full text-slate-400 opacity-0 group-hover:opacity-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-opacity"
+                aria-label="Remove file"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          )}
 
           <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-40 p-1 hover:bg-green-50 transition-colors duration-200 '>
             <Check />
