@@ -10,10 +10,11 @@ type IngredientErrors = string[]
 interface formProps {
   recipeId: string,
   ingredients: Ingredient[],
-  onAddIngredient: (ing: RecipeIngredients) => void
+  onAddIngredient: (ing: RecipeIngredients) => void,
+  tempIngredients: RecipeIngredients[]
 }
 
-const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient }: formProps) => {
+const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngredients }: formProps) => {
   const [quantity, setQuantity] = useState<number>(0); // Default to 1 instead of 0
   const [selectedIngredient, setSelectedIngredient] = useState<string>('');
   const [unit, setUnit] = useState<Unit>('');
@@ -28,16 +29,17 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient }: formPr
 
   const addIngredient = () => {
     
-
     const ingredient = ingredients.find((ing) => ing.name === selectedIngredient);
-
+    const foundIngredient = tempIngredients.find((ing) => ing.name === selectedIngredient);
+    
     // This should technically not happen if selectedIngredient is set, but it's a good safeguard.
     if (!ingredient) {
       setErrors(["Could not find the selected ingredient."]);
       return;
     }
     
-    const recipeIngredient: RecipeIngredients = {
+    
+      const recipeIngredient: RecipeIngredients = {
       name: selectedIngredient,
       unit: unit,
       unitPrice: ingredient.unitPrice,
@@ -54,9 +56,16 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient }: formPr
       const zodErrors = validationResult.error.errors.map(err => err.message);
       setErrors(zodErrors);
     } else {
-      onAddIngredient(validationResult.data);
-      resetForm();
+      if (!foundIngredient) {
+        onAddIngredient(validationResult.data);
+        resetForm();
+      } else {
+        setErrors(["Can't add duplicate ingredients"])
+      }
+      
     }
+    
+    
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {

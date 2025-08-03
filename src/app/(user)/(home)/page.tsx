@@ -5,8 +5,8 @@ const page = () => {
  
 
   return (
-    <div>
-      HOME
+    <div className='m-10'>
+      Home
     </div>
   )
 }

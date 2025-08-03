@@ -52,13 +52,19 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const { errors, isSubmitting, isSubmitted } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
-    const newIngredients = [...tempIngredients, ing];
-    const totalPrice = getTotalPrice(newIngredients);
-    setTempIngredients(newIngredients);
-    setValue("totalCost", totalPrice);
-  }
-  console.log(tempIngredients)
+    
+      const newIngredients = [...tempIngredients, ing];
+      const totalPrice = getTotalPrice(newIngredients);
+  
+      setTempIngredients(newIngredients);
+      setValue("totalCost", totalPrice);
+    
+    
+    
 
+   
+  }
+  
   const handleRemoveIngredient = (id: string) => {
     const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id);
     setTempIngredients(newIngredients);
@@ -129,7 +135,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
           </div>
           <p className='text-red-500 ml-3'> {errors.title?.message} </p>
 
-          <RecipeIngredient ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient}/>
+          <RecipeIngredient ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients}/>
 
           <AdditionalCosts />
 

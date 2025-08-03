@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import HomeContextProvider from "../context/homeContext/homeContext";
+import HomeContextProvider, { useHomeContext } from "../context/homeContext/homeContext";
 import Chat from "../components/chatUI/chat";
-import CreateButton from "../components/shared/createButton";
-import HomeButton from "../components/shared/homeButton";
-import RecipesButton from "../components/shared/recipesButton";
-import IngredientsButton from "../components/shared/ingredientsButton";
+import Sidebar from "../components/layout/sideBar"; // Import the new component
+import OptionsModal from "../components/shared/optionsModal";
 
 export const metadata: Metadata = {
   title: "Recipes App",
@@ -17,33 +15,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
-      {/* I've applied a default background color to the body */}
-      <body >
+      <body>
         <HomeContextProvider>
-          {/* Main flex container to create the sidebar layout */}
           <div className="flex h-screen">
-            
-            {/* Sidebar */}
-            <aside className="w-14 flex-shrink-0 items-center bg-white border-r border-gray-200 flex flex-col">
-              {/* Navigation container for the buttons */}
-              <nav className="flex flex-col space-y-2">
-                <HomeButton />
-                <RecipesButton />
-                <IngredientsButton />
-                <CreateButton />
-
-              </nav>
-            </aside>
-
-            {/* Main Content Area */}
+            <Sidebar /> {/* Use the Sidebar component */}
             <main className="flex-1 overflow-y-hidden">
               {children}
+              
             </main>
           </div>
-
-          {/* The Chat component is kept outside the main flex container. */}
           <Chat />
         </HomeContextProvider>
       </body>
