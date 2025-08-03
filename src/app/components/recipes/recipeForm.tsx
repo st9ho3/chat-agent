@@ -28,7 +28,6 @@ export type FormFields = {
 const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
-  const [ingredientsToDisplay, setIngredientsToDisplay ] = useState<Ingredient[]>(ingredients)
   const [isListVisible, setIsListVisible] = useState(false);
   const { state, dispatch } = useHomeContext()
   const router = useRouter()
@@ -45,7 +44,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
     resolver: zodResolver(RecipeSchema)
   });
 
-  const { errors, isSubmitting, isSubmitted } = formState;
+  const { errors, isSubmitting } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing];
@@ -141,7 +140,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
             </div>
           )}
           <div className='flex justify-center'>
-            <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-1 hover:bg-green-50 transition-colors duration-200 ' >
+            <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-30 p-2 hover:bg-green-50 transition-colors duration-200 ' >
               {!isSubmitting && <Check />}
               <button type='submit' disabled={isSubmitting}  > {isSubmitting ? "Submitting..." : "Add recipe"}</button>
             </div>

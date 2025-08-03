@@ -44,7 +44,7 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
     resolver: zodResolver(RecipeSchema)
   });
 
-  const { errors } = formState;
+  const { errors, isSubmitting } = formState;
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing];
@@ -151,10 +151,12 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
             </div>
           )}
 
-          <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-40 p-1 hover:bg-green-50 transition-colors duration-200 '>
-            <Check />
-            <button type='submit'>Update recipe</button>
-          </div>
+          <div className='flex justify-center'>
+                      <div className='flex items-center justify-evenly border border-gray-400 rounded-2xl w-fit p-2 hover:bg-green-50 transition-colors duration-200 ' >
+                        {!isSubmitting && <Check />}
+                        <button type='submit' disabled={isSubmitting}  > {isSubmitting ? "Submitting..." : "Update recipe"}</button>
+                      </div>
+                    </div>
         </form>
 
         {/* Displayed Ingredients Section (Right side, hidden on mobile) */}
