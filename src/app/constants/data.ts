@@ -1,4 +1,6 @@
 import { Column, Recipe } from "@/shemas/recipe";
+import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
+
 
 export const recipes: Recipe[] = [
   {
@@ -76,6 +78,31 @@ export const ingredientColumns: Column[] = [
         className: "text-gray-500 w-2/6 md:w-2/10 text-sm text-center md:text-start pl-4"
     }
 ];
+
+// Configuration object for different notification variants
+export const notificationVariants = {
+  success: {
+    Icon: CheckCircle2,
+    iconClass: 'text-green-600',
+    borderClass: 'border-green-300',
+    bgClass: 'bg-green-50',
+    title: 'Success!',
+  },
+  failure: {
+    Icon: AlertCircle,
+    iconClass: 'text-red-600',
+    borderClass: 'border-red-300',
+    bgClass: 'bg-red-50',
+    title: 'An error occurred.',
+  },
+  info: {
+    Icon: Info,
+    iconClass: 'text-blue-600',
+    borderClass: 'border-blue-300',
+    bgClass: 'bg-blue-50',
+    title: 'Information',
+  },
+};
 
 
 

@@ -8,9 +8,16 @@ export interface HomeContextProps {
     dispatch: React.Dispatch<Action>;
 }
 
+export enum NotificationType {
+  Success = 'success',
+  Failure = 'failure',
+  Info = 'info'
+}
+
 interface Notification {
   isOpen: boolean,
-  message: string
+  message: string,
+  notificationType: NotificationType
 }
 
 export interface ModalType {
@@ -35,8 +42,7 @@ export interface HomeState {
   | { type: "CHOOSE_PAGE"; payload: number }
   | { type: "OPEN_MODAL"; payload: ModalType}
   | { type: "CLOSE_MODAL";}
-  | { type: "OPEN_NOTIFICATION"; payload: string}
-  | { type: "CLOSE_NOTIFICATION"} 
+  | { type: "HANDLE_NOTIFICATION";  payload: Notification}
   | { type: "SET_FILE"; payload: File | null}
   | { type: "RESET_FILE"}
 

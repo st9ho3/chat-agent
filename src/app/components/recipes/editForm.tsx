@@ -11,10 +11,11 @@ import UploadFiles from '../shared/uploadFiles';
 import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
 import Link from 'next/link';
-import { IngredientEditAction } from '@/types/context';
+import { IngredientEditAction, NotificationType } from '@/types/context';
 import RecipeIngredient from './recipeIngredients';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
+import UseHelpers from '@/app/hooks/useHelpers';
 
 export type FormFields = {
   id: string;
@@ -30,6 +31,7 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
   const [isListVisible, setIsListVisible] = useState(false);
   const { state, dispatch } = useHomeContext();
   const { handleFileUpload, error } = useFileUpload();
+  const {raiseNotification} = UseHelpers()
   const router = useRouter();
 
   const { register, handleSubmit, setValue, formState, reset } = useForm<FormFields>({
@@ -92,11 +94,12 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
     } catch (err) {
       console.log(err);
     } finally {
-      setTimeout(() => { dispatch({ type: "RESET_FILE" }) }, 1000);
-      reset();
-      setTempIngredients([]);
-      dispatch({ type: "OPEN_NOTIFICATION", payload: "Recipe updated succesfully" });
-      dispatch({ type: "RESET_FILE" });
+      setTimeout(() => { 
+        dispatch({ type: "RESET_FILE" })
+        reset()
+        setTempIngredients([])
+       }, 1000);
+      raiseNotification("Recipe updated succesfully!", NotificationType.Success)
       router.replace("/recipes");
     }
   }

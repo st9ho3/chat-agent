@@ -1,4 +1,5 @@
 import { HomeState, Action } from "@/types/context";
+import { NotificationType } from "@/types/context";
 // Initial state for the reducer
 const initialState: HomeState = {
   dialogExists: false,
@@ -9,7 +10,7 @@ const initialState: HomeState = {
   modalType: {
     type: ""
   },
-  notification: {isOpen:false, message: "no message"},
+  notification: {isOpen:false, message: "no message", notificationType: NotificationType.Success},
   file: null
 };
 
@@ -44,21 +45,10 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
         ...state,
         isModalOpen: false
       }
-    case 'OPEN_NOTIFICATION':
+    case 'HANDLE_NOTIFICATION':
       return {
         ...state,
-         notification: {
-          isOpen: true,
-          message: action.payload
-         }
-      }
-    case 'CLOSE_NOTIFICATION':
-      return {
-        ...state,
-         notification: {
-          isOpen: false,
-          message: ""
-         }
+         notification: action.payload
       }
     case 'SET_FILE':
       return {

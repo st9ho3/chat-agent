@@ -4,7 +4,6 @@ import { ingredientColumns } from "@/app/constants/data";
 import { paginate } from "@/app/services/helpers";
 import { useHomeContext } from "@/app/context/homeContext/homeContext";
 import { Pencil, Trash2 } from "lucide-react";
-import Image from "next/image";
 import { Ingredient, Recipe } from "@/shemas/recipe";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'

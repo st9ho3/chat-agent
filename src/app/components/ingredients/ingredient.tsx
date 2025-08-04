@@ -79,8 +79,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
       zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]))
 
     } else {
-      console.log(validatedIngredient.data)
-    await onAddIngredient(validatedIngredient.data)
+      await onAddIngredient(validatedIngredient.data)
 
       setQuantity(0)
       setName('')
