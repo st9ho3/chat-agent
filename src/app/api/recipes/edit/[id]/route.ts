@@ -27,12 +27,11 @@ export const PATCH = async (req: NextRequest) => {
   
   try {
     const request: RecipeUpdatePayload = await req.json();
-    console.log(request)
     const id = request.recipe.id;
     const ingredients = request.ingredients;
     const action = request.action;
-    const { validatedRecipe, validatedRecipeIngredients } = await zodValidateDataBeforeAddThemToDatabase(request);
-    console.log("recipe after validation and before updating",validatedRecipe)
+    const { validatedRecipe, validatedRecipeIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
+    
     const response = await updateRecipe(id, validatedRecipe);
 
     if (ingredients && validatedRecipeIngredients) {

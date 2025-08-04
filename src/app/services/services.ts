@@ -123,9 +123,9 @@ export const deleteIngredient = async (id: string) => {
   })
 }
 
-export const zodValidateDataBeforeAddThemToDatabase = async (request: RecipeUpdatePayload) => {
-  const { recipe, ingredients } = await request;
-
+export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayload) => {
+  const {recipe, ingredients} = request;
+  
   if (typeof recipe.dateCreated === 'string') {
     recipe.dateCreated = new Date(recipe.dateCreated);
   }

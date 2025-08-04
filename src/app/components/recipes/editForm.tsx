@@ -67,9 +67,9 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
 
     const newCost = getTotalPrice(tempIngredients);
 
-    if (diferrence !== 0) {
-      ingredientsChanged = diferrence > 0 ? tempIngredients.filter((ing) => !recipeIngredients.includes(ing)) : recipeIngredients.filter((ing) => !tempIngredients.includes(ing));
-    }
+    
+    ingredientsChanged = diferrence >= 0 ? tempIngredients.filter((ing) => !recipeIngredients.includes(ing)) : recipeIngredients.filter((ing) => !tempIngredients.includes(ing));
+    
 
     if (diferrence > 0) {
       action = IngredientEditAction.Add;
@@ -80,7 +80,7 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
     if (diferrence < 0) {
       action = IngredientEditAction.Delete;
     }
-
+    console.log("These are the changed ingredients",ingredientsChanged)
     try {
       if (state.file) {
         const url = await handleFileUpload(state.file);
@@ -103,6 +103,7 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
       router.replace("/recipes");
     }
   }
+  console.log(tempIngredients)
 
   return (
     <>
