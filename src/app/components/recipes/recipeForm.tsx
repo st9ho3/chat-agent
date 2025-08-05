@@ -15,6 +15,8 @@ import { useFileUpload } from '@/app/hooks/useFileUpload';
 import AdditionalCosts from './additionalCosts';
 import UploadFiles from '../shared/uploadFiles';
 import RecipeIngredient from './recipeIngredients';
+import UseHelpers from '@/app/hooks/useHelpers';
+import { NotificationType } from '@/types/context';
 
 export type FormFields = {
   id: string;
@@ -32,6 +34,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const { state, dispatch } = useHomeContext()
   const router = useRouter()
   const { handleFileUpload, error } = useFileUpload();
+  const {raiseNotification} = UseHelpers()
 
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
     defaultValues: {
@@ -79,7 +82,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
       setTempIngredients([]);
       const nextRecipeId = uuidv4();
       setNewId(nextRecipeId);
-      dispatch({ type: "OPEN_NOTIFICATION", payload: "Recipe added succesfully" })
+      raiseNotification("Recipe added succesfully", NotificationType.Success)
       dispatch({ type: "RESET_FILE" })
       setValue("id", nextRecipeId);
       router.replace("/recipes")

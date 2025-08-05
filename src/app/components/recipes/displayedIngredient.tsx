@@ -19,7 +19,8 @@ const DisplayedIngredientItem = ({
   onRemove: (value: string) => void
 }) => {
 
-  const totalPrice = unitPrice * quantity;
+  const totalPrice = unit === "kg" || unit === "L" ? unitPrice * quantity*1000 : unitPrice* quantity
+  
   return (
     <div className="flex w-full items-center p-1">
       {/* <div
@@ -34,7 +35,7 @@ const DisplayedIngredientItem = ({
 
       <div className="w-26  px-2">
         <p className="text-sm text-gray-600">
-          ${unitPrice.toFixed(2)} x{quantity}{unit}
+          {quantity} {unit}
         </p>
       </div>
 

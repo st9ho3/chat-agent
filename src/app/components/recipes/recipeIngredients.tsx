@@ -1,7 +1,7 @@
 "use client"
 
 import { Ingredient, RecipeIngredients, RecipeIngredientsSchema, Unit } from '@/shemas/recipe'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react' // 1. Import useEffect
 import Incremental from '../shared/incremental';
 import { Carrot, PlusCircle, Scale } from 'lucide-react';
 
@@ -15,10 +15,45 @@ interface formProps {
 }
 
 const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngredients }: formProps) => {
-  const [quantity, setQuantity] = useState<number>(0); // Default to 1 instead of 0
+  const [quantity, setQuantity] = useState<number>(0);
   const [selectedIngredient, setSelectedIngredient] = useState<string>('');
   const [unit, setUnit] = useState<Unit>('');
   const [errors, setErrors] = useState<IngredientErrors>([]);
+  
+  // 2. Add state to hold the list of units compatible with the selected ingredient.
+  const [availableUnits, setAvailableUnits] = useState<Unit[]>([]);
+
+  // 3. Use useEffect to update available units when the selected ingredient changes.
+  useEffect(() => {
+    
+    // Find the full ingredient object from the master list.
+    const ingredient: Ingredient | undefined = ingredients.find((ing) => ing.name === selectedIngredient) 
+
+    if (ingredient) {
+      const baseUnit = ingredient.unit
+      let compatibleUnits: Unit[] = [];
+
+      // Determine the compatible units based on the ingredient's base unit.
+      if (baseUnit === 'g' || baseUnit === 'kg') {
+        compatibleUnits = ['g', 'kg'];
+      } else if (baseUnit === 'ml' || baseUnit === 'L') {
+        compatibleUnits = ['ml', 'L'];
+      } else if (baseUnit === 'piece') {
+        compatibleUnits = ['piece'];
+      }
+      
+      setAvailableUnits(compatibleUnits);
+      // Automatically set the unit to the ingredient's default unit for better UX.
+      if (baseUnit === "g" || baseUnit === "kg" || baseUnit === "L" || baseUnit === "ml" || baseUnit === "piece") {
+        setUnit(baseUnit);
+      } 
+    } else {
+      // If no ingredient is selected, clear the available units.
+      setAvailableUnits([]);
+      setUnit('');
+    }
+  }, [selectedIngredient, ingredients]); // This effect runs when selectedIngredient or ingredients change.
+
 
   const resetForm = () => {
     setErrors([]);
@@ -28,18 +63,15 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
   };
 
   const addIngredient = () => {
-    
     const ingredient = ingredients.find((ing) => ing.name === selectedIngredient);
     const foundIngredient = tempIngredients.find((ing) => ing.name === selectedIngredient);
     
-    // This should technically not happen if selectedIngredient is set, but it's a good safeguard.
     if (!ingredient) {
       setErrors(["Could not find the selected ingredient."]);
       return;
     }
     
-    
-      const recipeIngredient: RecipeIngredients = {
+    const recipeIngredient: RecipeIngredients = {
       name: selectedIngredient,
       unit: unit,
       unitPrice: ingredient.unitPrice,
@@ -52,7 +84,6 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
     const validationResult = RecipeIngredientsSchema.safeParse(recipeIngredient);
     
     if (!validationResult.success) {
-      // More efficient way to set Zod errors
       const zodErrors = validationResult.error.errors.map(err => err.message);
       setErrors(zodErrors);
     } else {
@@ -62,10 +93,7 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
       } else {
         setErrors(["Can't add duplicate ingredients"])
       }
-      
     }
-    
-    
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
@@ -77,11 +105,9 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
 
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-    // FIX 4: Add "piece" to the list of valid units.
-    if (value === 'g' || value === 'ml' || value === 'kg' || value === 'L' || value === 'piece') {
-      setUnit(value as Unit);
-      setErrors([]);
-    }
+    // Type assertion is safe here because the availableUnits logic controls the options.
+    setUnit(value as Unit);
+    setErrors([]);
   };
 
   return (
@@ -106,6 +132,7 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
           {/* Unit */}
           <div className='flex items-center p-1 space-x-2 border-l border-dashed border-gray-300'>
             <Scale className="h-5 w-5 text-gray-400 flex-shrink-0 ml-2" />
+            {/* 4. Update the select to use the `availableUnits` state and disable it when no ingredient is chosen */}
             <select
               name="unit"
               id="unit"
@@ -113,13 +140,13 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
               className="block w-24 p-2 text-sm bg-transparent focus:outline-none"
               onChange={handleUnit}
               onKeyDown={handleKeyDown}
+              disabled={!selectedIngredient} // Better UX: disable until an ingredient is selected
             >
               <option value="" disabled>Unit</option>
-              <option value="kg">kg</option>
-              <option value="L">L</option>
-              <option value="g">g</option>
-              <option value="ml">ml</option>
-              <option value="piece">piece</option>
+              {/* Render options from the dynamic list of available units */}
+              {availableUnits.map((u) => (
+                <option key={u} value={u}>{u}</option>
+              ))}
             </select>
           </div>
           {/* Quantity */}
