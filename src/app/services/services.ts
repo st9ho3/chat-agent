@@ -1,7 +1,7 @@
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm";
 import { Ingredient, IngredientSchema, Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
-import { IngredientEditAction, RecipeUpdatePayload } from "@/types/context";
+import { RecipeUpdatePayload } from "@/types/context";
 
 export const createMessage = (text: string, user: string) => {
   const message = {
@@ -37,8 +37,8 @@ export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
   return response;
 };
 
-export const sendRecipeToUpdate = async (data: FormFields, ing: RecipeIngredients[] | undefined, action: IngredientEditAction) => {
-  const dataToSend = { recipe: data, ingredients: ing, action: action };
+export const sendRecipeToUpdate = async (data: FormFields, addedIngredients: RecipeIngredients[], removedIngredients: RecipeIngredients[] ) => {
+  const dataToSend = { recipe: data, addedIngredients: addedIngredients, removedIngredients: removedIngredients};
   console.log("services patch", dataToSend)
   const res = await fetch(`/api/recipes/edit/${data.id}`, {
     method: "PATCH",
@@ -124,26 +124,35 @@ export const deleteIngredient = async (id: string) => {
 }
 
 export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayload) => {
-  const {recipe, ingredients} = request;
+  const {recipe, addedIngredients, removedIngredients} = request;
   
   if (typeof recipe.dateCreated === 'string') {
     recipe.dateCreated = new Date(recipe.dateCreated);
   }
 
   const validatedRecipe = RecipeSchema.parse(recipe);
-  let validatedIngredients;
+  let validatedAddedIngredients;
+  let validatedRemovedIngredients;
 
-  if (ingredients) {
-    const validatedRecipeIngredients = ingredients.map((ingredient: RecipeIngredients) => {
+  if (addedIngredients.length > 0) {
+    const validatedRecipeAddedIngredients = addedIngredients.map((ingredient: RecipeIngredients) => {
       const validatedIngredient = RecipeIngredientsSchema.parse(ingredient);
       return validatedIngredient;
     });
-    validatedIngredients = validatedRecipeIngredients;
+    validatedAddedIngredients = validatedRecipeAddedIngredients;
+  }
+  if (removedIngredients.length > 0) {
+    const validatedRecipeRemovedIngredients = removedIngredients.map((ingredient: RecipeIngredients) => {
+      const validatedIngredient = RecipeIngredientsSchema.parse(ingredient);
+      return validatedIngredient;
+    });
+    validatedRemovedIngredients = validatedRecipeRemovedIngredients;
   }
 
   return {
     validatedRecipe: validatedRecipe,
-    validatedRecipeIngredients: validatedIngredients
+    validatedRecipeAddedIngredients: validatedAddedIngredients,
+    validatedrecipeRemovedIngredients: validatedRemovedIngredients
   };
 };
 

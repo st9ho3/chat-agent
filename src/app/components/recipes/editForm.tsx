@@ -11,7 +11,7 @@ import UploadFiles from '../shared/uploadFiles';
 import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
 import Link from 'next/link';
-import { IngredientEditAction, NotificationType } from '@/types/context';
+import {  NotificationType } from '@/types/context';
 import RecipeIngredient from './recipeIngredients';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
@@ -62,34 +62,20 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
 
   const onSubmit = async (data: FormFields) => {
     const diferrence = tempIngredients.length - recipeIngredients.length;
-    let action: IngredientEditAction;
     let ingredientsChanged: RecipeIngredients[] | undefined;
 
     const newCost = getTotalPrice(tempIngredients);
+    const addedIngredients: RecipeIngredients[] = tempIngredients.filter((tempIngredient) => !recipeIngredients.includes(tempIngredient))
+    const removedIngredients: RecipeIngredients[] = recipeIngredients.filter((recipeIngredient) => !tempIngredients.includes(recipeIngredient))
 
-    
-    ingredientsChanged = diferrence >= 0 ? tempIngredients.filter((ing) => !recipeIngredients.includes(ing)) : recipeIngredients.filter((ing) => !tempIngredients.includes(ing));
-    
-
-    if (diferrence > 0) {
-      action = IngredientEditAction.Add;
-    } else {
-      action = IngredientEditAction.NoAction;
-    }
-
-    if (diferrence < 0) {
-      action = IngredientEditAction.Delete;
-    }
-    console.log("These are the changed ingredients",ingredientsChanged)
     try {
       if (state.file) {
         const url = await handleFileUpload(state.file);
-        console.log(url)
         const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url };
-        await sendRecipeToUpdate(recipeToUpdate, ingredientsChanged, action);
+        await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
       } else {
         const recipeToUpdate = { ...data, totalCost: newCost };
-        await sendRecipeToUpdate(recipeToUpdate, ingredientsChanged, action);
+        await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
       }
     } catch (err) {
       console.log(err);
@@ -103,7 +89,6 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
       router.replace("/recipes");
     }
   }
-  console.log(tempIngredients)
 
   return (
     <>

@@ -57,12 +57,6 @@ export interface ButtonProps {
   action: () => void;
 }
 
-export enum IngredientEditAction {
-  Delete = "delete",
-  Add = "add",
-  NoAction = "no action"
-}
-
 export interface Ingredient {
   ingredientId: string;
   name: string;
@@ -84,6 +78,6 @@ export interface Recipe {
 
 export interface RecipeUpdatePayload {
   recipe: Recipe;
-  ingredients: RecipeIngredients[];
-  action: string; // Or a specific literal type like 'add' | 'delete' | 'update'
+  addedIngredients: RecipeIngredients[];
+  removedIngredients: RecipeIngredients[]
 }

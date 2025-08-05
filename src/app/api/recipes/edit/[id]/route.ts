@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import { RecipeIngredients } from "@/shemas/recipe";
 import { createIngredientsToDatabase, createRecipeIngredientsToDatabase } from "@/db/create";
-import { IngredientEditAction, RecipeUpdatePayload } from "@/types/context";
+import {  RecipeUpdatePayload } from "@/types/context";
 import { deleteIngredientsFromRecipe } from "@/db/delete";
 
 export async function GET(
@@ -26,21 +26,20 @@ export async function GET(
 export const PATCH = async (req: NextRequest) => {
   
   try {
+    
     const request: RecipeUpdatePayload = await req.json();
     const id = request.recipe.id;
-    const ingredients = request.ingredients;
-    const action = request.action;
-    const { validatedRecipe, validatedRecipeIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
+   
+    const { validatedRecipe, validatedRecipeAddedIngredients, validatedrecipeRemovedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
     
     const response = await updateRecipe(id, validatedRecipe);
 
-    if (ingredients && validatedRecipeIngredients) {
-      if (action === IngredientEditAction.Add) {
-        await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient)));
-      }
-      if (action === IngredientEditAction.Delete) {
-        await Promise.all(validatedRecipeIngredients.map(async (ingredient: RecipeIngredients) => await deleteIngredientsFromRecipe(ingredient.recipeId, ingredient.ingredientId)));
-      }
+    if (validatedrecipeRemovedIngredients && validatedrecipeRemovedIngredients.length > 0 ) {
+       await Promise.all(validatedrecipeRemovedIngredients.map(async (ingredient: RecipeIngredients) => await deleteIngredientsFromRecipe(ingredient.recipeId, ingredient.ingredientId)));
+    }
+
+    if (validatedRecipeAddedIngredients && validatedRecipeAddedIngredients.length > 0) {
+       await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient)));
     }
 
     if (response.length > 0) {
