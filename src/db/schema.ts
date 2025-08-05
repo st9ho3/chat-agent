@@ -22,7 +22,7 @@ export const ingredientsTable = pgTable('ingredients', {
   icon: varchar('icon'), 
   name: varchar('name', { length: 255 }).notNull(), 
   unit: varchar('unit', { length: 50 }).notNull(), 
-  unitPrice: numeric('unit_price', { precision: 10, scale: 2 }).notNull(),
+  unitPrice: numeric('unit_price', { precision: 10, scale: 5 }).notNull(),
   quantity: numeric('quantity').notNull(),
   usage: numeric('usage').notNull().default('1') 
 });

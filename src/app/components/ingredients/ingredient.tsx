@@ -4,6 +4,7 @@ import Incremental from '../shared/incremental'
 import { Carrot, Plus, Scale, Euro } from 'lucide-react'
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe'
 import { v4 as uuidv4 } from 'uuid';
+import { normalizePrice } from '@/app/services/helpers'
 
 type IngredientErrors = string[]
 
@@ -50,7 +51,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {value} = e.target
-    if (value === 'g' || value ==='ml' || value ==='kg' || value === 'L' ) {
+    if (value === 'g' || value ==='ml' || value ==='kg' || value === 'L' || value === "piece" ) {
       setUnit(value)
       setErrors([])
     }
@@ -61,12 +62,19 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
     const id = uuidv4()
 
+    const normalizedUnitPrice = normalizePrice(price, unit, quantity)
+    console.log(normalizedUnitPrice)
+
     const ingredient: Ingredient = {
       id: id,
       icon: '🥑',
       name: name,
-      unit: unit,
-      unitPrice: Number(price),
+      unit: unit === "g" || unit === "kg" 
+      ? "g" 
+      : unit === "L" || unit === "ml" 
+      ? "ml" 
+      : "piece",
+      unitPrice: normalizedUnitPrice,
       quantity: quantity,
       usage: "0"
     }
@@ -170,7 +178,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
       
       <div className="w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 mt-3 text-center text-gray-600">
       <p className="text-lg">
-        {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-gray-800">{price}€</span>
+        {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-red-500">{price}€</span>
       </p>
     </div>
 

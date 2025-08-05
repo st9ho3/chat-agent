@@ -1,4 +1,4 @@
-import { Ingredient, Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {
     if (items.length === 0) {
@@ -25,5 +25,36 @@ export const getTotalPrice = (ingredients: RecipeIngredients[]) => {
     return sum + item.unitPrice * item.quantity;
   }, 0);
 
-
 }
+
+export const normalizePrice = (price: string, unit: Unit, quantity: number): number => {
+  const numericPrice = parseFloat(price);
+  console.log(price)
+  console.log(numericPrice)
+  // Guard against invalid numbers or a quantity of 0 to prevent division by zero.
+  if (isNaN(numericPrice) || quantity === 0) {
+    return 0;
+  }
+
+  // Calculate the price based on the unit.
+  switch (unit) {
+    case 'kg':
+      // For kilograms, convert to grams (1kg = 1000g) and find the price per gram.
+      return numericPrice / (quantity * 1000);
+    case 'g':
+      // For grams, calculate the price per gram directly.
+      return numericPrice / quantity;
+    case 'L':
+      // For liters, convert to milliliters (1L = 1000ml) and find the price per ml.
+      return numericPrice / (quantity * 1000);
+    case 'ml':
+      // For milliliters, calculate the price per ml directly.
+      return numericPrice / quantity;
+    case 'piece':
+      // For pieces, calculate the price per piece.
+      return numericPrice / quantity;
+    default:
+      // If the unit is not recognized, return 0.
+      return 0;
+  }
+};
