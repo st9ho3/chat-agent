@@ -19,7 +19,8 @@ export const createMessage = (text: string, user: string) => {
 };
 
 export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
-  const dataToSend = { recipe: data, ingredients: ing };
+  const dataToSend = { recipe: data, addedIngredients: ing };
+  console.log("client fetch ", dataToSend)
   const res = await fetch("/api/recipes", {
     method: "POST",
     headers: {
@@ -125,7 +126,6 @@ export const deleteIngredient = async (id: string) => {
 
 export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayload) => {
   const {recipe, addedIngredients, removedIngredients} = request;
-  
   if (typeof recipe.dateCreated === 'string') {
     recipe.dateCreated = new Date(recipe.dateCreated);
   }
@@ -133,7 +133,6 @@ export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayl
   const validatedRecipe = RecipeSchema.parse(recipe);
   let validatedAddedIngredients;
   let validatedRemovedIngredients;
-
   if (addedIngredients.length > 0) {
     const validatedRecipeAddedIngredients = addedIngredients.map((ingredient: RecipeIngredients) => {
       const validatedIngredient = RecipeIngredientsSchema.parse(ingredient);
@@ -141,7 +140,7 @@ export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayl
     });
     validatedAddedIngredients = validatedRecipeAddedIngredients;
   }
-  if (removedIngredients.length > 0) {
+  if (removedIngredients && removedIngredients.length > 0) {
     const validatedRecipeRemovedIngredients = removedIngredients.map((ingredient: RecipeIngredients) => {
       const validatedIngredient = RecipeIngredientsSchema.parse(ingredient);
       return validatedIngredient;
