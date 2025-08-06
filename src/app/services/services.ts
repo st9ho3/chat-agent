@@ -131,9 +131,11 @@ export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayl
   }
 
   const validatedRecipe = RecipeSchema.parse(recipe);
+
   let validatedAddedIngredients;
   let validatedRemovedIngredients;
-  if (addedIngredients.length > 0) {
+
+  if (addedIngredients && addedIngredients.length > 0) {
     const validatedRecipeAddedIngredients = addedIngredients.map((ingredient: RecipeIngredients) => {
       const validatedIngredient = RecipeIngredientsSchema.parse(ingredient);
       return validatedIngredient;
@@ -151,7 +153,7 @@ export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayl
   return {
     validatedRecipe: validatedRecipe,
     validatedRecipeAddedIngredients: validatedAddedIngredients,
-    validatedrecipeRemovedIngredients: validatedRemovedIngredients
+    validatedRecipeRemovedIngredients: validatedRemovedIngredients
   };
 };
 

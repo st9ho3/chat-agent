@@ -25,7 +25,9 @@ export type FormFields = {
   category: RecipeCategory;
   createdBy: string;
   dateCreated: Date;
+  tax: number; // Add this line
 }
+
 
 const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
@@ -37,15 +39,17 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const {raiseNotification} = UseHelpers()
 
   const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
-    defaultValues: {
-      id: newId,
-      title: '',
-      category: 'starter',
-      createdBy: 'User',
-      dateCreated: new Date()
-    },
-    resolver: zodResolver(RecipeSchema)
-  });
+  defaultValues: {
+    id: newId,
+    title: '',
+    totalCost: 0, 
+    category: 'starter',
+    createdBy: 'User',
+    dateCreated: new Date(),
+    tax: 0 
+  },
+  resolver: zodResolver(RecipeSchema)
+});
 
   const { errors, isSubmitting } = formState;
 
@@ -60,6 +64,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
     const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id);
     setTempIngredients(newIngredients);
   }
+
 
   const onSubmit = async (data: FormFields) => {
     try {
@@ -76,7 +81,8 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      
+      raiseNotification(String(error), NotificationType.Failure)
     } finally {
       reset();
       setTempIngredients([]);
@@ -113,7 +119,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
 
           <RecipeIngredient ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients}/>
 
-          <AdditionalCosts />
+          <AdditionalCosts register={register} errors={errors} />
 
           <UploadFiles />
           {error && <p className='text-red-500 ml-3'> {error} </p> }

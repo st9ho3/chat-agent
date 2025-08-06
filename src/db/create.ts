@@ -25,6 +25,7 @@ const createRecipeToDatabase = async (r: Recipe, tx: Database ) => {
           dateCreated: r.dateCreated.toISOString().split('T')[0],
           category: r.category,
           imgPath: r.imgPath,
+          tax: r.tax.toString()
         })
         .returning({
           returnedId: recipesTable.id
@@ -71,7 +72,8 @@ export const createIngredientsToDatabase = async (ingredient: Ingredient) => {
  * @param recipeIngredient The recipe ingredient object to insert.
  * @returns The ID of the newly created recipe ingredient.
  */
-export const createRecipeIngredientsToDatabase = async (recipeIngredient: RecipeIngredients, tx: Database ) => {
+export const createRecipeIngredientsToDatabase = async (recipeIngredient: RecipeIngredients, tx?: Database ) => {
+  
   const foundIngredient = await checkIfIngredientExists(recipeIngredient.name);
   let assignedId;
 
@@ -80,8 +82,10 @@ export const createRecipeIngredientsToDatabase = async (recipeIngredient: Recipe
   } else {
     assignedId = recipeIngredient.ingredientId;
   }
+  
+  const dbConnection = tx || db
 
-  const ingredient = await tx
+  const ingredient = await dbConnection
     .insert(recipeIngredientsTable)
     .values({
       recipeId: recipeIngredient.recipeId,

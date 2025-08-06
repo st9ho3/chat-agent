@@ -51,6 +51,7 @@ export const RecipeSchema = z.object({
   createdBy: z.string().min(1, "Creator ID is required"),
   dateCreated: z.date(),
   category: RecipeCategorySchema,
+  tax: z.number().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
   imgPath: z.string().url("Image path must be a valid URL").optional(),
 });
 

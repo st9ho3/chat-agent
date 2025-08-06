@@ -12,7 +12,7 @@ type AddIngredientProps = {
   onAddIngredient: (value: Ingredient) => void,
 }
 
-const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
+const AddIngredient = ({ onAddIngredient }: AddIngredientProps) => {
 
   const [quantity, setQuantity] = useState<number>(0)
   const [name, setName] = useState<string>('')
@@ -25,13 +25,13 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
 
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target
+    const { value } = e.target
     setName(value.toLowerCase())
     setErrors([])
   }
-  
+
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target
+    const { value } = e.target
     if (value === '' || /^(\d*\.?\d*)$/.test(value)) {
       setPrice(value)
     }
@@ -41,17 +41,17 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
   const handleFocus = () => {
     setIsEditing(true)
   }
-  
+
   const handleBlur = () => {
     setIsEditing(false)
   }
-  
+
   // Fixed displayedPrice logic - show empty string when editing and price is "0"
   const displayedPrice = isEditing && price === "0" ? "" : price
 
   const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const {value} = e.target
-    if (value === 'g' || value ==='ml' || value ==='kg' || value === 'L' || value === "piece" ) {
+    const { value } = e.target
+    if (value === 'g' || value === 'ml' || value === 'kg' || value === 'L' || value === "piece") {
       setUnit(value)
       setErrors([])
     }
@@ -69,11 +69,11 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
       id: id,
       icon: '🥑',
       name: name,
-      unit: unit === "g" || unit === "kg" 
-      ? "g" 
-      : unit === "L" || unit === "ml" 
-      ? "ml" 
-      : "piece",
+      unit: unit === "g" || unit === "kg"
+        ? "g"
+        : unit === "L" || unit === "ml"
+          ? "ml"
+          : "piece",
       unitPrice: normalizedUnitPrice,
       quantity: quantity,
       usage: "0"
@@ -97,7 +97,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
       setIsEditing(false) // Reset editing state
     }
   }
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSelectElement>) => {
     if (e.key === "Enter") {
       addIngredient(e)
@@ -106,7 +106,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
   return (
     <form className="p-2">
-      
+
       {/* Container for all inputs on one line */}
       <div className="flex flex-wrap items-center justify-center gap-4 rounded-lg">
         {/* Ingredient Name */}
@@ -139,7 +139,7 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
             pattern="[0-9]*[.]?[0-9]*"
           />
         </div>
-        
+
         {/* Quantity */}
         <Incremental onChange={setQuantity} count={quantity} onKeyDown={handleKeyDown} setErrors={setErrors} />
 
@@ -167,25 +167,25 @@ const AddIngredient = ({onAddIngredient}: AddIngredientProps) => {
 
       {/* Add Ingredient Button on its own line */}
       <div className="flex justify-center mt-4">
-        <button 
-          type='button' 
-          onClick={addIngredient} 
+        <button
+          type='button'
+          onClick={addIngredient}
           className='flex items-center gap-2 px-4 py-2 transition-colors duration-200 border border-gray-400 border-dashed rounded-md bg-green-100 w-fit hover:bg-green-50'
         >
           <Plus size={20} /> Add Ingredient
         </button>
       </div>
-      
+
       <div className="w-full rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4 mt-3 text-center text-gray-600">
-      <p className="text-lg">
-        {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-red-500">{price}€</span>
-      </p>
-    </div>
+        <p className="text-lg">
+          {quantity} {unit} of <span className="font-semibold text-gray-800">{name}</span> cost <span className="font-semibold text-red-500">{price}€</span>
+        </p>
+      </div>
 
 
       {/* Error messages */}
       <div className="mt-2 text-center">
-        {errors.length > 0 && errors.map((err) => <p key={err} className='text-red-500'> {err} </p> )}
+        {errors.length > 0 && errors.map((err) => <p key={err} className='text-red-500'> {err} </p>)}
       </div>
 
     </form>

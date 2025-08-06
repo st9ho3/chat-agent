@@ -13,8 +13,6 @@ const Label = ({ text, type }: {text: string, type: "low" | "medium" | "high"}) 
     medium: 'bg-blue-300/30 text-blue-400',
     high:   'bg-green-300/30 text-green-400',
   };
-  const styleClass = typeStyles[type]
-  
 
   return (
     <div className={`

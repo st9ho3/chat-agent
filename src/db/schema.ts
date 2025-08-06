@@ -20,7 +20,8 @@ export const recipesTable = pgTable("recipes", {
   createdBy: varchar("created_by").notNull(),
   dateCreated: date("date").notNull(),
   category: recipeCategoryEnum("category").notNull(),
-  imgPath: varchar("img_path")
+  imgPath: varchar("img_path"),
+  tax: numeric("tax").notNull()
 });
 
 // Defines the 'ingredients' table schema for individual ingredients.

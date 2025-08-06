@@ -78,6 +78,6 @@ export interface Recipe {
 
 export interface RecipeUpdatePayload {
   recipe: Recipe;
-  addedIngredients: RecipeIngredients[];
-  removedIngredients?: RecipeIngredients[]
+  addedIngredients?: RecipeIngredients[];
+  removedIngredients?: RecipeIngredients[];
 }

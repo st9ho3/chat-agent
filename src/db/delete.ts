@@ -1,6 +1,6 @@
 import { eq, and } from "drizzle-orm";
 import { db } from "./db";
-import { ingredientsTable, recipeIngredientsTable, recipesTable } from "./schema";
+import { Database, ingredientsTable, recipeIngredientsTable, recipesTable } from "./schema";
 import { revalidatePath } from "next/cache";
 
 export const deleteRecipe = async (recipeId: string) => {
@@ -16,9 +16,11 @@ export const deleteRecipe = async (recipeId: string) => {
     }
 };
 
-export const deleteIngredientsFromRecipe = async (recipeId: string, ingredientId: string) => {
+export const deleteIngredientsFromRecipe = async (recipeId: string, ingredientId: string, tx?: Database ) => {
+
+    const dbConnection = tx || db
     try {
-        await db
+       const removedIngredients = await dbConnection
             .delete(recipeIngredientsTable)
             .where(
                 and(
@@ -27,6 +29,8 @@ export const deleteIngredientsFromRecipe = async (recipeId: string, ingredientId
                 )
             )
             .returning();
+
+            return removedIngredients
     } catch (err) {
         console.error("Failed to delete ingredient from recipe:", err);
     }

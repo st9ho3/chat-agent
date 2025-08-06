@@ -1,13 +1,13 @@
 "use client"
 import React, { useState } from 'react'
 import Incremental from '../shared/incremental'
-import { Carrot, Plus, Scale, Euro, Pencil, X } from 'lucide-react'
+import { Carrot, Scale, Euro, Pencil, X } from 'lucide-react'
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe'
-import { v4 as uuidv4 } from 'uuid';
 import { updateIngredient } from '@/app/services/services'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useHomeContext } from '@/app/context/homeContext/homeContext'
+import UseHelpers from '@/app/hooks/useHelpers'
+import { NotificationType } from '@/types/context'
 
 type IngredientErrors = string[]
 
@@ -21,7 +21,7 @@ const EditIngredientForm = ({ ingredient }: AddIngredientProps) => {
   const [name, setName] = useState<string>(ingredient.name)
   const [unit, setUnit] = useState<string>(ingredient.unit)
   const [price, setPrice] = useState<string>(ingredient.unitPrice.toString())
-  const { dispatch} = useHomeContext()
+  const {raiseNotification} = UseHelpers()
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const [errors, setErrors] = useState<IngredientErrors>([])
@@ -83,7 +83,7 @@ const EditIngredientForm = ({ ingredient }: AddIngredientProps) => {
     } else {
 
       await updateIngredient(validatedIngredient.data)
-      dispatch({ type: "OPEN_NOTIFICATION", payload: "Ingredient updated succesfully" });
+      raiseNotification("Ingredient updated succesfully", NotificationType.Success )
       router.replace("/ingredients")
 
     }

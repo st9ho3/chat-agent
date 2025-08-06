@@ -1,8 +1,10 @@
 import { eq, sql } from 'drizzle-orm';
 import { db } from './db';
 import { ingredientsTable, recipesTable } from './schema';
-import { Ingredient, Recipe } from '@/shemas/recipe';
+import { Ingredient, Recipe, RecipeIngredients } from '@/shemas/recipe';
 import { Database } from './schema';
+import { deleteIngredientsFromRecipe } from './delete';
+import { createRecipeIngredientsToDatabase } from './create';
 
 export const updateRecipe = async (id: string, recipe: Recipe) => {
     try {
@@ -62,4 +64,24 @@ export const updateIngredient = async (ingredient: Ingredient) => {
         return [];
     }
 };
+
+export const updateRecipeAndIngredients = async (id: string, recipe: Recipe, removedIngredients: RecipeIngredients[] | undefined, addedIngredients: RecipeIngredients[] | undefined) => {
+    console.log("id: ", id, "recipe: ", recipe, "removedIngredients: ", removedIngredients, "addedIngredients: ", addedIngredients)
+    const updateResponse = await db
+    .transaction(async (tx) => {
+        const updateRecipeResponse = await updateRecipe(id, recipe)
+
+            if (removedIngredients && removedIngredients.length > 0) {
+                const ingredientsThatRemoved = await Promise.all(removedIngredients.map(async (ingredient: RecipeIngredients) => await deleteIngredientsFromRecipe(ingredient.recipeId, ingredient.ingredientId, tx)));
+            }
+
+            if (addedIngredients && addedIngredients.length > 0) {
+                const ingredientsThatAdded = await Promise.all(addedIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient, tx)));
+            }
+            return updateRecipeResponse
+            }) 
+            
+            return updateResponse
+        
+} 
 

@@ -1,6 +1,6 @@
 // src/app/api/edit/[id]/route.ts
 import { getRecipeById } from "@/db/read";
-import { updateRecipe } from "@/db/update";
+import { updateRecipe, updateRecipeAndIngredients } from "@/db/update";
 import { NextRequest, NextResponse } from "next/server";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import { RecipeIngredients } from "@/shemas/recipe";
@@ -30,17 +30,9 @@ export const PATCH = async (req: NextRequest) => {
     const request: RecipeUpdatePayload = await req.json();
     const id = request.recipe.id;
    
-    const { validatedRecipe, validatedRecipeAddedIngredients, validatedrecipeRemovedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
-    
-    const response = await updateRecipe(id, validatedRecipe);
-
-    if (validatedrecipeRemovedIngredients && validatedrecipeRemovedIngredients.length > 0 ) {
-       await Promise.all(validatedrecipeRemovedIngredients.map(async (ingredient: RecipeIngredients) => await deleteIngredientsFromRecipe(ingredient.recipeId, ingredient.ingredientId)));
-    }
-
-    if (validatedRecipeAddedIngredients && validatedRecipeAddedIngredients.length > 0) {
-       await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => await createRecipeIngredientsToDatabase(ingredient)));
-    }
+    const { validatedRecipe, validatedRecipeAddedIngredients, validatedRecipeRemovedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
+  
+    const response = await updateRecipeAndIngredients(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
 
     if (response.length > 0) {
       return NextResponse.json({
