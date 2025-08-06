@@ -2,13 +2,16 @@ import { ingredientsTable, recipeIngredientsTable, recipesTable } from './schema
 import { Ingredient, Recipe, RecipeIngredients } from '../shemas/recipe';
 import { db } from './db';
 import { checkIfIngredientExists, checkIfRecipeExists } from '@/db/helpers';
+import { Database } from './schema';
+import { updateIngredientsUsage } from './update';
+
 
 /**
  * Inserts a new recipe into the database.
  * @param r The recipe object to insert.
  * @returns The ID of the newly created recipe.
  */
-const createRecipeToDatabase = async (r: Recipe) => {
+const createRecipeToDatabase = async (r: Recipe, tx: Database ) => {
   const foundRecipe = await checkIfRecipeExists(r.title);
   if (foundRecipe) {
     if (foundRecipe.length === 0) {
@@ -68,7 +71,7 @@ export const createIngredientsToDatabase = async (ingredient: Ingredient) => {
  * @param recipeIngredient The recipe ingredient object to insert.
  * @returns The ID of the newly created recipe ingredient.
  */
-export const createRecipeIngredientsToDatabase = async (recipeIngredient: RecipeIngredients) => {
+export const createRecipeIngredientsToDatabase = async (recipeIngredient: RecipeIngredients, tx: Database ) => {
   const foundIngredient = await checkIfIngredientExists(recipeIngredient.name);
   let assignedId;
 
@@ -78,7 +81,7 @@ export const createRecipeIngredientsToDatabase = async (recipeIngredient: Recipe
     assignedId = recipeIngredient.ingredientId;
   }
 
-  const ingredient = await db
+  const ingredient = await tx
     .insert(recipeIngredientsTable)
     .values({
       recipeId: recipeIngredient.recipeId,
@@ -100,18 +103,29 @@ export const createRecipeIngredientsToDatabase = async (recipeIngredient: Recipe
  */
 export const createRecipeAndIngredients = async (r: Recipe, recipeIngredients: RecipeIngredients[]) => {
   try {
-    const recipeResponse = await createRecipeToDatabase(r);
-    if (recipeResponse) {
-      await Promise.all(recipeIngredients.map(async (ingredient) => await createIngredientsToDatabase(ingredient)));
-      const recipeIngredientsResponses = await Promise.all(recipeIngredients.map(async (ingredient) => await createRecipeIngredientsToDatabase(ingredient)));
+    const transactionResponse = await db
 
-      const responses = {
-        recipeResponse: recipeResponse,
-        ingredientsResponse: recipeIngredientsResponses[0]
-      };
-      return responses;
-    }
-  } catch (err) {
+    .transaction(async (tx) => {
+      
+      const recipeResponse = await createRecipeToDatabase(r,tx)
+      console.log("This is the recipe response: ", recipeResponse)
+      const recipeIngredientsResponse = await Promise.all(recipeIngredients.map(async (ingredient) => {
+
+        const ingredients = await createRecipeIngredientsToDatabase(ingredient, tx)
+
+        await updateIngredientsUsage(ingredient.ingredientId, tx, "+")
+        return ingredients
+      }));
+      console.log("This is the ingredients response: ", recipeIngredientsResponse)
+      return {
+        recipe: recipeResponse,
+        recipeIngredients: recipeIngredientsResponse
+      }
+      });
+      console.log(transactionResponse)
+      return transactionResponse
+      
+    } catch (err) {
     console.log(`There was an error adding your data: ${err}`);
     return;
   }

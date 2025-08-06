@@ -1,8 +1,13 @@
-import { drizzle } from 'drizzle-orm/neon-http';
-import * as schema from "./schema"
+// db/index.ts
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+import * as schema from './schema';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is not set');
-}
+// Make sure your DATABASE_URL from Neon is the "Pooled" connection string
+// It should look like: postgresql://user:pass@host/db?sslmode=require
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL!,
+});
 
-export const db = drizzle(process.env.DATABASE_URL!, {schema});
+// This driver supports transactions
+export const db = drizzle(pool, { schema });

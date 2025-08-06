@@ -64,7 +64,7 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
               {/* Cell 3: Usage */}
               {<td className="hidden md:table-cell pl-4">
                 
-                <Label text={Number(item.usage) < 5 ? "low" : 'medium' } type={Number(item.usage) < 5 ? "low" : 'medium' } /> 
+                <Label text={Number(item.usage) < 4 ? "low" : 'medium' } type={Number(item.usage) < 4 ? "low" : 'medium' } /> 
                 </td>}
 
               {/* Cell 4: Actions */}

@@ -7,10 +7,9 @@ import { deleteRecipe } from "@/db/delete";
 export const POST = async (req: NextRequest) => {
     try {
         const request = await req.json();
-        console.log("before validation: ", request)
         const { validatedRecipe, validatedRecipeAddedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
-        console.log(" route POST: ", validatedRecipeAddedIngredients)
         if (validatedRecipe && validatedRecipeAddedIngredients) {
+            
             const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeAddedIngredients);
 
             if (res) {
