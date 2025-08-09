@@ -58,3 +58,4 @@ export const normalizePrice = (price: string, unit: Unit, quantity: number): num
       return 0;
   }
 };
+

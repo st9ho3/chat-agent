@@ -1,5 +1,5 @@
 import { Euro, Percent } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UseFormRegister, FieldErrors, FormState, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
 import { FormFields } from './recipeForm';
 
@@ -21,19 +21,21 @@ const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors, setV
 
   const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
     setSelectedValue(e.currentTarget.value)
+    setValue("profitMargin", 0)
+    setValue("sellingPrice", 0)
   }
 
   const handleFocus = (fieldName: "sellingPrice" | "profitMargin") => {
     if (getValues(fieldName) === 0) {
       setValue(fieldName, undefined, {shouldValidate: true})
     }
-
   }
+   
 
   const [selectedValue, setSelectedValue] = useState<string >("")
-  const sellingPrice = getValues('sellingPrice')
-  const disabled = "rounded-lg disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:border-gray-200"
 
+  const disabled = "rounded-lg disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:border-gray-200"
+  
 
   return (
     <div className="flex flex-col gap-y-1">

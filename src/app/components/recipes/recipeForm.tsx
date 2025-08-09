@@ -173,7 +173,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
           />
         ) : <h3 className='text-center text-gray-500'>Empty</h3>}
       </div>
-      <OrderTotal ingredients={tempIngredients} getValues={getValues} />
+      <OrderTotal ingredients={tempIngredients} getValues={getValues} setValue={setValue}/>
     </div>
   </div>
 
@@ -200,7 +200,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
         ) : <h3 className='text-center text-gray-500'>Empty</h3>}
       </div>
 
-      <OrderTotal ingredients={tempIngredients} getValues={getValues} />
+      <OrderTotal ingredients={tempIngredients} getValues={getValues} setValue={setValue} />
     </div>
   )}
 </>
