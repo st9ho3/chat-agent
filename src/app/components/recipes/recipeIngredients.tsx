@@ -111,10 +111,10 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
   };
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col '>
       <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
         {/* Input Group */}
-        <div className="flex items-center gap-3 rounded-lg border border-dashed border-gray-300 p-2 w-full flex-grow">
+        <div className="flex items-center gap-3 rounded-lg border border-dashed border-gray-300 p-1 w-full flex-grow">
           <Carrot className="h-5 w-5 text-gray-400 flex-shrink-0" />
           <select 
             value={selectedIngredient} 

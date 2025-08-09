@@ -33,7 +33,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   const { handleFileUpload, error } = useFileUpload();
   const {raiseNotification} = UseHelpers()
 
-  const { register, handleSubmit, setValue, reset, formState } = useForm<FormFields>({
+  const { register, handleSubmit, setValue, reset, formState, getValues } = useForm<FormFields>({
   defaultValues: {
     id: newId,
     title: '',
@@ -68,12 +68,12 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
     try {
       if (state.file) {
         const url = await handleFileUpload(state.file)
-        const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin/100 };
+        const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
         if (tempIngredients.length > 0) {
           await sendRecipe(updatedData, tempIngredients);
         }
       } else {
-        const updatedData = { ...data, id: newId, profitMargin: data.profitMargin/100 };
+        const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
         if (tempIngredients.length > 0) {
           await sendRecipe(updatedData, tempIngredients);
         }
@@ -114,11 +114,11 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
       {errors.title && <p className='text-red-500 ml-3'> {errors.title?.message} </p>}
 
       <UploadFiles />
-      Ingredients
+      
       <RecipeIngredient ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
       {/* The Pricing component now handles its own inputs */}
-      <Pricing register={register} errors={errors}>
+      <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues}>
         <AdditionalCosts register={register} errors={errors} />
       </Pricing>
 

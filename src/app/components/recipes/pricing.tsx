@@ -1,6 +1,6 @@
 import { Euro, Percent } from 'lucide-react';
-import React from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import React, { useState } from 'react';
+import { UseFormRegister, FieldErrors, FormState, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
 import { FormFields } from './recipeForm';
 
 // Define props for the component
@@ -8,36 +8,59 @@ type PricingCostsProps = {
   register: UseFormRegister<FormFields>;
   errors: FieldErrors<FormFields>;
   children: React.ReactNode;
+  setValue: UseFormSetValue<FormFields>;
+  getValues: UseFormGetValues<FormFields>
 };
 
-const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors }) => {
+const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors, setValue, getValues }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    setSelectedValue(e.currentTarget.value)
+  }
+
+  const handleFocus = (fieldName: "sellingPrice" | "profitMargin") => {
+    if (getValues(fieldName) === 0) {
+      setValue(fieldName, undefined, {shouldValidate: true})
+    }
+
+  }
+
+  const [selectedValue, setSelectedValue] = useState<string >("")
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [inputvalue, setInputValue] = useState<string>()
+
+  const disabled = "rounded-lg disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:border-gray-200"
+
+
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">
         <div className="flex flex-col items-center gap-2  w-full flex-grow">
+          Choose one: 
           <div className="flex items-center justify-start w-full border border-dashed border-gray-300 rounded-2xl flex-grow p-2">
-            <input type="radio" name="selected_pricing" className='mx-2'/>
-            <div className='w-fit mx-2'>
+            <input type="radio" onClick={handleClick} value="price" name="selected_pricing" className='mx-2'/>
+            <div className="w-fit mx-2">
               My price is: 
             </div>
             <Euro className="h-5 w-5 text-gray-400 flex-shrink-0 ml-2" />
             <input
               type="number"
               step="0.01"
+              disabled={!selectedValue || selectedValue === 'profit'}
               {...register('sellingPrice', { valueAsNumber: true })}
               onKeyDown={handleKeyDown}
-              className="px-3 placeholder:text-gray-500  text-md focus:outline-none flex-grow"
+              onFocus={() => handleFocus('sellingPrice')}
+              className={`px-3 placeholder:text-gray-500  text-md focus:outline-none flex-grow ${!selectedValue || selectedValue === "profit" && disabled}`}
               placeholder="Selling price"
             />
           </div>
           <div className="flex items-center justify-start w-full border border-dashed border-gray-300 rounded-2xl flex-grow p-2">
-            <input type="radio" name="selected_pricing" className='mx-2'/>
+            <input type="radio" onClick={handleClick} value="profit" name="selected_pricing" className='mx-2'/>
             <div className='w-fit mx-2'>
               My profit margin is:  
             </div>
@@ -45,9 +68,11 @@ const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors }) =>
             <input
               type="number"
               step="0.01"
+              disabled={!selectedValue || selectedValue === "price"}
               {...register('profitMargin', { valueAsNumber: true })}
               onKeyDown={handleKeyDown}
-              className="px-3 placeholder:text-gray-500 text-md focus:outline-none flex-grow"
+               onFocus={() => handleFocus('profitMargin')}
+              className={`px-3 placeholder:text-gray-500 text-md focus:outline-none flex-grow ${!selectedValue || selectedValue === "price" && disabled} `}
               placeholder="Profit margin"
             />
           </div>
