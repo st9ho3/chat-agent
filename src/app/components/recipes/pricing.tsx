@@ -31,9 +31,7 @@ const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors, setV
   }
 
   const [selectedValue, setSelectedValue] = useState<string >("")
-  const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [inputvalue, setInputValue] = useState<string>()
-
+  const sellingPrice = getValues('sellingPrice')
   const disabled = "rounded-lg disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:border-gray-200"
 
 
@@ -55,7 +53,7 @@ const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors, setV
               {...register('sellingPrice', { valueAsNumber: true })}
               onKeyDown={handleKeyDown}
               onFocus={() => handleFocus('sellingPrice')}
-              className={`px-3 placeholder:text-gray-500  text-md focus:outline-none flex-grow ${!selectedValue || selectedValue === "profit" && disabled}`}
+              className={`px-3 placeholder:text-gray-500  text-md focus:outline-none flex-grow ${ selectedValue === "profit" || selectedValue.length === 0  ? disabled : ''}`}
               placeholder="Selling price"
             />
           </div>
@@ -72,7 +70,7 @@ const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors, setV
               {...register('profitMargin', { valueAsNumber: true })}
               onKeyDown={handleKeyDown}
                onFocus={() => handleFocus('profitMargin')}
-              className={`px-3 placeholder:text-gray-500 text-md focus:outline-none flex-grow ${!selectedValue || selectedValue === "price" && disabled} `}
+              className={`px-3 placeholder:text-gray-500 text-md focus:outline-none flex-grow ${ selectedValue === "price" || selectedValue.length === 0  ? disabled : ''} `}
               placeholder="Profit margin"
             />
           </div>

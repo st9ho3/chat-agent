@@ -1,20 +1,23 @@
 import React from 'react';
 import { RecipeIngredients } from '@/shemas/recipe';
 import { getTotalPrice } from '@/app/services/helpers';
-import { CircleDollarSign, ShoppingBasket } from 'lucide-react';
+import { CircleDollarSign, ShoppingBasket, Coins } from 'lucide-react';
+import { UseFormGetValues } from 'react-hook-form';
+import { FormFields } from './recipeForm';
 
-const OrderTotal = ({ ingredients }: { ingredients: RecipeIngredients[] }) => {
+const OrderTotal = ({ ingredients, getValues }: { ingredients: RecipeIngredients[], getValues: UseFormGetValues<FormFields> }) => {
 
   const totalPrice = getTotalPrice(ingredients);
   const ingredientCount = ingredients.length;
-
+  const sellingPrice = getValues('sellingPrice')
+  console.log(sellingPrice)
   return (
     <div className="mt-1 p-2 w-full border-t border-dashed border-gray-300 flex flex-col items-center justify-between ">
       <div className='w-full flex items-center justify-between'>
         <div className='flex items-center'>
           <CircleDollarSign className='mr-2' color='gray' />
           <p className="text-lg font-semibold text-gray-900">
-            Total
+            Cost of goods
           </p>
           
         </div>
@@ -23,6 +26,20 @@ const OrderTotal = ({ ingredients }: { ingredients: RecipeIngredients[] }) => {
           €{totalPrice.toFixed(2)}
         </p>
       </div>
+      <div className='w-full flex items-center justify-between'>
+        <div className='flex items-center'>
+          <Coins className='mr-2' color='gray' />
+          <p className="text-lg font-semibold text-gray-900">
+            Selling price
+          </p>
+          
+        </div>
+
+        <p className="text-2xl font-bold text-gray-900">
+         {sellingPrice}
+        </p>
+      </div>
+
       <div className='w-full flex items-center justify-between'>
         <div className='flex items-center'>
           <ShoppingBasket className='mr-2' color='gray' />
