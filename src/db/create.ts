@@ -25,7 +25,9 @@ const createRecipeToDatabase = async (r: Recipe, tx: Database ) => {
           dateCreated: r.dateCreated.toISOString().split('T')[0],
           category: r.category,
           imgPath: r.imgPath,
-          tax: r.tax.toString()
+          tax: r.tax.toString(),
+          sellingPrice: r.sellingPrice.toString(),
+          profitMargin: r.profitMargin.toString()
         })
         .returning({
           returnedId: recipesTable.id

@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react';
+import { Apple, Trash2 } from 'lucide-react';
 import React from 'react';
 
 const DisplayedIngredientItem = ({
@@ -23,18 +23,18 @@ const DisplayedIngredientItem = ({
   
   return (
     <div className="flex w-full items-center p-1">
-      {/* <div
-        className={`flex h-9 w-9 mx-1 flex-shrink-0 items-center justify-center rounded-full ${iconBgColor}`}
+      <div
+        className={`flex h-7 w-7 mr-2 flex-shrink-0 items-center justify-center rounded-full bg-red-50 `}
       >
-        <span className="text-2xl">{icon}</span>
-      </div> */}
+        <Apple size={16} />
+      </div>
 
       <div className="min-w-fit w-26 flex-grow">
         <p className="font-semibold text-sm text-gray-700">{name}</p>
       </div>
 
       <div className="w-26  px-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm font-bold text-gray-500">
           {quantity} {unit}
         </p>
       </div>

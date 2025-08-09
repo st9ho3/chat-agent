@@ -31,7 +31,8 @@ const EditPage = async ({params}: Params ) => {
     id: recipeRaw.id,
     imgPath: recipeRaw.imgPath ?? undefined,
     title: recipeRaw.title,
-    totalCost: Number(recipeRaw.totalCost)
+    totalCost: Number(recipeRaw.totalCost),
+    tax: Number(recipeRaw.tax)
   }
 
   const recipeIngredients = recipeRaw.recipeIngredients?.map((ingredient) => ({

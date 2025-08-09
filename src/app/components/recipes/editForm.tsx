@@ -16,6 +16,8 @@ import RecipeIngredient from './recipeIngredients';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
 import UseHelpers from '@/app/hooks/useHelpers';
+import AdditionalCosts from './additionalCosts';
+
 
 export type FormFields = {
   id: string;
@@ -24,6 +26,7 @@ export type FormFields = {
   category: RecipeCategory;
   createdBy: string;
   dateCreated: Date;
+  tax: number
 }
 
 const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, recipeIngredients: RecipeIngredients[], ingredients: Ingredient[] }) => {
@@ -34,19 +37,22 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
   const {raiseNotification} = UseHelpers()
   const router = useRouter();
 
-  const { register, handleSubmit, setValue, formState, reset } = useForm<FormFields>({
+  const { register, handleSubmit, setValue, formState, reset, watch } = useForm<FormFields>({
     defaultValues: {
       id: recipe.id,
       title: recipe.title,
       category: recipe.category,
       createdBy: recipe.createdBy,
       dateCreated: recipe.dateCreated,
-      totalCost: recipe.totalCost
+      totalCost: recipe.totalCost,
+      tax: recipe.tax
     },
     resolver: zodResolver(RecipeSchema)
   });
+console.log(recipe.tax)
 
   const { errors, isSubmitting } = formState;
+  
 
   const handleAddIngredient = (ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing];
@@ -61,8 +67,6 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
   }
 
   const onSubmit = async (data: FormFields) => {
-    const diferrence = tempIngredients.length - recipeIngredients.length;
-    let ingredientsChanged: RecipeIngredients[] | undefined;
 
     const newCost = getTotalPrice(tempIngredients);
     const addedIngredients: RecipeIngredients[] = tempIngredients.filter((tempIngredient) => !recipeIngredients.includes(tempIngredient))
@@ -89,7 +93,8 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
       router.replace("/recipes");
     }
   }
-
+  const watchedValue = watch("tax")
+console.log(watchedValue)
   return (
     <>
       <Link href="/recipes">
@@ -114,6 +119,8 @@ const EditForm = ({ recipe, recipeIngredients, ingredients }: { recipe: Recipe, 
           <RecipeIngredient ingredients={ingredients} recipeId={recipe.id} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
           <UploadFiles />
+
+          <AdditionalCosts register={register} errors={errors} />
 
           {/* --- Button to show ingredients on mobile --- */}
           <button
