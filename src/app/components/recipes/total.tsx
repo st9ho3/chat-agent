@@ -1,4 +1,6 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import { RecipeIngredients } from '@/shemas/recipe';
 import { getTotalPrice } from '@/app/services/helpers';
 import { CircleDollarSign, ShoppingBasket, Coins } from 'lucide-react';
@@ -14,14 +16,21 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
        setValue('profitMargin', profitMargin)
        return profitMargin
     }
-    
   }
 
+  const calculate = () => {
+    const sellingPrice = getValues('sellingPrice')
+    const profitMargin = getValues('profitMargin')
+
+    console.log(sellingPrice, profitMargin)
+  }
+
+  calculate()
+  const [margin, setMargin] = useState<number | undefined>(0)
   const totalCost = getTotalPrice(ingredients);
   const ingredientCount = ingredients.length;
-  const margin = getProfitMargin()
   const profitMargin = margin ? margin*100 : margin
-  const sellingPrice = getValues('sellingPrice')
+  
 
   
 
@@ -50,7 +59,7 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
         </div>
 
         <p className="text-2xl font-bold text-gray-900">
-         {sellingPrice}
+         €
         </p>
       </div>
       <div className='w-full flex items-center justify-between'>
@@ -63,7 +72,20 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
         </div>
 
         <p className="text-2xl font-bold text-gray-900">
-         {profitMargin?.toFixed(2)} %
+         {profitMargin ? profitMargin?.toFixed(2) : 0} %
+        </p>
+      </div>
+      <div className='w-full flex items-center justify-between'>
+        <div className='flex items-center'>
+          <Coins className='mr-2' color='gray' />
+          <p className="text-lg font-semibold text-gray-900">
+            Food Cost
+          </p>
+          
+        </div>
+
+        <p className="text-2xl font-bold text-gray-900">
+         {profitMargin ? (100 - profitMargin).toFixed(2) : 0} %
         </p>
       </div>
 
