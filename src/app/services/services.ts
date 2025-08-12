@@ -41,7 +41,7 @@ export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
 export const sendRecipeToUpdate = async (data: FormFields, addedIngredients: RecipeIngredients[], removedIngredients: RecipeIngredients[] ) => {
   const dataToSend = { recipe: data, addedIngredients: addedIngredients, removedIngredients: removedIngredients};
   console.log("services patch", dataToSend)
-  const res = await fetch(`/api/recipes/edit/${data.id}`, {
+  const res = await fetch(`/api/recipes/${data.id}`, {
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json'
@@ -67,18 +67,17 @@ export const getRecipesFromServer = async () => {
 };
 
 export const getRecipeFromServer = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/edit/${id}`);
+  const response = await fetch(`http://localhost:3000/api/recipes/${id}`);
   const recipe = await response.json();
   return recipe;
 };
 
 export const deleteRecipesFromServer = async (recipeId: string) => {
-  await fetch("api/recipes", {
+  await fetch(`api/recipes/${recipeId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
-    },
-    body: JSON.stringify(recipeId)
+    }
   });
 };
 
@@ -95,7 +94,7 @@ export const sendIngredient = async (ingredient: Ingredient) => {
 }
 
 export const updateIngredient = async (ingredient: Ingredient) => {
-  const res = await fetch(`/api/ingredients/edit/${ingredient.id}`, {
+  const res = await fetch(`/api/ingredients/${ingredient.id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json"
@@ -114,13 +113,12 @@ export const updateIngredient = async (ingredient: Ingredient) => {
 }
 
 export const deleteIngredient = async (id: string) => {
-  console.log(id)
-  await fetch("/api/ingredients", {
+  
+  await fetch(`/api/ingredients/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
-    },
-    body: JSON.stringify(id)
+    }
   })
 }
 

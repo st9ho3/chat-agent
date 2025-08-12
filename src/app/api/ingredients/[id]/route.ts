@@ -1,5 +1,7 @@
 import { updateIngredient } from "@/db/update";
 import { NextRequest, NextResponse } from "next/server";
+import { deleteIngredient } from "@/db/delete";
+
 
 export const PATCH = async (req: NextRequest) => {
     try {
@@ -30,4 +32,16 @@ export const PATCH = async (req: NextRequest) => {
             message: "An unexpected error occurred on the server."
         }, { status: 500 });
     }
+}
+
+export const DELETE = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
+
+    try {
+        const {id} = await context.params
+        await deleteIngredient(id)
+        return NextResponse.json({ status: 200, message: "Recipe succesfully deleted" });
+    }catch(err) {
+        console.log(err)
+    }
+
 }

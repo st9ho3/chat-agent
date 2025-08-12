@@ -1,12 +1,11 @@
 // src/app/api/edit/[id]/route.ts
 import { getRecipeById } from "@/db/read";
-import { updateRecipe, updateRecipeAndIngredients } from "@/db/update";
+import {  updateRecipeAndIngredients } from "@/db/update";
 import { NextRequest, NextResponse } from "next/server";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
-import { RecipeIngredients } from "@/shemas/recipe";
-import { createIngredientsToDatabase, createRecipeIngredientsToDatabase } from "@/db/create";
 import {  RecipeUpdatePayload } from "@/types/context";
-import { deleteIngredientsFromRecipe } from "@/db/delete";
+import { deleteRecipe } from "@/db/delete";
+
 
 export async function GET(
   request: NextRequest,
@@ -23,13 +22,13 @@ export async function GET(
   );
 }
 
-export const PATCH = async (req: NextRequest) => {
+export const PATCH = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
   
   try {
     
     const request: RecipeUpdatePayload = await req.json();
-    const id = request.recipe.id;
-   
+    const {id} = await context.params
+    
     const { validatedRecipe, validatedRecipeAddedIngredients, validatedRecipeRemovedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
   
     const response = await updateRecipeAndIngredients(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
@@ -52,4 +51,11 @@ export const PATCH = async (req: NextRequest) => {
         message: "An internal server error occurred"
     });
   }
+};
+
+export const DELETE = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
+
+    const {id} = await context.params
+    await deleteRecipe(id);
+    return NextResponse.json({ status: 200, message: "Recipe succesfully deleted" });
 };

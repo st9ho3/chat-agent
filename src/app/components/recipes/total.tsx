@@ -25,7 +25,6 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
     console.log(sellingPrice, profitMargin)
   }
 
-  calculate()
   const [margin, setMargin] = useState<number | undefined>(0)
   const totalCost = getTotalPrice(ingredients);
   const ingredientCount = ingredients.length;
