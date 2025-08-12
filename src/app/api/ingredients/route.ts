@@ -1,6 +1,7 @@
 import { zodValidateIngredientBeforeAddItToDatabase } from "@/app/services/services";
 import { createIngredientsToDatabase } from "@/db/create";
 import { NextRequest, NextResponse } from "next/server";
+import { sendError, sendSuccess } from "../utils/responses";
 
 export const POST = async (req: NextRequest) => {
     const request = await req.json()
@@ -10,21 +11,11 @@ export const POST = async (req: NextRequest) => {
     try{
         const response = await createIngredientsToDatabase(request)
         if (!response) {
-            return NextResponse.json({
-                status: 404,
-                message: "Something wrong with the request"
-            })
+            sendError("Something wrong with the request", 404)
         }
-        return NextResponse.json({
-            status: 201,
-            message: "Ingredient successfully created",
-            ingredient: response
-        })
+        sendSuccess("Ingredient successfully created", response, 201)
     }catch(err) {
-        return NextResponse.json({
-            status: 500,
-            message: `Error creating ingredinet: ${err}`
-        })
+        sendError(`Error creating ingredinet: ${err}`, 500)
     }
 }
 

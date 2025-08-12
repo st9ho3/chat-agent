@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import {  RecipeUpdatePayload } from "@/types/context";
 import { deleteRecipe } from "@/db/delete";
+import { sendError, sendSuccess } from "../../utils/responses";
 
 
 export async function GET(
@@ -14,12 +15,7 @@ export async function GET(
   const { id } = await context.params;
   const recipe = await getRecipeById(id);
 
-  // return the raw recipe as JSON, with status 200
-  return NextResponse.json(
-    recipe, {
-      status: 200
-    }
-  );
+sendSuccess("Ingredients fetched succesfully", 200)
 }
 
 export const PATCH = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
@@ -34,22 +30,13 @@ export const PATCH = async (req: NextRequest, context: {params: Promise<{id: str
     const response = await updateRecipeAndIngredients(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
 
     if (response.length > 0) {
-      return NextResponse.json({
-        status: 200,
-        message: "Recipe updated succesfully"
-      });
+      sendSuccess("Recipe updated succesfully", 201)
     } else {
-      return NextResponse.json({
-        status: 404,
-        message: "Something went wrong with the data or recipe not found"
-      });
+      sendError("Something went wrong with the data or recipe not found", 404)
     }
   } catch (err) {
     console.error("UPDATE error: ", err);
-    return NextResponse.json({
-        status: 500,
-        message: "An internal server error occurred"
-    });
+    sendError(`An internal server error occurred, ${err}`, 500)
   }
 };
 
@@ -57,5 +44,5 @@ export const DELETE = async (req: NextRequest, context: {params: Promise<{id: st
 
     const {id} = await context.params
     await deleteRecipe(id);
-    return NextResponse.json({ status: 200, message: "Recipe succesfully deleted" });
+    sendSuccess("Recipe succesfully deleted", 200)
 };
