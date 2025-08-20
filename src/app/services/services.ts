@@ -60,7 +60,7 @@ export const sendRecipeToUpdate = async (data: FormFields, addedIngredients: Rec
   return response;
 };
 
-export const getRecipesFromServer = async () => {
+/* export const getRecipesFromServer = async () => {
   const response = await fetch("http://localhost:3000/api/recipes");
   const recipes = await response.json();
   return recipes.body;
@@ -70,7 +70,7 @@ export const getRecipeFromServer = async (id: string) => {
   const response = await fetch(`http://localhost:3000/api/recipes/${id}`);
   const recipe = await response.json();
   return recipe;
-};
+}; */
 
 export const deleteRecipesFromServer = async (recipeId: string) => {
   await fetch(`api/recipes/${recipeId}`, {
@@ -104,10 +104,11 @@ export const updateIngredient = async (ingredient: Ingredient) => {
 
   if (!res.ok) {
     console.log("An error occured, ", res.status, res.statusText);
+    const response = await res.json()
+    return response
     
   } else {
     const response = await res.json()
-    console.log("The response from updating the ingredient on the client, ", response)
     return response
   }
 }

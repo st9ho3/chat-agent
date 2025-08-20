@@ -20,7 +20,7 @@ export const recipesTable = pgTable("recipes", {
   createdBy: varchar("created_by").notNull(),
   dateCreated: date("date").notNull(),
   category: recipeCategoryEnum("category").notNull(),
-  imgPath: varchar("img_path"),
+  imgPath: varchar("img_path").notNull(),
   tax: numeric("tax").notNull(),
   sellingPrice: numeric("selling_price").notNull(),
   profitMargin: numeric("profit_margin").notNull()

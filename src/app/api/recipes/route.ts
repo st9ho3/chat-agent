@@ -1,7 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { createRecipeAndIngredients } from "@/db/create";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
-import { getRecipes } from "@/db/read";
 import { sendError, sendSuccess } from "../utils/responses";
 
 export const POST = async (req: NextRequest) => {
@@ -13,13 +12,13 @@ export const POST = async (req: NextRequest) => {
             const res = await createRecipeAndIngredients(validatedRecipe, validatedRecipeAddedIngredients);
 
             if (res) {
-                sendSuccess("Recipe succesfully created!", 201)
+               return sendSuccess("Recipe succesfully created!", 201)
             }
         } else {
-            sendError("Invalid Data.", 404)
+            return sendError("Invalid Data.", 404)
         }
     } catch (err) {
-        sendError(`Oops, something went wrong on our side, ${err}`, 500)
+       return sendError(`Oops, something went wrong on our side, ${err}`, 500)
     }
 };
 

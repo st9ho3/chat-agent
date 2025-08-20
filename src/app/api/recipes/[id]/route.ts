@@ -15,7 +15,7 @@ export async function GET(
   const { id } = await context.params;
   const recipe = await getRecipeById(id);
 
-sendSuccess("Ingredients fetched succesfully", 200)
+return sendSuccess("Ingredients fetched succesfully", 200)
 }
 
 export const PATCH = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
@@ -30,13 +30,13 @@ export const PATCH = async (req: NextRequest, context: {params: Promise<{id: str
     const response = await updateRecipeAndIngredients(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
 
     if (response.length > 0) {
-      sendSuccess("Recipe updated succesfully", 201)
+      return sendSuccess("Recipe updated succesfully", 201)
     } else {
-      sendError("Something went wrong with the data or recipe not found", 404)
+      return sendError("Something went wrong with the data or recipe not found", 404)
     }
   } catch (err) {
     console.error("UPDATE error: ", err);
-    sendError(`An internal server error occurred, ${err}`, 500)
+    return sendError(`An internal server error occurred, ${err}`, 500)
   }
 };
 
@@ -44,5 +44,5 @@ export const DELETE = async (req: NextRequest, context: {params: Promise<{id: st
 
     const {id} = await context.params
     await deleteRecipe(id);
-    sendSuccess("Recipe succesfully deleted", 200)
+    return sendSuccess("Recipe succesfully deleted", 200)
 };

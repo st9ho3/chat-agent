@@ -52,12 +52,28 @@ export const RecipeSchema = z.object({
   dateCreated: z.date(),
   category: RecipeCategorySchema,
   tax: z.number().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
-  imgPath: z.string().url("Image path must be a valid URL").optional(),
-  sellingPrice: z.number().min(0, "Selling price can't be negative").optional(),
-  profitMargin: z.number().min(0, "Profit margin can't be negative").optional()
+  imgPath: z.string().url("Image path must be a valid URL"),
+  sellingPrice: z.number().min(0, "Selling price can't be negative"),
+  profitMargin: z.number().min(0, "Profit margin can't be negative")
 });
 
 export type Recipe = z.infer<typeof RecipeSchema>;
+
+// Schema for the db recipe object
+export const DBRecipeSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(3, "Recipe title must be at least 3 characters").max(200, "Title cannot exceed 200 characters"),
+  totalCost: z.string().min(0, "Total cost cannot be negative"),
+  createdBy: z.string().min(1, "Creator ID is required"),
+  dateCreated: z.string(),
+  category: RecipeCategorySchema,
+  tax: z.string().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
+  imgPath: z.string().url("Image path must be a valid URL"),
+  sellingPrice: z.string().min(0, "Selling price can't be negative"),
+  profitMargin: z.string().min(0, "Profit margin can't be negative")
+});
+
+export type DBRecipe = z.infer<typeof DBRecipeSchema>;
 
 
 // Schema for an ingredient item with UI-specific properties

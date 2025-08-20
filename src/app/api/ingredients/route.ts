@@ -11,11 +11,11 @@ export const POST = async (req: NextRequest) => {
     try{
         const response = await createIngredientsToDatabase(request)
         if (!response) {
-            sendError("Something wrong with the request", 404)
+           return sendError("Something wrong with the request", 404)
         }
-        sendSuccess("Ingredient successfully created", response, 201)
+       return sendSuccess("Ingredient successfully created", response, 201)
     }catch(err) {
-        sendError(`Error creating ingredinet: ${err}`, 500)
+       return sendError(`Error creating ingredinet: ${err}`, 500)
     }
 }
 

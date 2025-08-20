@@ -1,7 +1,20 @@
 // src/app/api/utils/response.ts
 import { NextResponse } from 'next/server';
 
-export const sendSuccess = (message: string, data: any = null, status = 200) => {
+
+interface APIResponseSuccess<T> {
+    success: boolean;
+    message: string;
+    data: T;
+}
+interface APIResponseError {
+    success: boolean;
+    error: {
+        message: string
+    }
+}
+
+export const sendSuccess = <T>(message: string, data: any = null, status = 200): NextResponse<APIResponseSuccess<T>>  => {
   return NextResponse.json({
     success: true,
     message,
@@ -9,7 +22,7 @@ export const sendSuccess = (message: string, data: any = null, status = 200) => 
   }, { status });
 };
 
-export const sendError = (message: string, status = 500) => {
+export const sendError = (message: string, status = 500): NextResponse<APIResponseError> => {
   return NextResponse.json({
     success: false,
     error: {

@@ -1,10 +1,10 @@
 "use client"
 import React, { useState } from 'react';
-import { Check, NotepadText, File, X, DollarSign, Percent } from 'lucide-react';
+import { Check, NotepadText, File, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
-import { RecipeSchema, RecipeCategory, RecipeIngredients, Ingredient } from '@/shemas/recipe';
+import { RecipeSchema, RecipeIngredients, Ingredient } from '@/shemas/recipe';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from "uuid";
 import { getTotalPrice } from '@/app/services/helpers';
@@ -44,7 +44,7 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
     tax: 0,
     sellingPrice: 0, 
     profitMargin: 0, 
-    imgPath: undefined, 
+    imgPath: "https://yqbnjpxj7oneobhf.public.blob.vercel-storage.com/beef%20burger.png", 
   },
   resolver: zodResolver(RecipeSchema)
 });
@@ -68,12 +68,13 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
     try {
       if (state.file) {
         const url = await handleFileUpload(state.file)
-        const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
+        if (url) {
+          const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
         if (tempIngredients.length > 0) {
           await sendRecipe(updatedData, tempIngredients);
-        }
+        }}
       } else {
-        const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
+        const updatedData = { ...data, id: newId,  profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
         if (tempIngredients.length > 0) {
           await sendRecipe(updatedData, tempIngredients);
         }

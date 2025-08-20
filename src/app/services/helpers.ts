@@ -1,4 +1,4 @@
-import { Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
+import { DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {
     if (items.length === 0) {
@@ -58,4 +58,25 @@ export const normalizePrice = (price: string, unit: Unit, quantity: number): num
       return 0;
   }
 };
+
+export const transformRecipeFromDB = (recipeFromDb: DBRecipe): Recipe => ({
+  ...recipeFromDb,
+    totalCost: Number(recipeFromDb.totalCost),
+    tax: Number(recipeFromDb.tax),
+    sellingPrice: Number(recipeFromDb.sellingPrice),
+    profitMargin: Number(recipeFromDb.profitMargin),
+    dateCreated: new Date(recipeFromDb.dateCreated),
+    imgPath: recipeFromDb.imgPath,
+}) 
+
+export const transformRecipeToDB = (recipe: Recipe): DBRecipe => ({
+          ...recipe,
+          totalCost: recipe.totalCost.toString(),
+          dateCreated: recipe.dateCreated.toISOString().split('T')[0],
+          tax: recipe.tax.toString(),
+          sellingPrice: recipe.sellingPrice.toString(),
+          profitMargin: recipe.profitMargin.toString()
+}) 
+
+
 

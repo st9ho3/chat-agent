@@ -4,6 +4,7 @@ import { db } from './db';
 import { checkIfIngredientExists, checkIfRecipeExists } from '@/db/helpers';
 import { Database } from './schema';
 import { updateIngredientsUsage } from './update';
+import { transformRecipeToDB } from '@/app/services/helpers';
 
 
 /**
@@ -15,20 +16,10 @@ const createRecipeToDatabase = async (r: Recipe, tx: Database ) => {
   const foundRecipe = await checkIfRecipeExists(r.title);
   if (foundRecipe) {
     if (foundRecipe.length === 0) {
-      const recipe = await db
+      const transformedRecipe = transformRecipeToDB(r)
+      const recipe = await tx
         .insert(recipesTable)
-        .values({
-          id: r.id,
-          title: r.title,
-          totalCost: r.totalCost.toString(),
-          createdBy: r.createdBy,
-          dateCreated: r.dateCreated.toISOString().split('T')[0],
-          category: r.category,
-          imgPath: r.imgPath,
-          tax: r.tax.toString(),
-          sellingPrice: r.sellingPrice.toString(),
-          profitMargin: r.profitMargin.toString()
-        })
+        .values(transformedRecipe)
         .returning({
           returnedId: recipesTable.id
         });

@@ -1,5 +1,5 @@
 import { Euro, Percent } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { UseFormRegister, FieldErrors, FormState, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
 import { FormFields } from './recipeForm';
 
