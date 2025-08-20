@@ -1,12 +1,13 @@
-import { Recipe } from "@/shemas/recipe";
-import { IRecipeRepository } from "@/types/repositories";
+import { Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { IRecipeIngredientsRepository, IRecipeRepository } from "@/types/repositories";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
-import { Database, recipesTable } from "@/db/schema";
+import { Database, recipesTable, recipeIngredientsTable } from "@/db/schema";
 import { transformRecipeFromDB } from "../services/helpers";
 import { checkIfRecipeExists } from "@/db/helpers";
 import { transformRecipeToDB } from "../services/helpers";
 import { revalidatePath } from "next/cache";
+import { checkIfIngredientExists } from "@/db/helpers";
 
 
 export class RecipeRepository implements IRecipeRepository {
@@ -102,3 +103,33 @@ export class RecipeRepository implements IRecipeRepository {
     }
 
 }
+
+export class RecipeIngredientsRepository implements IRecipeIngredientsRepository {
+
+    async create(recipeIngredient: RecipeIngredients, tx: Database): Promise<{id: string | null}> {
+        const foundIngredient = await checkIfIngredientExists(recipeIngredient.name);
+          let assignedId;
+        
+          if (foundIngredient && foundIngredient.name === recipeIngredient.name) {
+            assignedId = foundIngredient.id;
+          } else {
+            assignedId = recipeIngredient.ingredientId;
+          }
+          
+          const dbConnection = tx || db
+        
+          const [ingredient] = await dbConnection
+            .insert(recipeIngredientsTable)
+            .values({
+              recipeId: recipeIngredient.recipeId,
+              ingredientId: assignedId,
+              quantity: recipeIngredient.quantity.toString()
+            })
+            .returning({
+              ingredientId: recipeIngredientsTable.ingredientId
+            });
+        
+          return {id: ingredient.ingredientId}
+    }
+}
+

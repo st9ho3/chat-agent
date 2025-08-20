@@ -1,6 +1,6 @@
 
 import { Database } from '@/db/schema';
-import { Recipe, Ingredient } from '@/shemas/recipe';
+import { Recipe, Ingredient, RecipeIngredients } from '@/shemas/recipe';
 
 export interface IRecipeRepository {
   findById(id: string): Promise<Recipe | undefined>;
@@ -10,10 +10,13 @@ export interface IRecipeRepository {
   delete(id: string): Promise<{id: string} | undefined>;
   
 }
+export interface IRecipeIngredientsRepository {
+  create(recipeIngredient: RecipeIngredients, tx: Database): Promise<{id: string | null} >;  
+}
 
 export interface IIngredientRepository {
   findById(id: string): Promise<Ingredient | null>;
-  findAll(limit?: number, offset?: number): Promise<Ingredient[]>;
+  findAll(): Promise<Ingredient[]>;
   findByName(name: string): Promise<Ingredient[]>;
   create(ingredient: Ingredient): Promise<Ingredient>;
   update(id: string, ingredient: Ingredient): Promise<Ingredient | null>;

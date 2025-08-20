@@ -13,11 +13,11 @@ export const checkIfRecipeExists = async (title: string) => {
 };
 
 export const checkIfIngredientExists = async (title: string) => {
-  const ingredients = await db
+  const [ingredients] = await db
     .select()
     .from(ingredientsTable)
     .where(eq(ingredientsTable.name, title));
 
-  return ingredients[0];
+  return ingredients;
 };
 
