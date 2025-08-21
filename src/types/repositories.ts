@@ -20,5 +20,6 @@ export interface IIngredientRepository {
   create(ingredient: Ingredient): Promise<{ingredientId: string} | undefined>;
   update(id: string, ingredient: Ingredient): Promise<{ingredientId: string} | undefined>;
   delete(id: string): Promise<{ingredientId: string} | undefined>;
+  updateUsage(id: string, tx: Database, action: "+" | "-"): Promise<undefined>
   
 }

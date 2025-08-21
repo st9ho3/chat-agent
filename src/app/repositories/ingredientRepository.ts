@@ -1,9 +1,9 @@
 import { Ingredient } from "@/shemas/recipe";
 import { IIngredientRepository } from "@/types/repositories";
 import { db } from "@/db/db";
-import { ingredientsTable } from "@/db/schema";
-import { transformIngredientFromDB } from "../services/helpers";
-import { eq } from "drizzle-orm";
+import { Database, ingredientsTable } from "@/db/schema";
+import { transformIngredientFromDB, transformIngredientToDB } from "../services/helpers";
+import { eq, sql } from "drizzle-orm";
 import { checkIfIngredientExists } from "@/db/helpers";
 import { revalidatePath } from "next/cache";
 
@@ -68,16 +68,11 @@ export class IngredientRepository implements IIngredientRepository {
     }
 
     async update(id: string, ingredient: Ingredient): Promise<{ingredientId: string} | undefined> {
+        const ingredientForDB = transformIngredientToDB(ingredient)
         try {
-        console.log("Got the ingredient before the db", ingredient);
         const [ingredientId] = await db
             .update(ingredientsTable)
-            .set({
-                name: ingredient.name,
-                unit: ingredient.unit,
-                unitPrice: String(ingredient.unitPrice),
-                quantity: String(ingredient.quantity)
-            })
+            .set(ingredientForDB)
             .where(eq(ingredientsTable.id, ingredient.id))
             .returning({
                 ingredientId: ingredientsTable.id
@@ -103,6 +98,19 @@ export class IngredientRepository implements IIngredientRepository {
             } catch (err) {
                 console.error("Failed to delete ingredient:", err);
                 return
+            }
+    }
+
+    async updateUsage(id: string, tx: Database, action: "+" | "-"): Promise<undefined> {
+        try {
+                 await tx
+                .update(ingredientsTable)
+                .set({
+                    usage: action === "+" ? sql`${ingredientsTable.usage} + 1` : sql`${ingredientsTable.usage} - 1`
+                }) 
+                .where(eq(ingredientsTable.id, id))
+            }catch(err) {
+                console.log("Something happened on our behalf: ",err, id )
             }
     }
 }
