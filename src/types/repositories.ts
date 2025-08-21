@@ -15,11 +15,10 @@ export interface IRecipeIngredientsRepository {
 }
 
 export interface IIngredientRepository {
-  findById(id: string): Promise<Ingredient | null>;
+  findById(id: string): Promise<Ingredient | undefined>;
   findAll(): Promise<Ingredient[]>;
-  findByName(name: string): Promise<Ingredient[]>;
-  create(ingredient: Ingredient): Promise<Ingredient>;
-  update(id: string, ingredient: Ingredient): Promise<Ingredient | null>;
-  delete(id: string): Promise<boolean>;
+  create(ingredient: Ingredient): Promise<{ingredientId: string} | undefined>;
+  update(id: string, ingredient: Ingredient): Promise<{ingredientId: string} | undefined>;
+  delete(id: string): Promise<{ingredientId: string} | undefined>;
   
 }

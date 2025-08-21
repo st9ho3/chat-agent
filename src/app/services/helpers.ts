@@ -1,4 +1,4 @@
-import { DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
+import { DBIngredient, DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {
     if (items.length === 0) {
@@ -77,6 +77,18 @@ export const transformRecipeToDB = (recipe: Recipe): DBRecipe => ({
           sellingPrice: recipe.sellingPrice.toString(),
           profitMargin: recipe.profitMargin.toString()
 }) 
+
+export const transformIngredientFromDB = (ingredient: DBIngredient): Ingredient => ({
+  ...ingredient,
+  unitPrice: Number(ingredient.unitPrice),
+  quantity: Number(ingredient.quantity)
+})
+
+export const transformIngredientToDB = (ingredient: Ingredient): DBIngredient => ({
+  ...ingredient,
+  unitPrice: ingredient.unitPrice.toString(),
+  quantity: ingredient.quantity.toString()
+})
 
 
 
