@@ -2,15 +2,19 @@ import { updateIngredient } from "@/db/update";
 import { NextRequest, NextResponse } from "next/server";
 import { deleteIngredient } from "@/db/delete";
 import { sendError, sendSuccess } from "../../utils/responses";
+import { IngredientService } from "@/app/services/ingredientService";
+import { Ingredient } from "@/shemas/recipe";
 
+const service = new IngredientService()
 
 export const PATCH = async (req: NextRequest) => {
+
+     const ingredient: Ingredient = await req.json();
+
+     
+    
     try {
-        const request = await req.json();
-
-        // Optional: Add validation logic here for the 'request' body
-
-        const res = await updateIngredient(request);
+        const res = await service.update(ingredient)
         
         if (!res) {
            return sendError("InvalidData, sorry", 404)
@@ -28,11 +32,17 @@ export const PATCH = async (req: NextRequest) => {
 export const DELETE = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
 
     try {
+
         const {id} = await context.params
-        await deleteIngredient(id)
+
+        await service.delete(id)
+
        return sendSuccess("Recipe succesfully deleted", 201)
+
     }catch(err) {
+
         console.log(err)
+        
     }
 
 }

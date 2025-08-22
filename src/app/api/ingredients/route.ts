@@ -13,7 +13,8 @@ export const POST = async (req: NextRequest) => {
    const service = new IngredientService(ingredient)
 
     try{
-        const response = await service.create(ingredient)
+        const response = await service.create()
+        
         if (!response) {
            return sendError("Something wrong with the request", 404)
         }

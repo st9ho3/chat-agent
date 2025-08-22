@@ -65,7 +65,7 @@ const EditIngredientForm = ({ ingredient }: AddIngredientProps) => {
 
     const updatedIngredient: Ingredient = {
       id: ingredient.id,
-      icon: 'bg-yellow-100', // Assuming a default icon or it comes from `ingredient` prop
+      icon: '🥑', // Assuming a default icon or it comes from `ingredient` prop
       name: name,
       unit: unit as Unit, // Cast unit to Unit type
       unitPrice: Number(price),

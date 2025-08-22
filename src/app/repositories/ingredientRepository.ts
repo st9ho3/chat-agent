@@ -4,7 +4,6 @@ import { db } from "@/db/db";
 import { Database, ingredientsTable } from "@/db/schema";
 import { transformIngredientFromDB, transformIngredientToDB } from "../services/helpers";
 import { eq, sql } from "drizzle-orm";
-import { checkIfIngredientExists } from "@/db/helpers";
 import { revalidatePath } from "next/cache";
 
 export class IngredientRepository implements IIngredientRepository {
@@ -54,12 +53,11 @@ export class IngredientRepository implements IIngredientRepository {
             }
     }
 
-    async update(id: string, ingredient: Ingredient): Promise<{ ingredientId: string } | undefined> {
-        const ingredientForDB = transformIngredientToDB(ingredient)
+    async update( ingredient: DBIngredient ): Promise<{ ingredientId: string } | undefined> {
         try {
             const [ingredientId] = await db
                 .update(ingredientsTable)
-                .set(ingredientForDB)
+                .set(ingredient)
                 .where(eq(ingredientsTable.id, ingredient.id))
                 .returning({
                     ingredientId: ingredientsTable.id

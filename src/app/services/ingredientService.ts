@@ -8,19 +8,16 @@ import { zodValidateIngredientBeforeAddItToDatabase } from "./services";
 export class IngredientService implements IIngredientService {
 
     private ingredientRepository: IngredientRepository
-    private ingredient: Ingredient
-
-    constructor(ingredient: Ingredient) {
-        this.ingredientRepository = new IngredientRepository()
-        this.ingredient = ingredient
-    }
-
     
+
+    constructor() {
+        this.ingredientRepository = new IngredientRepository()
+    }
 
     async create(ingredient: Ingredient): Promise<{ ingredientId: string; } | undefined> {
           
           const ingredientExists = await checkIfIngredientExists(ingredient.name);
-          const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(this.ingredient)
+          const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient)
           const DBIngredient = validatedIngredient ? transformIngredientToDB(validatedIngredient) : undefined
 
           if (!ingredientExists && DBIngredient) {
@@ -30,4 +27,25 @@ export class IngredientService implements IIngredientService {
             console.log("Ingredient already exists or is not validated")
           }
     }
+
+    async update(ingredient: Ingredient): Promise<{ ingredientId: string; } | undefined> {
+
+        const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient)
+        const DBIngredient =  validatedIngredient ?  transformIngredientToDB(validatedIngredient) : undefined
+
+        try {
+
+          const ingredientId = DBIngredient ? await this.ingredientRepository.update(DBIngredient) : undefined
+            return ingredientId
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    async delete(id: string): Promise<void> {
+
+      await this.ingredientRepository.delete(id)
+
+    }
+
 }
