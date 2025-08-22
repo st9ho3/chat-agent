@@ -1,7 +1,7 @@
 import { Recipe, RecipeIngredients } from "@/shemas/recipe";
 import { IRecipeIngredientsRepository, IRecipeRepository } from "@/types/repositories";
 import { db } from "@/db/db";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { Database, recipesTable, recipeIngredientsTable } from "@/db/schema";
 import { transformRecipeFromDB } from "../services/helpers";
 import { checkIfRecipeExists } from "@/db/helpers";
@@ -24,6 +24,7 @@ export class RecipeRepository implements IRecipeRepository {
                         }
                     }
                 });
+                // Need to define the type for the return type: Recipe with nested {ingredients}
                 return 
             } catch (err) {
                 console.log("Error fetching recipe ------->", err);
@@ -64,38 +65,34 @@ export class RecipeRepository implements IRecipeRepository {
           }
     }
 
-    async update(id: string, recipe: Recipe): Promise<{id: string} | []> {
+    async update(id: string, recipe: Recipe): Promise<{id: string} | undefined> {
+      const recipeToDB = transformRecipeToDB(recipe)
         try {
-        const response = await db
+        const [response] = await db
             .update(recipesTable)
-            .set({
-                title: recipe.title,
-                totalCost: String(recipe.totalCost),
-                imgPath: recipe.imgPath,
-                tax: recipe.tax.toString()
-            })
+            .set(recipeToDB)
             .where(eq(recipesTable.id, id))
             .returning({
                 id: recipesTable.id
             });
 
-        return response[0];
+        return response;
     } catch (err) {
         console.error("Failed to update recipe:", err);
-        return [];
+        return
     }
     }
 
     async delete(id: string): Promise<{id: string} | undefined> {
          try {
-                const deletereceipt = await db
+                const [deletereceipt] = await db
                     .delete(recipesTable)
                     .where(eq(recipesTable.id, id))
                     .returning({
                         id: recipesTable.id
                     });
                 revalidatePath('/recipes')
-                return deletereceipt[0]
+                return deletereceipt
                 
             } catch (err) {
                 console.error("Failed to delete recipe:", err);
@@ -130,6 +127,28 @@ export class RecipeIngredientsRepository implements IRecipeIngredientsRepository
             });
         
           return {id: ingredient.ingredientId}
+    }
+
+    async delete(recipeId: string, ingredientId: string, tx?: Database): Promise<{ ingredientId: string | null } | undefined> {
+      const dbConnection = tx || db
+          try {
+             const [removedIngredient] = await dbConnection
+                  .delete(recipeIngredientsTable)
+                  .where(
+                      and(
+                          eq(recipeIngredientsTable.recipeId, recipeId),
+                          eq(recipeIngredientsTable.ingredientId, ingredientId)
+                      )
+                  )
+                  .returning();
+      
+                  return {
+                      ingredientId: removedIngredient.ingredientId
+                  }
+          } catch (err) {
+              console.error("Failed to delete ingredient from recipe:", err);
+              return
+          }
     }
 }
 

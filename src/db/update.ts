@@ -56,7 +56,7 @@ export const updateIngredient = async (ingredient: Ingredient) => {
             })
             .where(eq(ingredientsTable.id, ingredient.id))
             .returning({
-                id: ingredientsTable.id
+                ingredientId: ingredientsTable.id
             });
         console.log("This is the response from the db", response);
         return response;
@@ -68,7 +68,7 @@ export const updateIngredient = async (ingredient: Ingredient) => {
 
 export const updateRecipeAndIngredients = async (id: string, recipe: Recipe, removedIngredients: RecipeIngredients[] | undefined, addedIngredients: RecipeIngredients[] | undefined) => {
     console.log("id: ", id, "recipe: ", recipe, "removedIngredients: ", removedIngredients, "addedIngredients: ", addedIngredients)
-    const updateResponse = await db
+    const [updateResponse] = await db
     .transaction(async (tx) => {
         const updateRecipeResponse = await updateRecipe(id, recipe)
 

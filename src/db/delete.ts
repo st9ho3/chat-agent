@@ -20,7 +20,7 @@ export const deleteIngredientsFromRecipe = async (recipeId: string, ingredientId
 
     const dbConnection = tx || db
     try {
-       const removedIngredients = await dbConnection
+       const [removedIngredient] = await dbConnection
             .delete(recipeIngredientsTable)
             .where(
                 and(
@@ -30,9 +30,12 @@ export const deleteIngredientsFromRecipe = async (recipeId: string, ingredientId
             )
             .returning();
 
-            return removedIngredients
+            return {
+                ingredientId: removedIngredient.ingredientId
+            }
     } catch (err) {
         console.error("Failed to delete ingredient from recipe:", err);
+        return
     }
 };
 

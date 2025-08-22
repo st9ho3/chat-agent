@@ -2,14 +2,18 @@ import { zodValidateIngredientBeforeAddItToDatabase } from "@/app/services/servi
 import { createIngredientsToDatabase } from "@/db/create";
 import { NextRequest, NextResponse } from "next/server";
 import { sendError, sendSuccess } from "../utils/responses";
+import { IngredientService } from "@/app/services/ingredientService";
+import { Ingredient } from "@/shemas/recipe";
 
 export const POST = async (req: NextRequest) => {
-    const request = await req.json()
-    const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(request)
-    console.log("validated ingredient in the POST",validatedIngredient)
+
+
+   const ingredient: Ingredient = await req.json()
+
+   const service = new IngredientService(ingredient)
 
     try{
-        const response = await createIngredientsToDatabase(request)
+        const response = await service.create(ingredient)
         if (!response) {
            return sendError("Something wrong with the request", 404)
         }

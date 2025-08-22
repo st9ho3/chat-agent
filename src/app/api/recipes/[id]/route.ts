@@ -6,7 +6,10 @@ import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services"
 import {  RecipeUpdatePayload } from "@/types/context";
 import { deleteRecipe } from "@/db/delete";
 import { sendError, sendSuccess } from "../../utils/responses";
+import { RecipeService } from "@/app/services/recipeService";
 
+
+const service = new RecipeService()
 
 export async function GET(
   request: NextRequest,
@@ -19,6 +22,7 @@ return sendSuccess("Ingredients fetched succesfully", 200)
 }
 
 export const PATCH = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
+
   
   try {
     
@@ -27,9 +31,9 @@ export const PATCH = async (req: NextRequest, context: {params: Promise<{id: str
     
     const { validatedRecipe, validatedRecipeAddedIngredients, validatedRecipeRemovedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
   
-    const response = await updateRecipeAndIngredients(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
+    const response = await service.update(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
 
-    if (response.length > 0) {
+    if (response) {
       return sendSuccess("Recipe updated succesfully", 201)
     } else {
       return sendError("Something went wrong with the data or recipe not found", 404)
@@ -43,6 +47,6 @@ export const PATCH = async (req: NextRequest, context: {params: Promise<{id: str
 export const DELETE = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {
 
     const {id} = await context.params
-    await deleteRecipe(id);
+    await service.delete(id)
     return sendSuccess("Recipe succesfully deleted", 200)
 };

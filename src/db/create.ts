@@ -41,7 +41,7 @@ export const createIngredientsToDatabase = async (ingredient: Ingredient) => {
   const foundIngredient = await checkIfIngredientExists(ingredient.name);
   
   if (!foundIngredient) {
-    const ing = await db
+    const [ing] = await db
       .insert(ingredientsTable)
       .values({
         id: ingredient.id,
@@ -56,7 +56,7 @@ export const createIngredientsToDatabase = async (ingredient: Ingredient) => {
         ingredientId: ingredientsTable.id
       });
 
-    return ing[0].ingredientId;
+    return ing;
   }
 };
 
