@@ -15,7 +15,7 @@ import {
   SubmitButton,
   RecipeIngredientsDisplay,
   MobileIngredientsList
-} from '@/app/constants/components'
+} from '@/app/constants/components';
 import useRecipeForm from '@/app/hooks/useRecipeForm';
 
 // Use the Zod schema as the single source of truth for the form's type
@@ -24,63 +24,63 @@ export type FormFields = z.infer<typeof RecipeSchema>;
 
 const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   
-const [isListVisible, setIsListVisible] = useState(false);
-const { newId,register, handleSubmit, setValue, getValues, errors, isSubmitting, handleAddIngredient, handleRemoveIngredient, onSubmit, tempIngredients, error, state } = useRecipeForm();
+  const [isListVisible, setIsListVisible] = useState(false);
+  const { newId, register, handleSubmit, setValue, getValues, errors, isSubmitting, handleAddIngredient, handleRemoveIngredient, onSubmit, tempIngredients, error, state } = useRecipeForm();
 
   return (
     <>
-  {/* Main container */}
-  <div className='w-full md:w-250 md:h-130 md:flex'>
+      {/* Main container */}
+      <div className='w-full md:w-250 md:h-130 md:flex'>
 
-    <ExitButton />
+        <ExitButton />
 
-    {/* Form Section (Left) */}
-    <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col gap-y-2'>
+        {/* Form Section (Left) */}
+        <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col gap-y-2'>
 
-      <FormHeader register={register} /> 
+          <FormHeader register={register} /> 
 
-      {errors.title && <ErrorDisplay error={errors.title?.message} />}
+          {errors.title && <ErrorDisplay error={errors.title?.message} />}
 
-      <UploadFiles />
-      
-      <RecipeIngredientForm ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
+          <UploadFiles />
+          
+          <RecipeIngredientForm ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
-      {/* The Pricing component now handles its own inputs */}
-      <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues}>
-        <AdditionalCosts register={register} errors={errors} />
-      </Pricing>
+          {/* The Pricing component now handles its own inputs */}
+          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues}>
+            <AdditionalCosts register={register} errors={errors} />
+          </Pricing>
 
-      {error && <ErrorDisplay error={error} />}
+          {error && <ErrorDisplay error={error} />}
 
-      {/* --- Button to show ingredients on mobile --- */}
-      <ViewIngredientsButtonMobile onToggleList={setIsListVisible} ingredients={tempIngredients} /> 
+          {/* --- Button to show ingredients on mobile --- */}
+          <ViewIngredientsButtonMobile onToggleList={setIsListVisible} ingredients={tempIngredients} /> 
 
-      {state.file && <SelectedFileBadge /> }
+          {state.file && <SelectedFileBadge /> }
 
-      <SubmitButton isSubmitting={isSubmitting} />
+          <SubmitButton isSubmitting={isSubmitting} />
 
-    </form>
+        </form>
 
-    {/* Displayed Ingredients Section (Right side, hidden on mobile) */}
-    <RecipeIngredientsDisplay
-    ingredients={tempIngredients}
-    getValues={getValues}
-    setValue={setValue}
-    onRemove={handleRemoveIngredient} 
-  />
-  </div>
+        {/* Displayed Ingredients Section (Right side, hidden on mobile) */}
+        <RecipeIngredientsDisplay
+          ingredients={tempIngredients}
+          getValues={getValues}
+          setValue={setValue}
+          onRemove={handleRemoveIngredient} 
+        />
+      </div>
 
-  {/* --- Full-screen ingredient list for mobile --- */}
-  {isListVisible &&
-   <MobileIngredientsList
-    ingredients={tempIngredients}
-    getValues={getValues}
-    setValue={setValue}
-    onRemove={handleRemoveIngredient}
-    onToggle={setIsListVisible} 
-   />}
-</>
-  )
-}
+      {/* --- Full-screen ingredient list for mobile --- */}
+      {isListVisible &&
+        <MobileIngredientsList
+          ingredients={tempIngredients}
+          getValues={getValues}
+          setValue={setValue}
+          onRemove={handleRemoveIngredient}
+          onToggle={setIsListVisible} 
+        />}
+    </>
+  );
+};
 
 export default RecipeForm;
