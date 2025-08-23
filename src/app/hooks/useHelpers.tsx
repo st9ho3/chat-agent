@@ -2,7 +2,7 @@ import React from 'react'
 import { useHomeContext } from '../context/homeContext/homeContext'
 import { NotificationType } from '@/types/context'
 
-const UseHelpers = () => {
+const useHelpers = () => {
     const {dispatch} = useHomeContext()
 
     const raiseNotification = (message: string, type: NotificationType) => {
@@ -29,4 +29,4 @@ const UseHelpers = () => {
   )
 }
 
-export default UseHelpers
+export default useHelpers
