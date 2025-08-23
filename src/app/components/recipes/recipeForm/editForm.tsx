@@ -2,21 +2,21 @@
 import React, { useState } from 'react';
 import { Check, File, NotepadText, X } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
-import OrderTotal from './total';
+import OrderTotal from '../total';
 import { useForm } from 'react-hook-form';
 import { RecipeSchema, RecipeCategory, RecipeIngredients, Recipe, Ingredient } from '@/shemas/recipe';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getTotalPrice } from '@/app/services/helpers';
-import UploadFiles from '../shared/uploadFiles';
+import UploadFiles from '../../shared/uploadFiles';
 import { useRouter } from 'next/navigation';
 import { sendRecipeToUpdate } from '@/app/services/services';
 import Link from 'next/link';
 import {  NotificationType } from '@/types/context';
-import RecipeIngredient from './recipeIngredients';
+import RecipeIngredient from '../recipeIngredients';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
 import UseHelpers from '@/app/hooks/useHelpers';
-import AdditionalCosts from './additionalCosts';
+import AdditionalCosts from '../additionalCosts';
 
 
 export type FormFields = {

@@ -1,4 +1,4 @@
-import EditForm from '@/app/components/recipes/editForm'
+import EditForm from '@/app/components/recipes/recipeForm/editForm'
 import { getIngredients, getRecipeById } from '@/db/read'
 import { Recipe } from '@/shemas/recipe'
 import React from 'react'

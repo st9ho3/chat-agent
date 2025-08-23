@@ -1,4 +1,4 @@
-import RecipeForm from '@/app/components/recipes/recipeForm'
+import RecipeForm from '@/app/components/recipes/recipeForm/recipeForm'
 import { getIngredients } from '@/db/read'
 import React from 'react'
 

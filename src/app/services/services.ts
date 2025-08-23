@@ -1,5 +1,5 @@
 import { uid } from "uid";
-import { FormFields } from "../components/recipes/recipeForm";
+import { FormFields } from "../components/recipes/recipeForm/recipeForm";
 import { Ingredient, IngredientSchema, Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { RecipeUpdatePayload } from "@/types/context";
 

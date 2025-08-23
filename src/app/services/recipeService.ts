@@ -25,7 +25,6 @@ export class RecipeService implements IRecipeService {
           throw Error("A problem with validation")
         }
 
-        // Step 3: If validation is successful, proceed with the database transaction.
         try {
             const transactionResponse = await db.transaction(async (tx) => {
 

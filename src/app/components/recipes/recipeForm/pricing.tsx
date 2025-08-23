@@ -12,7 +12,7 @@ type PricingCostsProps = {
   getValues: UseFormGetValues<FormFields>
 };
 
-const Pricing: React.FC<PricingCostsProps> = ({ children, register, errors, setValue, getValues }) => {
+const Pricing = ({ children, register, errors, setValue, getValues }: PricingCostsProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();

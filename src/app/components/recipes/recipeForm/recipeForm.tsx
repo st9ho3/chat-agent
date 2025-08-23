@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { Check, NotepadText, File, X } from 'lucide-react';
+import { Check, NotepadText, File } from 'lucide-react';
 import DisplayedIngredientItem from './displayedIngredient';
 import OrderTotal from './total';
 import { useForm } from 'react-hook-form';
@@ -13,12 +13,15 @@ import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { useFileUpload } from '@/app/hooks/useFileUpload';
 import AdditionalCosts from './additionalCosts';
-import UploadFiles from '../shared/uploadFiles';
+import UploadFiles from '../../shared/uploadFiles';
 import RecipeIngredient from './recipeIngredients';
 import UseHelpers from '@/app/hooks/useHelpers';
 import { NotificationType } from '@/types/context';
 import Pricing from './pricing';
 import { z } from 'zod';
+import ExitButton from '../../shared/exitButton';
+import FormHeader from './formComponents/formHeader';
+import ErrorDisplay from './formComponents/errorDisplay';
 
 // Use the Zod schema as the single source of truth for the form's type
 export type FormFields = z.infer<typeof RecipeSchema>;
@@ -98,21 +101,14 @@ const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
   {/* Main container */}
   <div className='w-full md:w-250 md:h-130 md:flex'>
 
-    <button
-      onClick={() => router.back()}
-      className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-offset-2 transition-colors"
-      aria-label="Close modal"
-    >
-      <X />
-    </button>
+    <ExitButton />
 
     {/* Form Section (Left) */}
     <form onSubmit={handleSubmit(onSubmit)} className='border-1 border-gray-300 border-dashed p-2 rounded-lg flex flex-col gap-y-2'>
-      <div className='flex items-center border-1 border-gray-300 border-dashed rounded-lg p-1'>
-        <NotepadText color='gray' />
-        <input {...register('title')} id='title' type="text" className='p-4 placeholder:text-gray-500 text-2xl focus:outline-none w-full' placeholder="Recipe's name" required />
-      </div>
-      {errors.title && <p className='text-red-500 ml-3'> {errors.title?.message} </p>}
+
+      <FormHeader register={register} /> 
+
+      {errors.title && <ErrorDisplay error={errors.title?.message} />}
 
       <UploadFiles />
       

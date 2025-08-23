@@ -2,7 +2,7 @@
 
 import { Ingredient, RecipeIngredients, RecipeIngredientsSchema, Unit } from '@/shemas/recipe'
 import React, { useState, useEffect } from 'react' // 1. Import useEffect
-import Incremental from '../shared/incremental';
+import Incremental from '../../shared/incremental';
 import { Carrot, PlusCircle, Scale } from 'lucide-react';
 
 type IngredientErrors = string[]
