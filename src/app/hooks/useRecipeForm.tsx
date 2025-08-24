@@ -12,10 +12,13 @@ import { useFileUpload } from './useFileUpload';
 import { NotificationType } from '@/types/context';
 import useHelpers from './useHelpers';
 import { defaultValues } from '../constants/recipeFormDefaultValues';
+import { RecipeFormProps } from '../components/recipes/recipeForm/recipeForm';
 
 export type FormFields = z.infer<typeof RecipeSchema>;
 
-const useRecipeForm = () => {
+
+
+const useRecipeForm = ({mode, recipe, recipeIngredients, ingredients}: RecipeFormProps) => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
 
@@ -24,10 +27,10 @@ const useRecipeForm = () => {
   const { handleFileUpload, error } = useFileUpload();
   const { raiseNotification } = useHelpers();
   const { register, handleSubmit, setValue, reset, formState, getValues } = useForm<FormFields>({
-    defaultValues: {
+    defaultValues: mode === "create" ? {
       ...defaultValues,
       id: newId
-    },
+    } : recipe,
     resolver: zodResolver(RecipeSchema)
   });
 

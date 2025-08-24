@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { BanknoteX } from "lucide-react";
 import { UseFormRegister, FieldErrors } from 'react-hook-form';

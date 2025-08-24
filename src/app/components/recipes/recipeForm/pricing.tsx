@@ -1,3 +1,4 @@
+"use client"
 import { Euro, Percent } from 'lucide-react';
 import React, {  useState } from 'react';
 import { UseFormRegister, FieldErrors, FormState, UseFormSetValue, UseFormGetValues } from 'react-hook-form';

@@ -12,6 +12,7 @@ import SelectedFileBadge from "../components/recipes/recipeForm/formComponents/s
 import SubmitButton from "../components/recipes/recipeForm/formComponents/submitButton";
 import RecipeIngredientsDisplay from "../components/recipes/recipeForm/formComponents/recipeIngredientsDisplay";
 import MobileIngredientsList from "../components/recipes/recipeForm/formComponents/mobileIngredientsList";
+import RecipeForm from "../components/recipes/recipeForm/recipeForm";
 
 
 export {
@@ -27,5 +28,6 @@ export {
   SelectedFileBadge,
   SubmitButton,
   RecipeIngredientsDisplay,
-  MobileIngredientsList
+  MobileIngredientsList,
+  RecipeForm
 };

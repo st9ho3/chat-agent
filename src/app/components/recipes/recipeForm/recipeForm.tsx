@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { RecipeSchema, Ingredient } from '@/shemas/recipe';
+import { RecipeSchema, Ingredient, Recipe, RecipeIngredients } from '@/shemas/recipe';
 import { z } from 'zod';
 import {
   AdditionalCosts,
@@ -21,11 +21,31 @@ import useRecipeForm from '@/app/hooks/useRecipeForm';
 // Use the Zod schema as the single source of truth for the form's type
 export type FormFields = z.infer<typeof RecipeSchema>;
 
+export interface RecipeFormProps {
+  mode: "create" | "edit"
+  ingredients: Ingredient[]
+  recipe?: Recipe
+  recipeIngredients?: RecipeIngredients[]
+}
 
-const RecipeForm = ({ingredients}: {ingredients: Ingredient[]}) => {
+
+const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormProps) => {
   
   const [isListVisible, setIsListVisible] = useState(false);
-  const { newId, register, handleSubmit, setValue, getValues, errors, isSubmitting, handleAddIngredient, handleRemoveIngredient, onSubmit, tempIngredients, error, state } = useRecipeForm();
+  const { 
+    newId, 
+    register, 
+    handleSubmit, 
+    setValue, 
+    getValues, 
+    errors, 
+    isSubmitting, 
+    handleAddIngredient, 
+    handleRemoveIngredient, 
+    onSubmit, 
+    tempIngredients, 
+    error, 
+    state } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
 
   return (
     <>

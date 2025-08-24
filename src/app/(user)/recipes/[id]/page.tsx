@@ -1,3 +1,4 @@
+import RecipeForm from '@/app/components/recipes/recipeForm/recipeForm'
 import React from 'react'
 
 const page = () => {

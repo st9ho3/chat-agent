@@ -1,4 +1,6 @@
 import EditForm from '@/app/components/recipes/recipeForm/editForm'
+import { RecipeForm } from '@/app/constants/components'
+import { transformIngredientFromDB, transformRecipeFromDB } from '@/app/services/helpers'
 import { getIngredients, getRecipeById } from '@/db/read'
 import { Recipe } from '@/shemas/recipe'
 import React from 'react'
@@ -24,16 +26,7 @@ const EditPage = async ({params}: Params ) => {
   }
 
   // Create the recipe object without recipeIngredients
-  const recipe: Recipe = {
-    category: recipeRaw.category,
-    createdBy: recipeRaw.createdBy,
-    dateCreated: new Date(recipeRaw.dateCreated),
-    id: recipeRaw.id,
-    imgPath: recipeRaw.imgPath ?? undefined,
-    title: recipeRaw.title,
-    totalCost: Number(recipeRaw.totalCost),
-    tax: Number(recipeRaw.tax)
-  }
+  const recipe: Recipe = transformRecipeFromDB(recipeRaw)
 
   const recipeIngredients = recipeRaw.recipeIngredients?.map((ingredient) => ({
     ingredientId: ingredient.ingredientId || '',
@@ -46,16 +39,13 @@ const EditPage = async ({params}: Params ) => {
     
   })) || []
 
-  const ingredients = rawIngredients.map((ingredient) => ({
-    ...ingredient,
-    unitPrice: Number(ingredient.unitPrice),
-    quantity: Number(ingredient.quantity)
-  }))
+  const ingredients = rawIngredients.map((ingredient) => (transformIngredientFromDB(ingredient)))
 
   return (
     <div className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
       <div className={`relative w-full max-w-fit p-9 mx-4 transform transition-all duration-300 bg-white rounded-2xl shadow-xl`}>
-        <EditForm recipe={recipe} recipeIngredients={recipeIngredients} ingredients={ingredients} />
+        {/* <EditForm recipe={recipe} recipeIngredients={recipeIngredients} ingredients={ingredients} /> */}
+        <RecipeForm mode='edit' recipe={recipe} recipeIngredients={recipeIngredients} ingredients={ingredients} />
       </div>
     </div>
   )
