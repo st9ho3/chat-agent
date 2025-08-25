@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
+import { Recipe, RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";
-import { useForm } from 'react-hook-form';
+import { NonUndefined, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getTotalPrice } from '@/app/services/helpers';
-import { sendRecipe } from '@/app/services/services';
+import { sendRecipe, sendRecipeToUpdate } from '@/app/services/services';
 import { useHomeContext } from '../context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { useFileUpload } from './useFileUpload';
@@ -16,11 +16,9 @@ import { RecipeFormProps } from '../components/recipes/recipeForm/recipeForm';
 
 export type FormFields = z.infer<typeof RecipeSchema>;
 
-
-
-const useRecipeForm = ({mode, recipe, recipeIngredients, ingredients}: RecipeFormProps) => {
+const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
-  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>([]);
+  const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>(mode === 'edit' && recipeIngredients ? recipeIngredients : []);
 
   const { state, dispatch } = useHomeContext();
   const router = useRouter();
@@ -49,31 +47,50 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, ingredients}: RecipeFor
   };
 
   const resetForm = () => {
-    reset();
-    setTempIngredients([]);
-    const nextRecipeId = uuidv4();
-    setNewId(nextRecipeId);
-    raiseNotification("Recipe added succesfully", NotificationType.Success);
-    dispatch({ type: "RESET_FILE" });
-    setValue("id", nextRecipeId);
+    if (mode === 'create') {
+      const nextRecipeId = uuidv4();
+      setNewId(nextRecipeId);
+      setValue("id", nextRecipeId);
+    }
+    setTimeout(() => {
+      dispatch({ type: "RESET_FILE" });
+      reset();
+      setTempIngredients([]);
+    }, 1000);
+    raiseNotification(mode === 'edit' ? "Recipe updated succesfully" : "Recipe added succesfully", NotificationType.Success);
     router.replace("/recipes");
   }; 
 
-
   const onSubmit = async (data: FormFields) => {
+    const newCost = getTotalPrice(tempIngredients);
+    const addedIngredients: RecipeIngredients[] = tempIngredients.filter((tempIngredient) => !recipeIngredients.includes(tempIngredient));
+    const removedIngredients: RecipeIngredients[] = recipeIngredients.filter((recipeIngredient) => !tempIngredients.includes(recipeIngredient));
+            
     try {
       if (state.file) {
         const url = await handleFileUpload(state.file);
         if (url) {
-          const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
-          if (tempIngredients.length > 0) {
-            await sendRecipe(updatedData, tempIngredients);
+          if (mode === 'edit') {
+            console.log("ADDED", addedIngredients);
+            console.log("REMOVED", removedIngredients);
+            const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url };
+            await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+          } else {
+            const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin / 100 : 0 };
+            if (tempIngredients.length > 0) {
+              await sendRecipe(updatedData, tempIngredients);
+            }
           }
         }
       } else {
-        const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin/100 : 0 };
-        if (tempIngredients.length > 0) {
-          await sendRecipe(updatedData, tempIngredients);
+        if (mode === 'edit') {
+          const recipeToUpdate = { ...data, totalCost: newCost };
+          await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+        } else {
+          const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin / 100 : 0 };
+          if (tempIngredients.length > 0) {
+            await sendRecipe(updatedData, tempIngredients);
+          }
         }
       }
     } catch (error) {

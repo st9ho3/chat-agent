@@ -28,7 +28,7 @@ export const PATCH = async (req: NextRequest, context: {params: Promise<{id: str
     const {id} = await context.params
     
     const { validatedRecipe, validatedRecipeAddedIngredients, validatedRecipeRemovedIngredients } = zodValidateDataBeforeAddThemToDatabase(request);
-  
+    console.log("PATCH",id)
     const response = await service.update(id, validatedRecipe, validatedRecipeRemovedIngredients, validatedRecipeAddedIngredients)
 
     if (response) {

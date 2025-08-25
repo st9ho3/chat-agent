@@ -25,7 +25,7 @@ export interface RecipeFormProps {
   mode: "create" | "edit"
   ingredients: Ingredient[]
   recipe?: Recipe
-  recipeIngredients?: RecipeIngredients[]
+  recipeIngredients: RecipeIngredients[]
 }
 
 
@@ -63,7 +63,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
 
           <UploadFiles />
           
-          <RecipeIngredientForm ingredients={ingredients} recipeId={newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
+          <RecipeIngredientForm ingredients={ingredients} recipeId={mode === 'edit' && recipe ? recipe.id : newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
           {/* The Pricing component now handles its own inputs */}
           <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues}>
