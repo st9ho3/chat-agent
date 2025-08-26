@@ -8,8 +8,6 @@ import { sendIngredient, updateIngredient } from '../services/services';
 import useHelpers from './useHelpers';
 import { NotificationType } from '@/types/context';
 
-
-
 type IngredientErrors = string[];
 
 type UseIngredientFormProps = {
