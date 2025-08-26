@@ -57,7 +57,7 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
               
                {/* Cell 2: Price */}
               <td className="hidden md:table-cell align-middle text-center md:text-start md:pl-4">
-                € {Number(item.unitPrice).toFixed(3)} / <span className="font-bold">{item.unit}</span> 
+                € { Number(item.unitPrice) < 1 ? Number(item.unitPrice).toFixed(3) : Number(item.unitPrice).toFixed(1) } / <span className="font-bold">{item.unit}</span> 
               </td>
               
 

@@ -67,7 +67,7 @@ export const getRecipeById = async (id: string) => {
 
 export const getIngredientById = async (id: string) => {
     try {
-        const ingredient = await db
+        const [ingredient] = await db
             .select()
             .from(ingredientsTable)
             .where(eq(ingredientsTable.id, id));
