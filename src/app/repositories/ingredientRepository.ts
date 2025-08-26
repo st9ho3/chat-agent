@@ -4,7 +4,6 @@ import { db } from "@/db/db";
 import { Database, ingredientsTable } from "@/db/schema";
 import { transformIngredientFromDB, transformIngredientToDB } from "../services/helpers";
 import { eq, sql } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 
 export class IngredientRepository implements IIngredientRepository {
 
@@ -78,7 +77,7 @@ export class IngredientRepository implements IIngredientRepository {
                 .returning({
                     ingredientId: ingredientsTable.id
                 });
-            revalidatePath("/ingredients");
+            
             return ingredientId
         } catch (err) {
             console.error("Failed to delete ingredient:", err);

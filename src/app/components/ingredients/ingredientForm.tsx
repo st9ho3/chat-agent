@@ -7,17 +7,17 @@ import { useIngredientForm } from '../../hooks/useIngredientsForm'; // Adjust pa
 
 
 type AddIngredientProps = {
-  onAddIngredient: (value: Ingredient) => void
-  ingredient: Ingredient
+  ingredient: Ingredient | undefined
   mode: 'create' | 'edit'
+  
 };
 
-const IngredientForm = ({ onAddIngredient, ingredient, mode }: AddIngredientProps) => {
+const IngredientForm = ({ ingredient, mode }: AddIngredientProps) => {
   const {
     quantity, name, unit, price, displayedPrice, errors,
     setQuantity, setErrors, handleName, handlePrice, handleFocus,
     handleBlur, handleUnit, addIngredient, handleKeyDown,
-  } = useIngredientForm({ onAddIngredient, ingredient, mode });
+  } = useIngredientForm({ ingredient, mode });
 
   return (
     <form className="p-2">

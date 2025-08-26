@@ -30,8 +30,6 @@ export const getTotalPrice = (ingredients: RecipeIngredients[]) => {
 
 export const normalizePrice = (price: string, unit: Unit, quantity: number): number => {
   const numericPrice = parseFloat(price);
-  console.log(price)
-  console.log(numericPrice)
   // Guard against invalid numbers or a quantity of 0 to prevent division by zero.
   if (isNaN(numericPrice) || quantity === 0) {
     return 0;

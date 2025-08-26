@@ -7,23 +7,15 @@ import { ExitButton, IngredientForm } from '@/app/constants/components'
 
 interface Props {
   mode: 'create' | 'edit'
-  ingredient: Ingredient
+  ingredient: Ingredient | undefined
 }
 
 const IngredientModal = ({ingredient, mode}: Props) => {
 
-  const router = useRouter()
-
-  const addIngredient = async (ingredient: Ingredient) => {
-    console.log("addIngredient: ", ingredient)
-    await sendIngredient(ingredient)
-    router.replace("/ingredients")
-  }
-
   return (
     <div>
       <ExitButton />
-      <IngredientForm mode={mode} ingredient={ingredient} onAddIngredient={addIngredient} />
+      <IngredientForm mode={mode} ingredient={ingredient}  />
     </div>
   )
 }
