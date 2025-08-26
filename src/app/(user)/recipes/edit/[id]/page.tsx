@@ -1,6 +1,6 @@
 import EditForm from '@/app/components/recipes/recipeForm/editForm'
 import { RecipeForm } from '@/app/constants/components'
-import { transformIngredientFromDB, transformRecipeFromDB } from '@/app/services/helpers'
+import { transformIngredientFromDB, transformRecipeFromDB, transformRecipeIngredentFromDB } from '@/app/services/helpers'
 import { getIngredients, getRecipeById } from '@/db/read'
 import { Recipe } from '@/shemas/recipe'
 import React from 'react'
@@ -28,16 +28,7 @@ const EditPage = async ({params}: Params ) => {
   // Create the recipe object without recipeIngredients
   const recipe: Recipe = transformRecipeFromDB(recipeRaw)
 
-  const recipeIngredients = recipeRaw.recipeIngredients?.map((ingredient) => ({
-    ingredientId: ingredient.ingredientId || '',
-    name: ingredient.ingredients?.name || 'Unknown Ingredient',
-    unit: ingredient.ingredients?.unit || 'unit',
-    unitPrice: Number(ingredient.ingredients?.unitPrice),
-    quantity: Number(ingredient.quantity) || 0,
-    iconBgColor: '',
-    recipeId: ingredient.recipeId || '',
-    
-  })) || []
+  const recipeIngredients = recipeRaw.recipeIngredients?.map((ingredient) => (transformRecipeIngredentFromDB(ingredient))) || []
 
   const ingredients = rawIngredients.map((ingredient) => (transformIngredientFromDB(ingredient)))
 

@@ -1,4 +1,5 @@
 import { DBIngredient, DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit, DBRecipeIngredients } from "@/shemas/recipe";
+import { RecipeIngredientFromDB } from "@/types/specialTypes";
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {
     if (items.length === 0) {
@@ -90,29 +91,19 @@ export const transformIngredientToDB = (ingredient: Ingredient): DBIngredient =>
   quantity: ingredient.quantity.toString()
 })
 
-export const transformRecipeIngredientFromDB = (
-  ingredient: DBRecipeIngredients
-): RecipeIngredients => ({
-  ingredientId: ingredient.ingredientId || '',
-  recipeId: ingredient.recipeId || '',
-  name: ingredient.name || 'Unknown Ingredient',
-  unit: ingredient.unit || 'unit',
-  unitPrice: Number(ingredient.unitPrice) || 0,
-  quantity: Number(ingredient.quantity) || 0,
-  iconBgColor: '',
-})
+export const transformRecipeIngredentFromDB = (
+  ingredient: RecipeIngredientFromDB
+): RecipeIngredients => {
+  return {
+    name: ingredient.ingredients.name,
+    unit: ingredient.ingredients.unit,
+    unitPrice: parseFloat(ingredient.ingredients.unitPrice),
+    quantity: parseFloat(ingredient.quantity),
+    recipeId: ingredient.recipeId,
+    ingredientId: ingredient.ingredientId,
+  };
+};
 
-export const transformRecipeIngredientToDB = (
-  ingredient: RecipeIngredients
-): DBRecipeIngredients => ({
-  ingredientId: ingredient.ingredientId,
-  recipeId: ingredient.recipeId,
-  quantity: ingredient.quantity.toString(),
-  ingredients: {
-    name: ingredient.name,
-    unit: ingredient.unit,
-    unitPrice: ingredient.unitPrice.toString(),
-  },
-})
+
 
 

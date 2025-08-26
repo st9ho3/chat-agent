@@ -115,14 +115,10 @@ export const RecipeIngredientsSchema = z.object({
 
 export type RecipeIngredients = z.infer<typeof RecipeIngredientsSchema>;
 
-// Schema for the join table linking recipes to ingredients with specific quantities and units
 export const DBRecipeIngredientsSchema = z.object({
+  id: z.number(),
   recipeId: z.string().uuid(),
   ingredientId: z.string().uuid(),
-  name: z.string().min(1, "Name is required"),
-  iconBgColor: z.string().optional(),
-  unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.string(),
   quantity: z.string().min(1, "Quantity must be non-negative"),
 });
 

@@ -55,10 +55,12 @@ export const getRecipeById = async (id: string) => {
                         ingredients: true
                     }
                 }
-            }
-        });
-        return recipe;
-    } catch (err) {
+                }
+            })
+            return recipe;
+        }
+        
+     catch (err) {
         console.log("Error fetching recipe ------->", err);
     }
 };
