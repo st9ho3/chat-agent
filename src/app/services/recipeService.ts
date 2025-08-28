@@ -4,6 +4,7 @@ import { db } from "@/db/db";
 import { RecipeIngredientsRepository, RecipeRepository } from "../repositories/recipeRepository";
 import { IngredientRepository } from "../repositories/ingredientRepository";
 import { zodValidateDataBeforeAddThemToDatabase } from "./services";
+import { RecipeUpdatePayload } from "@/types/context";
 
 export class RecipeService implements IRecipeService {
 
@@ -19,31 +20,33 @@ export class RecipeService implements IRecipeService {
     
 
     async create(requestData: CreateRequest): Promise<CreateResponse | undefined> {
+        
         const { validatedRecipe, validatedRecipeAddedIngredients } = zodValidateDataBeforeAddThemToDatabase(requestData)
-
-        if (!validatedRecipe || !validatedRecipeAddedIngredients) {
-          throw Error("A problem with validation")
+        
+        if (validatedRecipeAddedIngredients.length === 0) {
+            throw Error("Ingredients required in order to create a recipe.")
         }
-
+        
+        
         try {
             const transactionResponse = await db.transaction(async (tx) => {
 
                 const recipeResponse = await this.recipeRepository.create(validatedRecipe, tx);
-                
-                const recipeIngredientsResponse = await Promise.all(
+
+                    const recipeIngredientsResponse = await Promise.all(
                     validatedRecipeAddedIngredients.map(async (ingredient) => {
                         const newIngredient = await this.recipeIngredientsRepository.create(ingredient, tx);
                         await this.ingredientRepository.updateUsage(ingredient.ingredientId, tx, "+");
                         return newIngredient;
                     })
                 );
+                
 
                 return {
                     recipe: recipeResponse,
-                    recipeIngredients: recipeIngredientsResponse
                 };
             });
-
+            
             return transactionResponse;
 
         } catch (err) {
@@ -52,18 +55,24 @@ export class RecipeService implements IRecipeService {
         }
     }
 
-    async update(id: string, recipe: Recipe, removedIngredients: RecipeIngredients[] | undefined, addedIngredients: RecipeIngredients[] | undefined): Promise<{ id: string; } | undefined> {
-        console.log("id: ", id, "recipe: ", recipe, "removedIngredients: ", removedIngredients, "addedIngredients: ", addedIngredients)
+    async update(id: string, recipe: Recipe, removedIngredients: RecipeIngredients[] , addedIngredients: RecipeIngredients[]): Promise<{ id: string; } | undefined> {
+        const request: RecipeUpdatePayload = {
+            recipe: recipe,
+            removedIngredients: removedIngredients,
+            addedIngredients: addedIngredients
+        }
+        const {validatedRecipe, validatedRecipeAddedIngredients, validatedRecipeRemovedIngredients} = zodValidateDataBeforeAddThemToDatabase(request)
+
             const updateResponse = await db
             .transaction(async (tx) => {
-                const updateRecipeResponse = await this.recipeRepository.update(id, recipe)
+                const updateRecipeResponse = await this.recipeRepository.update(id, validatedRecipe)
         
-                    if (removedIngredients && removedIngredients.length > 0) {
-                        const ingredientsThatRemoved = await Promise.all(removedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.delete(ingredient.recipeId, ingredient.ingredientId, tx)));
+                    if (validatedRecipeRemovedIngredients && validatedRecipeRemovedIngredients.length > 0) {
+                        const ingredientsThatRemoved = await Promise.all(validatedRecipeRemovedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.delete(ingredient.recipeId, ingredient.ingredientId, tx)));
                     }
         
-                    if (addedIngredients && addedIngredients.length > 0) {
-                        const ingredientsThatAdded = await Promise.all(addedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.create(ingredient, tx)));
+                    if (validatedRecipeAddedIngredients && validatedRecipeAddedIngredients.length > 0) {
+                        const ingredientsThatAdded = await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.create(ingredient, tx)));
                     }
                     return updateRecipeResponse
                     }) 

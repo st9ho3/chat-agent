@@ -3,6 +3,7 @@ import { FormFields } from "../components/recipes/recipeForm/recipeForm";
 import { Ingredient, IngredientSchema, Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
 import { RecipeUpdatePayload } from "@/types/context";
 
+
 export const createMessage = (text: string, user: string) => {
   const message = {
     id: uid(),
@@ -18,9 +19,10 @@ export const createMessage = (text: string, user: string) => {
   return message;
 };
 
+
 export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
   const dataToSend = { recipe: data, addedIngredients: ing };
-  console.log("client fetch ", dataToSend)
+  
   const res = await fetch("/api/recipes", {
     method: "POST",
     headers: {
@@ -30,8 +32,7 @@ export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
   });
 
   if (!res.ok) {
-    // You might want to throw an error here or return something to indicate failure
-    // For example: throw new Error('Failed to create recipe');
+    return await res.json()
   }
 
   const response = await res.json();
@@ -151,8 +152,8 @@ export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayl
 
   return {
     validatedRecipe: validatedRecipe,
-    validatedRecipeAddedIngredients: validatedAddedIngredients,
-    validatedRecipeRemovedIngredients: validatedRemovedIngredients
+    validatedRecipeAddedIngredients: validatedAddedIngredients ? validatedAddedIngredients : [],
+    validatedRecipeRemovedIngredients: validatedRemovedIngredients ? validatedRemovedIngredients : []
   };
 };
 

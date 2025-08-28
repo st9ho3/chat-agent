@@ -57,7 +57,6 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
       reset();
       setTempIngredients([]);
     }, 1000);
-    raiseNotification(mode === 'edit' ? "Recipe updated succesfully" : "Recipe added succesfully", NotificationType.Success);
     router.replace("/recipes");
   }; 
 
@@ -67,6 +66,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     const removedIngredients: RecipeIngredients[] = recipeIngredients.filter((recipeIngredient) => !tempIngredients.includes(recipeIngredient));
             
     try {
+  
       if (state.file) {
         const url = await handleFileUpload(state.file);
         if (url) {
@@ -74,27 +74,35 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
             console.log("ADDED", addedIngredients);
             console.log("REMOVED", removedIngredients);
             const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url };
-            await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+            const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
           } else {
             const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin / 100 : 0 };
             if (tempIngredients.length > 0) {
-              await sendRecipe(updatedData, tempIngredients);
+              const response = await sendRecipe(updatedData, tempIngredients);
+              console.log(response)
+              raiseNotification("Recipe added succesfully", NotificationType.Success);
             }
           }
         }
       } else {
         if (mode === 'edit') {
           const recipeToUpdate = { ...data, totalCost: newCost };
-          await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+          const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+          raiseNotification("Recipe updated succesfully", NotificationType.Success);
         } else {
           const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin / 100 : 0 };
-          if (tempIngredients.length > 0) {
-            await sendRecipe(updatedData, tempIngredients);
-          }
+          
+            const response = await sendRecipe(updatedData, tempIngredients)
+            
+            if (response.success) {
+              raiseNotification(response.message, NotificationType.Success)
+            } else {
+              raiseNotification(response.error.message, NotificationType.Failure)
+            }
         }
       }
     } catch (error) {
-      raiseNotification(String(error), NotificationType.Failure);
+      raiseNotification(String(error), NotificationType.Failure)
     } finally {
       resetForm();
     }

@@ -3,9 +3,7 @@ import { Recipe, Ingredient, RecipeIngredients, DBIngredient } from '@/shemas/re
 
 export interface CreateResponse {
     recipe: string | undefined;
-    recipeIngredients: {
-        id: string | null;
-}[]}
+    }
 
 export interface CreateRequest {
     recipe: Recipe,
