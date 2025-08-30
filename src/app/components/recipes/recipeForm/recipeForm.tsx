@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RecipeSchema, Ingredient, Recipe, RecipeIngredients } from '@/shemas/recipe';
 import { z } from 'zod';
 import {
@@ -49,6 +49,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
     state,
     calculate } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
 
+    useEffect(() => {console.log("calculate")}, [calculate])
   return (
     <>
       {/* Main container */}
@@ -61,7 +62,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
 
           <FormHeader register={register} /> 
 
-          {errors.title && <ErrorDisplay error={errors.title?.message} errors={[]} />}
+          {errors.title && <ErrorDisplay error={errors.title?.message} errors={[]} pricingErrors={{}} />}
 
           <UploadFiles />
           
@@ -72,7 +73,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
             <AdditionalCosts register={register} errors={errors} />
           </Pricing>
 
-          {error && <ErrorDisplay error={error} errors={[]} />}
+          {error && <ErrorDisplay error={error} errors={[]} pricingErrors={{}} />}
 
           {/* --- Button to show ingredients on mobile --- */}
           <ViewIngredientsButtonMobile onToggleList={setIsListVisible} ingredients={tempIngredients} /> 

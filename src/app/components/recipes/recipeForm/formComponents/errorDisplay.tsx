@@ -1,8 +1,9 @@
-import { Divide } from 'lucide-react'
+
 import React from 'react'
+import { FieldErrors } from 'react-hook-form'
 
 
-const ErrorDisplay = ({error, errors}: {error: string | undefined, errors: string[]}) => {
+const ErrorDisplay = ({error, errors}: {error: string | undefined, errors: string[], pricingErrors: FieldErrors}) => {
   return (
     <div>
       {errors.map((e: string) => <p className='text-red-500 ml-3'> {e} </p>  )}

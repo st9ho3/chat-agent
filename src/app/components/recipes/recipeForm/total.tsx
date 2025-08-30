@@ -9,11 +9,9 @@ import { FormFields } from './recipeForm';
 
 const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeIngredients[], getValues: UseFormGetValues<FormFields> , setValue: UseFormSetValue<FormFields>}) => {
 
-
-  const [margin, setMargin] = useState<number | undefined>(0)
   const totalCost = getTotalPrice(ingredients);
+  const sellingprice = getValues('sellingPrice')
   const ingredientCount = ingredients.length;
-  const profitMargin = margin ? margin*100 : margin
   
 
   
@@ -43,7 +41,7 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
         </div>
 
         <p className="text-2xl font-bold text-gray-900">
-         € {}
+         € {sellingprice}
         </p>
       </div>
       <div className='w-full flex items-center justify-between'>
@@ -56,7 +54,7 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
         </div>
 
         <p className="text-2xl font-bold text-gray-900">
-         {profitMargin ? profitMargin?.toFixed(2) : 0} %
+         {} %
         </p>
       </div>
       <div className='w-full flex items-center justify-between'>
@@ -69,7 +67,7 @@ const OrderTotal = ({ ingredients, getValues, setValue }: { ingredients: RecipeI
         </div>
 
         <p className="text-2xl font-bold text-gray-900">
-         {profitMargin ? (100 - profitMargin).toFixed(2) : 0} %
+         {} %
         </p>
       </div>
 

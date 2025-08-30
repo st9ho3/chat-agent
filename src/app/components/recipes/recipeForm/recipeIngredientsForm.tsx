@@ -77,7 +77,7 @@ const RecipeIngredientForm: React.FC<FormProps> = ({
         <AddIngredientButton onClick={addIngredient} />
       </div>
 
-      <ErrorDisplay errors={errors} error='' />
+      <ErrorDisplay errors={errors} error='' pricingErrors={{}}/>
     </div>
   );
 };

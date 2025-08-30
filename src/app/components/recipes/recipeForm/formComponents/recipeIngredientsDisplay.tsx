@@ -24,7 +24,10 @@ const RecipeIngredientsDisplay = ({ingredients, onRemove, getValues, setValue}: 
           />
         ) : <h3 className='text-center text-gray-500'>Empty</h3>}
       </div>
-      <OrderTotal ingredients={ingredients} getValues={getValues} setValue={setValue}/>
+      <OrderTotal 
+       ingredients={ingredients} 
+       getValues={getValues} 
+       setValue={setValue}/>
     </div>
   )
 }

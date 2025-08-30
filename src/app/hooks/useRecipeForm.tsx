@@ -108,13 +108,15 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     }
   };
 
-  const calculate = (): number | undefined => {
+  const calculate = (e: React.MouseEvent<HTMLButtonElement>): number | undefined => {
+    e.preventDefault()
     let tax = getValues('tax')
     let cost = getTotalPrice(tempIngredients)
     let isPriceKnown = getValues('sellingPrice')
-    console.log(`tax: ${tax}, cost: ${cost}, isPriceKnown: ${isPriceKnown}`)
+    let profitIsKnown = getValues('profitMargin')
+
     if (tax !== 0 && cost !== 0) {
-      if (isPriceKnown !== 0) {
+      if (isPriceKnown !== 0 && profitIsKnown === 0) {
       let price = getValues('sellingPrice')
       if (price) {
         let profitMargin = (price - (price * tax) - cost)/price * 100
