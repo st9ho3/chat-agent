@@ -77,7 +77,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
 
           {state.file && <SelectedFileBadge /> }
 
-          <SubmitButton isSubmitting={isSubmitting} />
+          <SubmitButton isSubmitting={isSubmitting} mode={mode} />
 
         </form>
 

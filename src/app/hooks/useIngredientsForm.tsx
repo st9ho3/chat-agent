@@ -43,7 +43,7 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    if (value === '' || /^(\d+\.?\d*)$/.test(value)) {
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setPrice(value);
     }
     setErrors([]);
@@ -111,13 +111,16 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
         }
       }
     } else if (mode === 'edit' && ingredient) {
+
+      const normalizedUnitPrice = normalizePrice(price, unit, quantity);
+
       // Edit mode logic
       const updatedIngredient: Ingredient = {
         id: ingredient.id,
         icon: ingredient.icon || '🥑',
         name: name,
         unit: unit as Unit,
-        unitPrice: Number(price),
+        unitPrice: normalizedUnitPrice,
         quantity: quantity,
         usage: ingredient.usage || "0"
       };

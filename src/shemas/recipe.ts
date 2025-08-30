@@ -82,7 +82,7 @@ export const IngredientSchema = z.object({
   icon: z.string().optional().nullable(),
   name: z.string().min(1, "Name is required"),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.number().min(0, "Unit price must be non-negative"),
+  unitPrice: z.number().min(0.001, "Unit price can't be zero."),
   quantity: z.number().min(1, "Quantity must be non-negative"),
   usage: z.string()
 });
@@ -94,7 +94,7 @@ export const DBIngredientSchema = z.object({
   icon: z.string().optional().nullable(),
   name: z.string().min(1, "Name is required"),
   unit: z.string().min(1, "Unit is required"),
-  unitPrice: z.string().min(0, "Unit price must be non-negative"),
+  unitPrice: z.string().min(0.001, "Unit price can't be zero."),
   quantity: z.string().min(1, "Quantity must be non-negative"),
   usage: z.string()
 });
