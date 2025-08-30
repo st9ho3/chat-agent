@@ -108,6 +108,35 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     }
   };
 
+  const calculate = (): number | undefined => {
+    let tax = getValues('tax')
+    let cost = getTotalPrice(tempIngredients)
+    let isPriceKnown = getValues('sellingPrice')
+    console.log(`tax: ${tax}, cost: ${cost}, isPriceKnown: ${isPriceKnown}`)
+    if (tax !== 0 && cost !== 0) {
+      if (isPriceKnown !== 0) {
+      let price = getValues('sellingPrice')
+      if (price) {
+        let profitMargin = (price - (price * tax) - cost)/price * 100
+        setValue('profitMargin', profitMargin)
+        console.log("Profit margin: %",profitMargin)
+        return profitMargin
+      }
+    } else {
+      let profitMargin = getValues('profitMargin')
+      if (profitMargin) {
+      let price = cost / ((1 - tax) - (profitMargin / 100));
+      setValue('sellingPrice', price)
+      console.log("Price: ",price)
+      return price
+      }
+    }
+    } else {
+      console.log("Tax and Cost can't be zero")
+    }
+    return
+  }
+
   return {
     newId,
     register,
@@ -123,7 +152,8 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     onSubmit,
     error,
     tempIngredients,
-    state
+    state,
+    calculate
   };
 };
 

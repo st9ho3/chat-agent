@@ -10,10 +10,11 @@ type PricingCostsProps = {
   errors: FieldErrors<FormFields>;
   children: React.ReactNode;
   setValue: UseFormSetValue<FormFields>;
-  getValues: UseFormGetValues<FormFields>
+  getValues: UseFormGetValues<FormFields>;
+  calculate: () => number | undefined
 };
 
-const Pricing = ({ children, register, errors, setValue, getValues }: PricingCostsProps) => {
+const Pricing = ({ children, register, errors, setValue, getValues, calculate }: PricingCostsProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -28,7 +29,7 @@ const Pricing = ({ children, register, errors, setValue, getValues }: PricingCos
 
   const handleFocus = (fieldName: "sellingPrice" | "profitMargin") => {
     if (getValues(fieldName) === 0) {
-      setValue(fieldName, undefined, {shouldValidate: true})
+      setValue(fieldName,undefined, {shouldValidate: true})
     }
   }
    
@@ -80,12 +81,10 @@ const Pricing = ({ children, register, errors, setValue, getValues }: PricingCos
           <div className="flex items-center justify-between w-full border border-dashed border-gray-300 rounded-lg flex-grow px-1">
             My additional tax is: 
             {children}
-               <button
-          type="button"
-          className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors w-full sm:w-auto flex-shrink-0"
-        >
-          <span className="sm:inline">Calculate</span>
-        </button>
+               <div className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-green-600 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors w-full sm:w-auto flex-shrink-0" >
+          
+          <button onClick={calculate} type='submit'> Calculate </button>
+        </div>
           </div>
           
          

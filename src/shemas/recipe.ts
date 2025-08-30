@@ -53,8 +53,8 @@ export const RecipeSchema = z.object({
   category: RecipeCategorySchema,
   tax: z.number().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
   imgPath: z.string().url("Image path must be a valid URL"),
-  sellingPrice: z.number().min(0, "Selling price can't be negative"),
-  profitMargin: z.number().min(0, "Profit margin can't be negative")
+  sellingPrice: z.number().min(0, "Selling price can't be negative").optional(),
+  profitMargin: z.number().min(0, "Profit margin can't be negative").optional()
 });
 
 export type Recipe = z.infer<typeof RecipeSchema>;

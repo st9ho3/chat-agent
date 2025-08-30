@@ -59,10 +59,11 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
     setErrors([]);
     setSelectedIngredient('');
     setUnit('');
-    setQuantity(1);
+    setQuantity(0);
   };
 
   const addIngredient = () => {
+    
     const ingredient = ingredients.find((ing) => ing.name === selectedIngredient);
     const foundIngredient = tempIngredients.find((ing) => ing.name === selectedIngredient);
     
@@ -154,7 +155,7 @@ const RecipeIngredientForm = ({ recipeId, ingredients, onAddIngredient, tempIngr
             <Incremental 
               onChange={setQuantity} 
               count={quantity} 
-              onKeyDown={() => {}}
+              onKeyDown={handleKeyDown}
               setErrors={() => {}}
             />
           </div>

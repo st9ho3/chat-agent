@@ -45,7 +45,8 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
     onSubmit, 
     tempIngredients, 
     error, 
-    state } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
+    state,
+    calculate } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
 
   return (
     <>
@@ -59,18 +60,18 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
 
           <FormHeader register={register} /> 
 
-          {errors.title && <ErrorDisplay error={errors.title?.message} />}
+          {errors.title && <ErrorDisplay error={errors.title?.message} errors={[]} />}
 
           <UploadFiles />
           
           <RecipeIngredientForm ingredients={ingredients} recipeId={mode === 'edit' && recipe ? recipe.id : newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
           {/* The Pricing component now handles its own inputs */}
-          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues}>
+          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues} calculate={calculate}>
             <AdditionalCosts register={register} errors={errors} />
           </Pricing>
 
-          {error && <ErrorDisplay error={error} />}
+          {error && <ErrorDisplay error={error} errors={[]} />}
 
           {/* --- Button to show ingredients on mobile --- */}
           <ViewIngredientsButtonMobile onToggleList={setIsListVisible} ingredients={tempIngredients} /> 
