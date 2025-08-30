@@ -2,7 +2,6 @@
 
 import AdditionalCosts from "../components/recipes/recipeForm/additionalCosts";
 import UploadFiles from "../components/shared/uploadFiles";
-import RecipeIngredientForm from "../components/recipes/recipeForm/recipeIngredients";
 import Pricing from "../components/recipes/recipeForm/pricing";
 import ExitButton from "../components/shared/exitButton";
 import FormHeader from "../components/recipes/recipeForm/formComponents/formHeader";
@@ -24,14 +23,13 @@ import IngredientForm from "../components/ingredients/ingredientForm";
 import { IngredientSelector } from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/ingredientSelector";
 import { UnitSelector } from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/unitSelector";
 import { AddRecipeIngredientButton } from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/addIngredientButton";
-
+import RecipeIngredientForm from "../components/recipes/recipeForm/recipeIngredientsForm";
 
 
 export {
 
   AdditionalCosts,
   UploadFiles,
-  RecipeIngredientForm,
   Pricing,
   ExitButton,
   FormHeader,
@@ -52,5 +50,6 @@ export {
   IngredientModal,
   IngredientSelector,
   UnitSelector,
-  AddRecipeIngredientButton
+  AddRecipeIngredientButton,
+  RecipeIngredientForm
 };

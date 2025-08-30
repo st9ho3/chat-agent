@@ -5,7 +5,7 @@ import { z } from 'zod';
 import {
   AdditionalCosts,
   UploadFiles,
-  RecipeIngredientForm,
+
   Pricing,
   ExitButton,
   FormHeader,
@@ -14,7 +14,8 @@ import {
   SelectedFileBadge,
   SubmitButton,
   RecipeIngredientsDisplay,
-  MobileIngredientsList
+  MobileIngredientsList,
+  RecipeIngredientForm
 } from '@/app/constants/components';
 import useRecipeForm from '@/app/hooks/useRecipeForm';
 

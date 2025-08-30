@@ -45,7 +45,7 @@ const RecipeIngredientForm: React.FC<FormProps> = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
+      <div className="flex sm:flex-row gap-3 w-full">
         {/* Input Group */}
         <div className="flex items-center gap-3 rounded-lg border border-dashed border-gray-300 p-1 w-full flex-grow">
           <IngredientSelector
