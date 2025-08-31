@@ -50,11 +50,6 @@ export const usePricing = (
 
 const calculateProfitMargin = (cost: number, sellingPrice: number, tax: number): number | undefined => {
   if (sellingPrice > 0) {
-    console.log(sellingPrice)
-    console.log(sellingPrice*tax)
-    console.log(cost)
-    console.log(sellingPrice - (sellingPrice * tax) - cost)
-    console.log(((sellingPrice - (sellingPrice * tax) - cost) / sellingPrice))
     return ((sellingPrice - (sellingPrice * tax) - cost) / sellingPrice) * 100;
     
   }
@@ -63,23 +58,21 @@ const calculateProfitMargin = (cost: number, sellingPrice: number, tax: number):
 };
 
   // Manual calculate function (still useful for the calculate button)
-  const calculate = (e: React.MouseEvent<HTMLButtonElement>)=> {
-    e.preventDefault()
-    const tax = getValues('tax')
-    const cost = getTotalPrice(ingredients)
-    const initialPrice = getValues('sellingPrice')
-    const initialProfitMargin = getValues('profitMargin')
-    if (initialPrice && initialPrice > 0 ) {
-     let profit = calculateProfitMargin(cost, initialPrice, tax)
-     console.log(profit)
-     console.log(initialProfitMargin)
-      setValue('profitMargin',profit)
-    }
-    if (initialProfitMargin && initialProfitMargin > 0 ) {
-     let price = calculateSellingPrice(cost, initialProfitMargin, tax)
-      setValue('profitMargin', Number(price?.toFixed(2)))
-    }
+  const calculate = (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.preventDefault();
+  const tax = getValues('tax');
+  const cost = getTotalPrice(ingredients);
+  const initialPrice = getValues('sellingPrice');
+  const initialProfitMargin = getValues('profitMargin');
+
+  if (selectedPricingMethod === "price" && initialPrice && initialPrice > 0) {
+    const profit = calculateProfitMargin(cost, initialPrice, tax);
+    setValue('profitMargin', profit ? Number(profit.toFixed(2)) : 0);
+  } else if (selectedPricingMethod === "profit" && initialProfitMargin && initialProfitMargin > 0) {
+    const price = calculateSellingPrice(cost, initialProfitMargin, tax);
+    setValue('sellingPrice', price ? Number(price.toFixed(2)) : 0);
   }
+};
 
   return {
     selectedPricingMethod,
