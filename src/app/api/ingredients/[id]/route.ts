@@ -40,9 +40,8 @@ export const DELETE = async (req: NextRequest, context: {params: Promise<{id: st
        return sendSuccess("Recipe succesfully deleted", 201)
 
     }catch(err) {
-
         console.log(err)
-        
+        return sendError("An error occured on our side", 500)
     }
 
 }

@@ -4,6 +4,7 @@ import { Ingredient, IngredientSchema, Recipe, RecipeIngredients, RecipeIngredie
 import { RecipeUpdatePayload } from "@/types/context";
 
 
+
 export const createMessage = (text: string, user: string) => {
   const message = {
     id: uid(),
@@ -114,14 +115,25 @@ export const updateIngredient = async (ingredient: Ingredient) => {
   }
 }
 
+// src/app/services/services.ts
+
 export const deleteIngredient = async (id: string) => {
   
-  await fetch(`/api/ingredients/${id}`, {
+  const res = await fetch(`/api/ingredients/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     }
   })
+  if (!res.ok) {
+    const error = await res.json(); // Parse the JSON from the response 
+    return error
+  } else {
+    const response = await res.json()
+    console.log(response)
+    return response
+  }
+  
 }
 
 export const zodValidateDataBeforeAddThemToDatabase = (request: RecipeUpdatePayload) => {

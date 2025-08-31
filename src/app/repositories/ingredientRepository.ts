@@ -80,8 +80,8 @@ export class IngredientRepository implements IIngredientRepository {
             
             return ingredientId
         } catch (err) {
-            console.error("Failed to delete ingredient:", err);
-            return
+            throw Error("Failed to delete ingredient from database")
+            
         }
     }
 

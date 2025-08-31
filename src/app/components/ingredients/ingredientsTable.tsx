@@ -10,16 +10,24 @@ import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
 import Label from "../shared/label";
 import { deleteIngredient } from "@/app/services/services";
+import useHelpers from "@/app/hooks/useHelpers";
+import { NotificationType } from "@/types/context";
 
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();
+  const {raiseNotification} = useHelpers()
   const router = useRouter()
   const paginateItems= paginate(10, state.currentPage, items);
   
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 
   const handleDelete = async(id: string) => {
-    await deleteIngredient(id)
+    const res = await deleteIngredient(id)
+    if (!res.success) {
+      raiseNotification(res.error.message, NotificationType.Failure)
+    } else {
+      raiseNotification(res.message, NotificationType.Success)
+    }
     router.replace("ingredients")
   }
 
