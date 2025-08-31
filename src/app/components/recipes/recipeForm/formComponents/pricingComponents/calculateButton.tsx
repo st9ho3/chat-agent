@@ -1,7 +1,7 @@
 import React from 'react';
 
 type CalculateButtonProps = {
-  onCalculate: (e: React.MouseEvent<HTMLButtonElement>) => number | undefined;
+  onCalculate: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const CalculateButton: React.FC<CalculateButtonProps> = ({ onCalculate }) => {

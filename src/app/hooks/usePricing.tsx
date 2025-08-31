@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { UseFormSetValue, UseFormGetValues } from 'react-hook-form';
 import { FormFields } from '@/app/components/recipes/recipeForm/recipeForm';
+import { getTotalPrice } from '../services/helpers';
+import { RecipeIngredients } from '@/shemas/recipe';
 
 export type PricingMethod = "price" | "profit" | "";
 
 export const usePricing = (
   setValue: UseFormSetValue<FormFields>,
-  getValues: UseFormGetValues<FormFields>
+  getValues: UseFormGetValues<FormFields>,
+  ingredients: RecipeIngredients[]
 ) => {
   const [selectedPricingMethod, setSelectedPricingMethod] = useState<PricingMethod>("");
 
@@ -36,11 +39,22 @@ export const usePricing = (
     return isFieldDisabled(fieldType) ? `${baseClasses} ${disabledClasses}` : baseClasses;
   };
 
+  // Manual calculate function (still useful for the calculate button)
+  const calculate = (e: React.MouseEvent<HTMLButtonElement>)=> {
+    e.preventDefault()
+    const tax = getValues('tax')
+    const cost = getTotalPrice(ingredients)
+    const price = getValues('sellingPrice')
+    const profitMargin = getValues('profitMargin')
+    
+  }
+
   return {
     selectedPricingMethod,
     handlePricingMethodChange,
     handleInputFocus,
     isFieldDisabled,
     getFieldClasses,
+    calculate
   };
 };

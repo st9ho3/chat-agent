@@ -2,9 +2,10 @@
 import { Euro, Percent } from 'lucide-react';
 import React from 'react';
 import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
-import { FormFields } from './recipeForm';
+import { FormFields } from '../recipeForm';
 import { usePricing } from '@/app/hooks/usePricing';
 import {PricingRadioOption, CalculateButton, ErrorDisplay} from '@/app/constants/components'
+import { RecipeIngredients } from '@/shemas/recipe';
 
 // Define props for the component
 type PricingCostsProps = {
@@ -13,7 +14,7 @@ type PricingCostsProps = {
   children: React.ReactNode;
   setValue: UseFormSetValue<FormFields>;
   getValues: UseFormGetValues<FormFields>;
-  calculate: (e: React.MouseEvent<HTMLButtonElement>) => number | undefined;
+  ingredients: RecipeIngredients[]
 };
 
 const Pricing: React.FC<PricingCostsProps> = ({
@@ -22,7 +23,7 @@ const Pricing: React.FC<PricingCostsProps> = ({
   errors,
   setValue,
   getValues,
-  calculate
+  ingredients
 }) => {
   const {
     selectedPricingMethod,
@@ -30,7 +31,8 @@ const Pricing: React.FC<PricingCostsProps> = ({
     handleInputFocus,
     isFieldDisabled,
     getFieldClasses,
-  } = usePricing(setValue, getValues);
+    calculate
+  } = usePricing(setValue, getValues, ingredients);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Ingredient, RecipeIngredients } from '@/shemas/recipe';
-import Incremental from '../../shared/incremental';
+import Incremental from '../../../shared/incremental';
 import { useRecipeIngredientsForm } from '@/app/hooks/useRecipeIngredientsForm';
 import { 
     IngredientSelector,

@@ -1,9 +1,8 @@
 import React from 'react'
-import DisplayedIngredientItem from '../displayedIngredient'
-import OrderTotal from '../total'
 import { RecipeIngredients } from '@/shemas/recipe'
 import { UseFormGetValues, UseFormSetValue } from 'react-hook-form'
-import { FormFields } from '../recipeForm'
+import { FormFields } from '../../recipeForm'
+import {OrderTotal, DisplayedIngredientItem} from '@/app/constants/components'
 
 interface Props {
     ingredients: RecipeIngredients[]

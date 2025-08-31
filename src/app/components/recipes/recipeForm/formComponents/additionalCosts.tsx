@@ -2,7 +2,7 @@
 import React from 'react';
 import { BanknoteX } from "lucide-react";
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { FormFields } from './recipeForm'; // Import your FormFields type
+import { FormFields } from '../recipeForm'; // Import your FormFields type
 
 // Define props for the component
 type AdditionalCostsProps = {

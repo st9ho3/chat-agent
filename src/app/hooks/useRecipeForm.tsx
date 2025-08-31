@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Recipe, RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";
 import { NonUndefined, useForm } from 'react-hook-form';
@@ -24,7 +24,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
   const router = useRouter();
   const { handleFileUpload, error } = useFileUpload();
   const { raiseNotification } = useHelpers();
-  const { register, handleSubmit, setValue, reset, formState, getValues } = useForm<FormFields>({
+  const { register, handleSubmit, setValue, reset, formState, getValues, watch } = useForm<FormFields>({
     defaultValues: mode === "create" ? {
       ...defaultValues,
       id: newId
@@ -44,6 +44,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
   const handleRemoveIngredient = (id: string) => {
     const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id);
     setTempIngredients(newIngredients);
+    setValue("totalCost", getTotalPrice(newIngredients));
   };
 
   const resetForm = () => {
@@ -66,7 +67,6 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     const removedIngredients: RecipeIngredients[] = recipeIngredients.filter((recipeIngredient) => !tempIngredients.includes(recipeIngredient));
             
     try {
-  
       if (state.file) {
         const url = await handleFileUpload(state.file);
         if (url) {
@@ -108,37 +108,6 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     }
   };
 
-  const calculate = (e: React.MouseEvent<HTMLButtonElement>): number | undefined => {
-    e.preventDefault()
-    let tax = getValues('tax')
-    let cost = getTotalPrice(tempIngredients)
-    let isPriceKnown = getValues('sellingPrice')
-    let profitIsKnown = getValues('profitMargin')
-
-    if (tax !== 0 && cost !== 0) {
-      if (isPriceKnown !== 0 && profitIsKnown === 0) {
-      let price = getValues('sellingPrice')
-      if (price) {
-        let profitMargin = (price - (price * tax) - cost)/price * 100
-        setValue('profitMargin', profitMargin)
-        console.log("Profit margin: %",profitMargin)
-        return profitMargin
-      }
-    } else {
-      let profitMargin = getValues('profitMargin')
-      if (profitMargin) {
-      let price = cost / ((1 - tax) - (profitMargin / 100));
-      setValue('sellingPrice', price)
-      console.log("Price: ",price)
-      return price
-      }
-    }
-    } else {
-      console.log("Tax and Cost can't be zero")
-    }
-    return
-  }
-
   return {
     newId,
     register,
@@ -147,6 +116,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     reset,
     formState,
     getValues,
+    watch, // Export watch for other components if needed
     errors,
     isSubmitting,
     handleAddIngredient,
@@ -154,9 +124,8 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     onSubmit,
     error,
     tempIngredients,
-    state,
-    calculate
-  };
-};
-
-export default useRecipeForm;
+    state
+    
+}
+}
+export default useRecipeForm

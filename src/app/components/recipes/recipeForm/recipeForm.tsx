@@ -46,10 +46,9 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
     onSubmit, 
     tempIngredients, 
     error, 
-    state,
-    calculate } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
+    state } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
 
-    useEffect(() => {console.log("calculate")}, [calculate])
+    
   return (
     <>
       {/* Main container */}
@@ -69,7 +68,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
           <RecipeIngredientForm ingredients={ingredients} recipeId={mode === 'edit' && recipe ? recipe.id : newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
           {/* The Pricing component now handles its own inputs */}
-          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues} calculate={calculate}>
+          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues} ingredients={tempIngredients}>
             <AdditionalCosts register={register} errors={errors} />
           </Pricing>
 
