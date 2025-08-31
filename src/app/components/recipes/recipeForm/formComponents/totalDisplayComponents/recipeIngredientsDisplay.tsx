@@ -1,6 +1,6 @@
 import React from 'react'
 import { RecipeIngredients } from '@/shemas/recipe'
-import { UseFormGetValues, UseFormSetValue } from 'react-hook-form'
+import { UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { FormFields } from '../../recipeForm'
 import {OrderTotal, DisplayedIngredientItem} from '@/app/constants/components'
 
@@ -9,9 +9,10 @@ interface Props {
     onRemove: (id: string) => void
     getValues: UseFormGetValues<FormFields>
     setValue: UseFormSetValue<FormFields>
+    watch: UseFormWatch<FormFields>
 }
 
-const RecipeIngredientsDisplay = ({ingredients, onRemove, getValues, setValue}: Props) => {
+const RecipeIngredientsDisplay = ({ingredients, onRemove, getValues, setValue, watch}: Props) => {
   return (
     <div className='hidden md:flex flex-col items-center border-1 border-gray-300 border-dashed rounded-lg w-full p-2 md:ml-1 mt-4 md:mt-0'>
       <div className='w-full h-2/3 overflow-auto'>
@@ -26,7 +27,9 @@ const RecipeIngredientsDisplay = ({ingredients, onRemove, getValues, setValue}: 
       <OrderTotal 
        ingredients={ingredients} 
        getValues={getValues} 
-       setValue={setValue}/>
+       setValue={setValue}
+       watch={watch}
+       />
     </div>
   )
 }

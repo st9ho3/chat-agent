@@ -1,7 +1,7 @@
 "use client"
 import { Euro, Percent } from 'lucide-react';
 import React from 'react';
-import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
+import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormGetValues, UseFormWatch } from 'react-hook-form';
 import { FormFields } from '../recipeForm';
 import { usePricing } from '@/app/hooks/usePricing';
 import {PricingRadioOption, CalculateButton, ErrorDisplay} from '@/app/constants/components'
@@ -14,7 +14,8 @@ type PricingCostsProps = {
   children: React.ReactNode;
   setValue: UseFormSetValue<FormFields>;
   getValues: UseFormGetValues<FormFields>;
-  ingredients: RecipeIngredients[]
+  ingredients: RecipeIngredients[];
+  watch: UseFormWatch<FormFields>
 };
 
 const Pricing: React.FC<PricingCostsProps> = ({

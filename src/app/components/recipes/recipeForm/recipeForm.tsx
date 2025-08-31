@@ -46,7 +46,9 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
     onSubmit, 
     tempIngredients, 
     error, 
-    state } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
+    state,
+    watch
+   } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
 
     
   return (
@@ -68,7 +70,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
           <RecipeIngredientForm ingredients={ingredients} recipeId={mode === 'edit' && recipe ? recipe.id : newId} onAddIngredient={handleAddIngredient} tempIngredients={tempIngredients} />
 
           {/* The Pricing component now handles its own inputs */}
-          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues} ingredients={tempIngredients}>
+          <Pricing register={register} errors={errors} setValue={setValue} getValues={getValues} ingredients={tempIngredients} watch={watch}>
             <AdditionalCosts register={register} errors={errors} />
           </Pricing>
 
@@ -88,7 +90,8 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
           ingredients={tempIngredients}
           getValues={getValues}
           setValue={setValue}
-          onRemove={handleRemoveIngredient} 
+          onRemove={handleRemoveIngredient}
+          watch={watch} 
         />
       </div>
 
@@ -99,7 +102,8 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
           getValues={getValues}
           setValue={setValue}
           onRemove={handleRemoveIngredient}
-          onToggle={setIsListVisible} 
+          onToggle={setIsListVisible}
+          watch ={watch} 
         />}
     </>
   );

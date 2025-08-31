@@ -1,9 +1,9 @@
 import { RecipeIngredients } from '@/shemas/recipe'
 import React from 'react'
-import { UseFormGetValues, UseFormSetValue } from 'react-hook-form'
+import { UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { FormFields } from '../../recipeForm'
 import {OrderTotal, DisplayedIngredientItem} from '@/app/constants/components'
-
+import { watch } from 'fs'
 
 interface Props {
     onToggle: (value: React.SetStateAction<boolean>) => void
@@ -11,10 +11,10 @@ interface Props {
     getValues: UseFormGetValues<FormFields>
     setValue: UseFormSetValue<FormFields>
     onRemove: (id: string) => void 
-
+    watch: UseFormWatch<FormFields>
 }
 
-const MobileIngredientsList = ({onToggle,ingredients, onRemove, setValue, getValues}: Props) => {
+const MobileIngredientsList = ({onToggle,ingredients, onRemove, setValue, getValues, watch}: Props) => {
   return (
     <div className="fixed inset-0 bg-white z-50 p-4 flex flex-col md:hidden">
       <div className="flex justify-between items-center mb-4">
@@ -32,7 +32,7 @@ const MobileIngredientsList = ({onToggle,ingredients, onRemove, setValue, getVal
         ) : <h3 className='text-center text-gray-500'>Empty</h3>}
       </div>
 
-      <OrderTotal ingredients={ingredients} getValues={getValues} setValue={setValue} />
+      <OrderTotal ingredients={ingredients} getValues={getValues} setValue={setValue} watch={watch} />
     </div>
   )
 }

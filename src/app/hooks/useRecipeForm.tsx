@@ -116,7 +116,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     reset,
     formState,
     getValues,
-    watch, // Export watch for other components if needed
+    watch, 
     errors,
     isSubmitting,
     handleAddIngredient,
