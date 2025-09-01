@@ -1,17 +1,19 @@
 import Header from '@/app/components/recipes/header'
 import Pagination from '@/app/components/recipes/pagination'
 import RecipesTable from '@/app/components/recipes/recipestable'
-import { getRecipes } from '@/db/read'
 import { transformRecipeFromDB } from '@/app/services/helpers'
+import { RecipeService } from '@/app/services/recipeService'
 
 export const dynamic = "force-dynamic"
 
 const RecipesPage = async() => {
 
-  const rawRecipes = await getRecipes();
-  const recipes = rawRecipes.map((recipe) => {
-    return transformRecipeFromDB(recipe)
-  })
+  const service = new RecipeService()
+
+  const rawRecipes = await service.findAll()
+  const recipes =rawRecipes ? rawRecipes.map((recipe) => {
+    return recipe
+  }) : []
 
 
   return (

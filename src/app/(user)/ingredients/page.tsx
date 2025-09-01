@@ -1,19 +1,18 @@
 import IngredientsTable from '@/app/components/ingredients/ingredientsTable'
 import Header from '@/app/components/recipes/header'
 import Pagination from '@/app/components/recipes/pagination'
-import { getIngredients } from '@/db/read'
+import { transformIngredientFromDB } from '@/app/services/helpers'
+import { IngredientService } from '@/app/services/ingredientService'
 import React from 'react'
 
 const ingredientsPage = async() => {
 
-  const rawIngredients = await getIngredients()
-  const ingredients = rawIngredients.map((ingredient) => {
-    return {
-      ...ingredient,
-      unitPrice: Number(ingredient.unitPrice),
-      quantity: Number(ingredient.quantity)
-    }
-  })
+  const service = new IngredientService()
+
+  const rawIngredients = await service.findAll()
+  const ingredients = rawIngredients ? rawIngredients.map((ingredient) => {
+    return ingredient
+  }) : []
 
 
   return (

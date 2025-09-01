@@ -5,6 +5,7 @@ import { RecipeIngredientsRepository, RecipeRepository } from "../repositories/r
 import { IngredientRepository } from "../repositories/ingredientRepository";
 import { zodValidateDataBeforeAddThemToDatabase } from "./services";
 import { RecipeUpdatePayload } from "@/types/context";
+import { RecipeWithQuery } from "@/types/specialTypes";
 
 export class RecipeService implements IRecipeService {
 
@@ -17,7 +18,21 @@ export class RecipeService implements IRecipeService {
         this.recipeIngredientsRepository = new RecipeIngredientsRepository()
         this.ingredientRepository = new IngredientRepository()
     }
-    
+
+    async findAll(): Promise<Recipe[] | undefined> {
+        const recipes = await this.recipeRepository.findAll()
+        return recipes
+    }
+
+    async findById(id: string): Promise< RecipeWithQuery | undefined> {
+        
+        try {
+            const recipe = await this.recipeRepository.findById(id)
+            return recipe
+        }catch(err) {
+            return 
+        }
+    }
 
     async create(requestData: CreateRequest): Promise<CreateResponse | undefined> {
         

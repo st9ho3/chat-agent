@@ -1,11 +1,15 @@
 import RecipeForm from '@/app/components/recipes/recipeForm/recipeForm'
-import { getIngredients } from '@/db/read'
+import { IngredientService } from '@/app/services/ingredientService'
 import { RecipeIngredients } from '@/shemas/recipe'
 import React from 'react'
 
 const page = async () => {
-  const rawIngredients = await getIngredients()
-  const ingredients = rawIngredients.map((ingredient) => {return {...ingredient, unitPrice: Number(ingredient.unitPrice), quantity: Number(ingredient.quantity)}})
+
+  const service = new IngredientService()
+
+  const rawIngredients = await service.findAll()
+  
+  const ingredients = rawIngredients ? rawIngredients.map((ingredient) => {return {...ingredient, unitPrice: Number(ingredient.unitPrice), quantity: Number(ingredient.quantity)}}) : []
   const recipeIngredients: RecipeIngredients[] = []
  
   return (

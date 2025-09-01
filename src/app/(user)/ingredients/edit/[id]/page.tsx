@@ -1,17 +1,15 @@
-import { getIngredientById } from '@/db/read'
+
 import React from 'react'
 import { transformIngredientFromDB } from '@/app/services/helpers'
 import { IngredientModal } from '@/app/constants/components'
+import { IngredientService } from '@/app/services/ingredientService'
 
 const IngredientEditPage = async ({params}: {params: Promise<{id: string}>} ) => {
+
+  const service = new IngredientService()
     const {id} = await params
 
-    const dbIngredient = await getIngredientById(id)
-
-    if (!dbIngredient) {
-    return <div>Igredient not found</div>
-  }
-    const ingredient = transformIngredientFromDB(dbIngredient)
+  const ingredient = await service.findById(id)
 
   return (
     <div className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">

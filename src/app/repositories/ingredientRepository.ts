@@ -7,7 +7,7 @@ import { eq, sql } from "drizzle-orm";
 
 export class IngredientRepository implements IIngredientRepository {
 
-    async findAll(): Promise<Ingredient[]> {
+    async findAll(): Promise<Ingredient[] | undefined> {
         try {
             const dbIngredients = await db
                 .select()
@@ -17,7 +17,7 @@ export class IngredientRepository implements IIngredientRepository {
             return ingredients
         } catch (err) {
             console.error("Failed to fetch ingredients:", err);
-            return []; // Return empty array on error
+            return undefined; // Return empty array on error
         }
     }
 

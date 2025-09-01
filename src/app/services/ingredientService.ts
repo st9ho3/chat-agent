@@ -14,6 +14,22 @@ export class IngredientService implements IIngredientService {
         this.ingredientRepository = new IngredientRepository()
     }
 
+    async findAll(): Promise<Ingredient[] | undefined> {
+      
+      try {
+        const ingredients = await this.ingredientRepository.findAll()
+        return ingredients
+      }catch (err) {
+        return 
+      }
+    }
+
+    async findById(id: string): Promise<Ingredient | undefined> {
+      const ingredient = await this.ingredientRepository.findById(id)
+
+      return ingredient
+    }
+
     async create(ingredient: Ingredient): Promise<{ ingredientId: string; } | undefined> {
           
           const ingredientExists = await checkIfIngredientExists(ingredient.name);

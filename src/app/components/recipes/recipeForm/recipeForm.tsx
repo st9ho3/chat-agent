@@ -18,6 +18,7 @@ import {
   RecipeIngredientForm
 } from '@/app/constants/components';
 import useRecipeForm from '@/app/hooks/useRecipeForm';
+import { RecipeWithQuery } from '@/types/specialTypes';
 
 // Use the Zod schema as the single source of truth for the form's type
 export type FormFields = z.infer<typeof RecipeSchema>;

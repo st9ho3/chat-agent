@@ -1,6 +1,4 @@
-import { updateIngredient } from "@/db/update";
 import { NextRequest, NextResponse } from "next/server";
-import { deleteIngredient } from "@/db/delete";
 import { sendError, sendSuccess } from "../../utils/responses";
 import { IngredientService } from "@/app/services/ingredientService";
 import { Ingredient } from "@/shemas/recipe";

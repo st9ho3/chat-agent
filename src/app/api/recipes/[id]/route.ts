@@ -1,5 +1,4 @@
 // src/app/api/edit/[id]/route.ts
-import { getRecipeById } from "@/db/read";
 import { NextRequest, NextResponse } from "next/server";
 import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services";
 import {  RecipeUpdatePayload } from "@/types/context";
@@ -14,9 +13,9 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params;
-  const recipe = await getRecipeById(id);
+  const recipe = await service.findById(id)
 
-return sendSuccess("Ingredients fetched succesfully", 200)
+  return sendSuccess("Recipe fetched succesfully",recipe, 200)
 }
 
 export const PATCH = async (req: NextRequest, context: {params: Promise<{id: string}>}) => {

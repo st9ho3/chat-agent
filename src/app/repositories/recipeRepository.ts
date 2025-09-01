@@ -8,11 +8,12 @@ import { checkIfRecipeExists } from "@/db/helpers";
 import { transformRecipeToDB } from "../services/helpers";
 import { revalidatePath } from "next/cache";
 import { checkIfIngredientExists } from "@/db/helpers";
+import { RecipeWithQuery } from "@/types/specialTypes";
 
 
 export class RecipeRepository implements IRecipeRepository {
 
-    async findById(id: string): Promise<Recipe | undefined> {
+    async findById(id: string): Promise<RecipeWithQuery | undefined> {
         try {
                 const recipe = await db.query.recipesTable.findFirst({
                     where: eq(recipesTable.id, id),
@@ -25,7 +26,7 @@ export class RecipeRepository implements IRecipeRepository {
                     }
                 });
                 // Need to define the type for the return type: Recipe with nested {ingredients}
-                return 
+                return recipe
             } catch (err) {
                 console.log("Error fetching recipe ------->", err);
             }

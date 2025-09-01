@@ -34,7 +34,7 @@ const IngredientForm = ({ ingredient, mode }: AddIngredientProps) => {
         <IngredientUnitSelect value={unit} onChange={handleUnit} onKeyDown={handleKeyDown} />
       </div>
 
-      <AddIngredientButton onClick={addIngredient} />
+      <AddIngredientButton onClick={addIngredient} mode={mode} />
       <IngredientSummary quantity={quantity} unit={unit} name={name} price={price} />
       <FormErrors errors={errors} />
     </form>
