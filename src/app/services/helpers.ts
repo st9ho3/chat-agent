@@ -58,6 +58,23 @@ export const normalizePrice = (price: string, unit: Unit, quantity: number): num
   }
 };
 
+export const calculateSellingPrice = (cost: number, profitMargin: number, tax: number): number | undefined => {
+  const denominator = (1 - tax) - (profitMargin / 100);
+  if (denominator > 0) {
+    return cost / denominator;
+  }
+  return undefined;
+};
+
+export const calculateProfitMargin = (cost: number, sellingPrice: number, tax: number): number | undefined => {
+  if (sellingPrice > 0) {
+    return ((sellingPrice - (sellingPrice * tax) - cost) / sellingPrice) * 100;
+    
+  }
+  console.error("Selling price must be greater than zero to calculate profit margin.");
+  return undefined;
+};
+
 export const transformRecipeFromDB = (recipeFromDb: DBRecipe): Recipe => ({
   ...recipeFromDb,
     totalCost: Number(recipeFromDb.totalCost),

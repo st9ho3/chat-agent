@@ -119,7 +119,7 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
         id: ingredient.id,
         icon: ingredient.icon || '🥑',
         name: name,
-        unit: unit as Unit,
+        unit:  unit === "g" || unit === "kg" ? "g" : unit === "L" || unit === "ml" ? "ml" : "piece",
         unitPrice: normalizedUnitPrice,
         quantity: quantity,
         usage: ingredient.usage || "0"

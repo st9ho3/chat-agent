@@ -1,10 +1,11 @@
 
 import { Database } from '@/db/schema';
-import { Recipe, Ingredient, RecipeIngredients, DBIngredient } from '@/shemas/recipe';
+import { Recipe, Ingredient, RecipeIngredients, DBIngredient, DBRecipeIngredients, DBRecipe } from '@/shemas/recipe';
 import { RecipeWithQuery } from './specialTypes';
 
 export interface IRecipeRepository {
   findById(id: string): Promise<RecipeWithQuery | undefined>;
+  findAllByIngredientId(id: string): Promise<DBRecipe[] | undefined>;
   findAll(): Promise<Recipe[] | undefined>;
   create(recipe: Recipe, tx: Database): Promise<string | undefined>;
   update(id: string, recipe: Recipe): Promise<{id: string} | undefined>;

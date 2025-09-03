@@ -3,6 +3,7 @@ import { UseFormSetValue, UseFormGetValues, UseFormWatch } from 'react-hook-form
 import { FormFields } from '@/app/components/recipes/recipeForm/recipeForm';
 import { getTotalPrice } from '../services/helpers';
 import { RecipeIngredients } from '@/shemas/recipe';
+import { calculateProfitMargin, calculateSellingPrice } from '../services/helpers';
 
 export type PricingMethod = "price" | "profit" | "";
 
@@ -40,23 +41,6 @@ export const usePricing = (
     return isFieldDisabled(fieldType) ? `${baseClasses} ${disabledClasses}` : baseClasses;
   };
 
-  const calculateSellingPrice = (cost: number, profitMargin: number, tax: number): number | undefined => {
-  const denominator = (1 - tax) - (profitMargin / 100);
-  if (denominator > 0) {
-    return cost / denominator;
-  }
-  return undefined;
-};
-
-const calculateProfitMargin = (cost: number, sellingPrice: number, tax: number): number | undefined => {
-  if (sellingPrice > 0) {
-    return ((sellingPrice - (sellingPrice * tax) - cost) / sellingPrice) * 100;
-    
-  }
-  console.error("Selling price must be greater than zero to calculate profit margin.");
-  return undefined;
-};
-
   // Manual calculate function (still useful for the calculate button)
   const calculate = (e: React.MouseEvent<HTMLButtonElement>) => {
   e.preventDefault();
@@ -71,6 +55,11 @@ const calculateProfitMargin = (cost: number, sellingPrice: number, tax: number):
   } else if (selectedPricingMethod === "profit" && initialProfitMargin && initialProfitMargin > 0) {
     const price = calculateSellingPrice(cost, initialProfitMargin, tax);
     setValue('sellingPrice', price ? Number(price.toFixed(2)) : 0);
+  } else {
+    if (initialPrice && initialProfitMargin) {
+      const profit = calculateProfitMargin(cost, initialPrice, tax);
+      setValue('profitMargin', profit ? Number(profit.toFixed(2)) : 0);
+    }
   }
 };
 

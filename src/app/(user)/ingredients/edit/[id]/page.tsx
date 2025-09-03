@@ -3,12 +3,15 @@ import React from 'react'
 import { transformIngredientFromDB } from '@/app/services/helpers'
 import { IngredientModal } from '@/app/constants/components'
 import { IngredientService } from '@/app/services/ingredientService'
+import { RecipeRepository } from '@/app/repositories/recipeRepository'
 
 const IngredientEditPage = async ({params}: {params: Promise<{id: string}>} ) => {
 
   const service = new IngredientService()
+  const repository = new RecipeRepository()
     const {id} = await params
 
+    
   const ingredient = await service.findById(id)
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { UseFormRegister, FieldErrors, useWatch } from 'react-hook-form';
 import { LucideIcon } from 'lucide-react';
 import { FormFields } from '../../recipeForm';
 import { PricingMethod } from '@/app/hooks/usePricing';
@@ -56,7 +56,10 @@ const PricingRadioOption: React.FC<PricingRadioOptionProps> = ({
         type="number"
         step="0.01"
         disabled={isDisabled}
-        {...register(fieldName, { valueAsNumber: true })}
+        {...register(fieldName, { 
+          valueAsNumber: true
+         })}
+       
         onKeyDown={onKeyDown}
         onFocus={() => onInputFocus(fieldName)}
         className={fieldClasses}

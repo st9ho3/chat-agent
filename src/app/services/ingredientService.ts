@@ -4,14 +4,17 @@ import { Ingredient } from "@/shemas/recipe";
 import { checkIfIngredientExists } from "@/db/helpers";
 import { transformIngredientToDB } from "./helpers";
 import { zodValidateIngredientBeforeAddItToDatabase } from "./services";
+import { RecipeRepository } from "../repositories/recipeRepository";
 
 export class IngredientService implements IIngredientService {
 
     private ingredientRepository: IngredientRepository
+    private recipeRepository: RecipeRepository
     
 
     constructor() {
         this.ingredientRepository = new IngredientRepository()
+        this.recipeRepository = new RecipeRepository()
     }
 
     async findAll(): Promise<Ingredient[] | undefined> {
@@ -26,7 +29,7 @@ export class IngredientService implements IIngredientService {
 
     async findById(id: string): Promise<Ingredient | undefined> {
       const ingredient = await this.ingredientRepository.findById(id)
-
+     
       return ingredient
     }
 
@@ -52,7 +55,10 @@ export class IngredientService implements IIngredientService {
         try {
 
           const ingredientId = DBIngredient ? await this.ingredientRepository.update(DBIngredient) : undefined
-            return ingredientId
+          const recipes = ingredientId ? await this.recipeRepository.findAllByIngredientId(ingredientId?.ingredientId) : []
+
+          console.log(recipes)
+          return ingredientId
         } catch(err) {
             console.log(err)
         }

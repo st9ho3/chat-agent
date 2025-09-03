@@ -37,6 +37,7 @@ const EditPage = async ({params}: Params ) => {
       <div className={`relative w-full max-w-fit p-9 mx-4 transform transition-all duration-300 bg-white rounded-2xl shadow-xl`}>
         
         <RecipeForm mode='edit' recipe={recipe} recipeIngredients={recIngredients} ingredients={ingredients} />
+        
       </div>
     </div>
   )
