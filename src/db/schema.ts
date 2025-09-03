@@ -23,7 +23,7 @@ export const recipesTable = pgTable("recipes", {
   imgPath: varchar("img_path").notNull(),
   tax: numeric("tax").notNull(),
   sellingPrice: numeric("selling_price").notNull(),
-  profitMargin: numeric("profit_margin").notNull()
+  profitMargin: numeric("profit_margin", { precision: 10, scale: 2 }).notNull()
 });
 
 // Defines the 'ingredients' table schema for individual ingredients.
