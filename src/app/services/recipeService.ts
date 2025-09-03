@@ -1,4 +1,4 @@
-import { Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
 import { CreateRequest, CreateResponse, IRecipeService } from "@/types/services";
 import { db } from "@/db/db";
 import { RecipeIngredientsRepository, RecipeRepository } from "../repositories/recipeRepository";
@@ -6,6 +6,8 @@ import { IngredientRepository } from "../repositories/ingredientRepository";
 import { zodValidateDataBeforeAddThemToDatabase } from "./services";
 import { RecipeUpdatePayload } from "@/types/context";
 import { RecipeWithQuery } from "@/types/specialTypes";
+import { calculateProfitMargin, getTotalPrice, transformIngredientFromDB, transformIngredientToDB, transformRecipeFromDB, transformRecipeIngredentFromDB } from "./helpers";
+
 
 export class RecipeService implements IRecipeService {
 
@@ -98,6 +100,26 @@ export class RecipeService implements IRecipeService {
     async delete(id: string): Promise<{ id: string; } | undefined> {
       const deleteResponse = this.recipeRepository.delete(id)
       return deleteResponse
+    }
+
+    async updateRecipeAfterIngredientsChange(dbRecipe: DBRecipe): Promise<void> {
+        
+        const queredRecipe = await this.recipeRepository.findById(dbRecipe.id)
+        const dbIngredients = queredRecipe?.recipeIngredients.map((ingredient) => ingredient)
+        const ingredients = dbIngredients?.map((ing) => transformRecipeIngredentFromDB(ing))
+        const recipe = transformRecipeFromDB(dbRecipe)
+        const cost = ingredients ? getTotalPrice(ingredients) : 0
+        const tax = recipe.tax
+        const price =recipe.sellingPrice ? recipe.sellingPrice : 1
+        const margin = calculateProfitMargin(cost, price, tax)
+
+        const updatedRecipe = 
+        {
+            ...recipe,
+            totalCost: cost,
+            profitMargin: margin 
+        }
+        this.recipeRepository.update(recipe.id, updatedRecipe)
     }
 }
 

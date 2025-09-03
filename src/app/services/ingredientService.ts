@@ -2,19 +2,23 @@ import { IIngredientService } from "@/types/services";
 import { IngredientRepository } from "../repositories/ingredientRepository";
 import { DBRecipe, Ingredient } from "@/shemas/recipe";
 import { checkIfIngredientExists } from "@/db/helpers";
-import { getTotalPrice, transformIngredientFromDB, transformIngredientToDB, transformRecipeIngredentFromDB } from "./helpers";
 import { zodValidateIngredientBeforeAddItToDatabase } from "./services";
 import { RecipeRepository } from "../repositories/recipeRepository";
+import { calculateProfitMargin, getTotalPrice, transformIngredientToDB, transformRecipeFromDB, transformRecipeIngredentFromDB } from "./helpers";
+import { RecipeService } from "./recipeService";
+
 
 export class IngredientService implements IIngredientService {
 
     private ingredientRepository: IngredientRepository
     private recipeRepository: RecipeRepository
+    private recipeService: RecipeService
     
 
     constructor() {
         this.ingredientRepository = new IngredientRepository()
         this.recipeRepository = new RecipeRepository()
+        this.recipeService = new RecipeService()
     }
 
     async findAll(): Promise<Ingredient[] | undefined> {
@@ -60,13 +64,10 @@ export class IngredientService implements IIngredientService {
 
           if (recipes) {
 
-            for (const recipe of recipes) {
-            const queredRecipe = await this.recipeRepository.findById(recipe.id)
-            const dbIngredients = queredRecipe?.recipeIngredients.map((ingredient) => ingredient)
-            const ingredients = dbIngredients?.map((ing) => transformRecipeIngredentFromDB(ing))
-            const cost = ingredients ? getTotalPrice(ingredients) : 0
-            const tax = recipe.tax
-            const price = recipe.sellingPrice
+            for (const dbRecipe of recipes) {
+            
+              this.recipeService.updateRecipeAfterIngredientsChange(dbRecipe)
+            
             }
           } 
           
