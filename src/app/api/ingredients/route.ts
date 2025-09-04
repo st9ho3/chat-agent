@@ -13,13 +13,13 @@ export const POST = async (req: NextRequest) => {
 
     try{
         const response = await service.create(ingredient)
-        
+        console.log(response)
         if (!response) {
            return sendError("Something wrong with the request", 404)
         }
        return sendSuccess("Ingredient successfully created", response, 201)
     }catch(err) {
-       return sendError(`Error creating ingredinet: ${err}`, 500)
+       return sendError(`${err}`, 500)
     }
 }
 

@@ -48,6 +48,7 @@ export class IngredientService implements IIngredientService {
             return ingredientId
           } else {
             console.log("Ingredient already exists or is not validated")
+            throw Error("Ingredient already exists or is not validated")
           }
     }
 

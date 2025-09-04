@@ -101,9 +101,12 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
         const zodErrors = validatedIngredient.error.errors;
         zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]));
       } else {
-        await sendIngredient(validatedIngredient.data);
-        if (raiseNotification) {
+        const response = await sendIngredient(validatedIngredient.data);
+        if (!response.success) {
+          raiseNotification(response.error.message, NotificationType.Failure)
+        } else {
           raiseNotification("Ingredient added successfully", NotificationType.Success);
+          
         }
         resetForm();
         if (router) {

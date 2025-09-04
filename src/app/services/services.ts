@@ -92,7 +92,7 @@ export const sendIngredient = async (ingredient: Ingredient) => {
     body: JSON.stringify(ingredient)
   })
   const response = await res.json()
-  console.log("This is the respons on the sendIngredient",response)
+  return response
 }
 
 export const updateIngredient = async (ingredient: Ingredient) => {
