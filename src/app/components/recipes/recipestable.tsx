@@ -10,6 +10,7 @@ import { deleteRecipesFromServer } from "@/app/services/services";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
+import Label from "../shared/label";
 
 
 const RecipesTable = ({items}: {items: Recipe[]}) => {
@@ -61,13 +62,19 @@ const RecipesTable = ({items}: {items: Recipe[]}) => {
                 </Link>
               </td>
 
-              <td className="hidden md:table-cell pl-4">{item.createdBy}</td>
               <td className="hidden md:table-cell pl-4">
-                <ClientOnlyTime date={item.dateCreated} />
+                {item.tax * 100} %
               </td>
-              <td className="hidden md:table-cell pl-4">{item.category}</td>
+
+              <td className="hidden md:table-cell pl-4">€ {item.sellingPrice}</td>
+
+              <td className="hidden md:table-cell pl-4">
+                <Label text={`${String(item.profitMargin)} %`} type={ item.profitMargin && item.profitMargin > 60 ? 'high' : item.profitMargin && item.profitMargin > 50 ? 'medium' : 'low' } />
+                 
+                </td>
+
               <td className="hidden md:table-cell align-middle text-center md:text-start md:pl-4">
-                € {Number(item.totalCost).toFixed(2)}
+                € {item.totalCost}
               </td>
               <td className="align-middle text-center gap-5 flex justify-center md:text-start md:justify-start mt-4 md:pl-4">
                 <Link href={`/recipes/edit/${item.id}`}>

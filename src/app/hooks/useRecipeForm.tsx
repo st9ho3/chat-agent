@@ -90,7 +90,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
           const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
           raiseNotification("Recipe updated succesfully", NotificationType.Success);
         } else {
-          const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin / 100 : 0 };
+          const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin : 0 };
           
             const response = await sendRecipe(updatedData, tempIngredients)
             
