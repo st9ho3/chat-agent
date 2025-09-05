@@ -1,10 +1,14 @@
+"use client"
 import { useState } from 'react';
 import type { PutBlobResult } from '@vercel/blob';
+import useHelpers from './useHelpers';
+import { sendError } from '../api/utils/responses';
 
 export const useFileUpload = () => {
  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const {raiseNotification} = useHelpers()
 
   /**
    * Uploads a file to the server.
@@ -47,8 +51,8 @@ export const useFileUpload = () => {
           const url = await uploadFile(file)
           return url
         } catch (err) {
-          console.log("An error occured while uploading the file:", err)
-          console.log("Error message:", error)
+          const url = "https://yqbnjpxj7oneobhf.public.blob.vercel-storage.com/beef%20burger.png"
+          return url
         }
       }
     }

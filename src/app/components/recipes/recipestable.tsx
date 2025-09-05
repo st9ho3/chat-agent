@@ -11,17 +11,19 @@ import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
 import Label from "../shared/label";
+import useHelpers from "@/app/hooks/useHelpers";
 
 
 const RecipesTable = ({items}: {items: Recipe[]}) => {
   const { state } = useHomeContext();
+  const { raiseNotification } = useHelpers()
   const router = useRouter()
   const paginateItems = paginate(10, state.currentPage, items);
   const itemsToDisplay = paginateItems ? paginateItems : [];
 
   const handleDelete = async(rec: Recipe) => {
     const response = await deleteRecipesFromServer(rec.id)
-    
+    raiseNotification(response)
     router.replace("recipes")
   }
  

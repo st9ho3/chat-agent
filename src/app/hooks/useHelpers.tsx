@@ -17,11 +17,13 @@ const useHelpers = () => {
     const raiseNotification = <T,>(response: ApiResponse<T>) => {
         const message = response.success ? response.message : response.error?.message || 'An unknown error occurred.';
         const type = response.success ? NotificationType.Success : NotificationType.Failure;
-
-        dispatch({
+        setTimeout(() => {
+            dispatch({
             type: "HANDLE_NOTIFICATION", 
             payload: { isOpen: true, message, notificationType: type }
         });
+        }, 1500)
+        
 
         setTimeout(() => {
             dispatch({

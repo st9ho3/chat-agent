@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from 'react-hook-form';
@@ -66,32 +66,25 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
     const removedIngredients: RecipeIngredients[] = recipeIngredients.filter((recipeIngredient) => !tempIngredients.includes(recipeIngredient));
             
     try {
+
+      let url: string | undefined
+
       if (state.file) {
-        const url = await handleFileUpload(state.file);
-        if (url) {
+         url = await handleFileUpload(state.file);
+      }
+
           if (mode === 'edit') {
-            const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url };
+            const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url || data.imgPath };
             const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
             raiseNotification(response);
           } else {
-            const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin : 0 };
+            const updatedData = { ...data, id: newId, imgPath: url || data.imgPath, profitMargin: data.profitMargin ? data.profitMargin : 0 };
             if (tempIngredients.length > 0) {
               const response = await sendRecipe(updatedData, tempIngredients);
               raiseNotification(response);
             }
           }
-        }
-      } else {
-        if (mode === 'edit') {
-          const recipeToUpdate = { ...data, totalCost: newCost };
-          const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
-          raiseNotification(response);
-        } else {
-          const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin : 0 };
-          const response = await sendRecipe(updatedData, tempIngredients);
-          raiseNotification(response);
-        }
-      }
+      
     } catch (error) {
         raiseNotification({
             success: false,
