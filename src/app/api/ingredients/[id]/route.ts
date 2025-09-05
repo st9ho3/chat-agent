@@ -35,7 +35,7 @@ export const DELETE = async (req: NextRequest, context: {params: Promise<{id: st
 
         await service.delete(id)
 
-       return sendSuccess("Recipe succesfully deleted", 201)
+       return sendSuccess("Ingredient succesfully deleted", 201)
 
     }catch(err) {
         console.log(err)

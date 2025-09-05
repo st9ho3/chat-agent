@@ -20,11 +20,11 @@ const RecipesTable = ({items}: {items: Recipe[]}) => {
   const itemsToDisplay = paginateItems ? paginateItems : [];
 
   const handleDelete = async(rec: Recipe) => {
-    await deleteRecipesFromServer(rec.id)
+    const response = await deleteRecipesFromServer(rec.id)
+    
     router.replace("recipes")
   }
-
-  console.log(state.isModalOpen, state.modalType.type)
+ 
 
   return (
     <div>

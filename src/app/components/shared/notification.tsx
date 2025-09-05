@@ -8,13 +8,10 @@ import { notificationVariants } from '@/app/constants/data';
 const Notification = () => {
 
   const {state} = useHomeContext()
-  const {closeNotification} = UseHelpers()
   const type = state.notification.notificationType
   
   const variant = notificationVariants[type] || notificationVariants.info;
   const { Icon, iconClass, borderClass, bgClass, title: defaultTitle } = variant;
-
-  useEffect(() => {closeNotification()}, [])
 
   return (
     <div

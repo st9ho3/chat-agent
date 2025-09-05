@@ -22,12 +22,8 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 
   const handleDelete = async(id: string) => {
-    const res = await deleteIngredient(id)
-    if (!res.success) {
-      raiseNotification(res.error.message, NotificationType.Failure)
-    } else {
-      raiseNotification(res.message, NotificationType.Success)
-    }
+    const response = await deleteIngredient(id)
+    raiseNotification(response)
     router.replace("ingredients")
   }
 

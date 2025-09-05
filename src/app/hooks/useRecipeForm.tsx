@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Recipe, RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
+import { RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";
-import { NonUndefined, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getTotalPrice } from '@/app/services/helpers';
@@ -9,7 +9,6 @@ import { sendRecipe, sendRecipeToUpdate } from '@/app/services/services';
 import { useHomeContext } from '../context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
 import { useFileUpload } from './useFileUpload';
-import { NotificationType } from '@/types/context';
 import useHelpers from './useHelpers';
 import { defaultValues } from '../constants/recipeFormDefaultValues';
 import { RecipeFormProps } from '../components/recipes/recipeForm/recipeForm';
@@ -71,16 +70,14 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
         const url = await handleFileUpload(state.file);
         if (url) {
           if (mode === 'edit') {
-            console.log("ADDED", addedIngredients);
-            console.log("REMOVED", removedIngredients);
             const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url };
             const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+            raiseNotification(response);
           } else {
-            const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin / 100 : 0 };
+            const updatedData = { ...data, id: newId, imgPath: url, profitMargin: data.profitMargin ? data.profitMargin : 0 };
             if (tempIngredients.length > 0) {
               const response = await sendRecipe(updatedData, tempIngredients);
-              console.log(response)
-              raiseNotification("Recipe added succesfully", NotificationType.Success);
+              raiseNotification(response);
             }
           }
         }
@@ -88,21 +85,19 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
         if (mode === 'edit') {
           const recipeToUpdate = { ...data, totalCost: newCost };
           const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
-          raiseNotification("Recipe updated succesfully", NotificationType.Success);
+          raiseNotification(response);
         } else {
           const updatedData = { ...data, id: newId, profitMargin: data.profitMargin ? data.profitMargin : 0 };
-          
-            const response = await sendRecipe(updatedData, tempIngredients)
-            
-            if (response.success) {
-              raiseNotification(response.message, NotificationType.Success)
-            } else {
-              raiseNotification(response.error.message, NotificationType.Failure)
-            }
+          const response = await sendRecipe(updatedData, tempIngredients);
+          raiseNotification(response);
         }
       }
     } catch (error) {
-      raiseNotification(String(error), NotificationType.Failure)
+        raiseNotification({
+            success: false,
+            message: 'An unexpected error occurred.',
+            error: { message: String(error) }
+        });
     } finally {
       resetForm();
     }

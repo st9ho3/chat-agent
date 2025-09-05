@@ -97,22 +97,17 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
       const validatedIngredient = IngredientSchema.safeParse(ingredientPrototype);
       
       if (!validatedIngredient.success) {
-        setErrors([]);
-        const zodErrors = validatedIngredient.error.errors;
-        zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]));
-      } else {
-        const response = await sendIngredient(validatedIngredient.data);
-        if (!response.success) {
-          raiseNotification(response.error.message, NotificationType.Failure)
-        } else {
-          raiseNotification("Ingredient added successfully", NotificationType.Success);
-          
-        }
-        resetForm();
-        if (router) {
-          router.replace("/ingredients");
-        }
-      }
+  setErrors([]);
+  const zodErrors = validatedIngredient.error.errors;
+  zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]));
+} else {
+  const response = await sendIngredient(validatedIngredient.data);
+  raiseNotification(response); // Pass the entire response
+  resetForm();
+  if (router) {
+    router.replace("/ingredients");
+  }
+}
     } else if (mode === 'edit' && ingredient) {
 
       const normalizedUnitPrice = normalizePrice(price, unit, quantity);
@@ -136,13 +131,12 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
         const zodErrors = validatedIngredient.error.errors;
         zodErrors.forEach((error) => setErrors(prev => [...prev, error.message]));
       } else {
-        await updateIngredient(validatedIngredient.data);
-        if (raiseNotification) {
-          raiseNotification("Ingredient updated successfully", NotificationType.Success);
-        }
-        if (router) {
-          router.replace("/ingredients");
-        }
+        const response = await updateIngredient(validatedIngredient.data);
+       raiseNotification(response); // Pass the entire response
+      resetForm();
+      if (router) {
+      router.replace("/ingredients");
+  }
       }
     }
   };

@@ -75,12 +75,20 @@ export const getRecipeFromServer = async (id: string) => {
 }; */
 
 export const deleteRecipesFromServer = async (recipeId: string) => {
-  await fetch(`api/recipes/${recipeId}`, {
+  const response = await fetch(`api/recipes/${recipeId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     }
   });
+
+  if (!response.ok) {
+    const error = await response.json(); 
+    return error
+  } else {
+    const res = await response.json()
+    return res
+  }
 };
 
 export const sendIngredient = async (ingredient: Ingredient) => {
@@ -119,19 +127,19 @@ export const updateIngredient = async (ingredient: Ingredient) => {
 
 export const deleteIngredient = async (id: string) => {
   
-  const res = await fetch(`/api/ingredients/${id}`, {
+  const response = await fetch(`/api/ingredients/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     }
   })
-  if (!res.ok) {
-    const error = await res.json(); // Parse the JSON from the response 
+  if (!response.ok) {
+    const error = await response.json(); 
     return error
   } else {
-    const response = await res.json()
-    console.log(response)
-    return response
+    const res = await response.json()
+    console.log(res)
+    return res
   }
   
 }
