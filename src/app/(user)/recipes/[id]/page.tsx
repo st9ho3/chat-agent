@@ -1,10 +1,11 @@
 import RecipeForm from '@/app/components/recipes/recipeForm/recipeForm'
+import TableSkeleton from '@/app/components/shared/skeleton'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      Recipe Page
+      <TableSkeleton />
     </div>
   )
 }
