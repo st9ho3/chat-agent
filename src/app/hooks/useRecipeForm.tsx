@@ -63,23 +63,20 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
 
   const onSubmit = async (data: FormFields) => {
 
-  const newMargin: number 
-  const newPrice: number 
+  const margin = data.profitMargin !== recipe?.profitMargin ? data.profitMargin : recipe?.profitMargin
+  const price = data.sellingPrice !== recipe?.sellingPrice ? data.sellingPrice : recipe?.sellingPrice
   const newCost = getTotalPrice(tempIngredients);
   const newTax = data.tax ? data.tax : recipe?.tax || 0
 
-  
-  
-  const marginAfterPrice = calculateProfitMargin(newCost, newPrice, newTax )
-  const priceAfterMArgin = calculateSellingPrice(newCost, newMargin, newTax)
+  const newPrice = data.profitMargin !== recipe?.profitMargin && margin ? calculateSellingPrice(newCost, margin, newTax) : price
+  const newMargin = newPrice && calculateProfitMargin(newCost, newPrice, newTax)  
 
   console.log("Recipe Calculation Details:", {
   "Cost": newCost,
   "Selling Price": newPrice,
   "Tax": newTax,
   "Profit Margin Input": newMargin,
-  "Calculated Margin from Price": marginAfterPrice,
-  "Calculated Price from Margin": priceAfterMArgin
+  
 });
     
 
@@ -101,7 +98,11 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
 
       const recipeToUpdate = { 
         ...data, 
-        totalCost: newCost, imgPath: url || data.imgPath};
+        totalCost: newCost, imgPath: url || data.imgPath,
+        profitMargin: newMargin,
+        sellingPrice: newPrice
+      };
+        
 
       const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
       raiseNotification(response);
