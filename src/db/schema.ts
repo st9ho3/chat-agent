@@ -22,7 +22,7 @@ export const recipesTable = pgTable("recipes", {
   category: recipeCategoryEnum("category").notNull(),
   imgPath: varchar("img_path").notNull(),
   tax: numeric("tax").notNull(),
-  sellingPrice: numeric("selling_price").notNull(),
+  sellingPrice: numeric("selling_price", { precision: 10, scale: 2 }).notNull(),
   profitMargin: numeric("profit_margin", { precision: 10, scale: 2 }).notNull()
 });
 

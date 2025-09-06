@@ -42,7 +42,6 @@ export const sendRecipe = async (data: Recipe, ing: RecipeIngredients[]) => {
 
 export const sendRecipeToUpdate = async (data: FormFields, addedIngredients: RecipeIngredients[], removedIngredients: RecipeIngredients[] ) => {
   const dataToSend = { recipe: data, addedIngredients: addedIngredients, removedIngredients: removedIngredients};
-  console.log("services patch", dataToSend)
   const res = await fetch(`/api/recipes/${data.id}`, {
     method: "PATCH",
     headers: {

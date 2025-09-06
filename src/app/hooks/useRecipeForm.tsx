@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getTotalPrice } from '@/app/services/helpers';
+import { calculateProfitMargin, calculateSellingPrice, getTotalPrice } from '@/app/services/helpers';
 import { sendRecipe, sendRecipeToUpdate } from '@/app/services/services';
 import { useHomeContext } from '../context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
@@ -23,6 +23,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
   const router = useRouter();
   const { handleFileUpload, error } = useFileUpload();
   const { raiseNotification } = useHelpers();
+  
   const { register, handleSubmit, setValue, reset, formState, getValues, watch } = useForm<FormFields>({
     defaultValues: mode === "create" ? {
       ...defaultValues,
@@ -61,40 +62,71 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
   }; 
 
   const onSubmit = async (data: FormFields) => {
-    const newCost = getTotalPrice(tempIngredients);
-    const addedIngredients: RecipeIngredients[] = tempIngredients.filter((tempIngredient) => !recipeIngredients.includes(tempIngredient));
-    const removedIngredients: RecipeIngredients[] = recipeIngredients.filter((recipeIngredient) => !tempIngredients.includes(recipeIngredient));
-            
-    try {
 
-      let url: string | undefined
+  const newMargin: number 
+  const newPrice: number 
+  const newCost = getTotalPrice(tempIngredients);
+  const newTax = data.tax ? data.tax : recipe?.tax || 0
 
-      if (state.file) {
-         url = await handleFileUpload(state.file);
-      }
+  
+  
+  const marginAfterPrice = calculateProfitMargin(newCost, newPrice, newTax )
+  const priceAfterMArgin = calculateSellingPrice(newCost, newMargin, newTax)
 
-          if (mode === 'edit') {
-            const recipeToUpdate = { ...data, totalCost: newCost, imgPath: url || data.imgPath };
-            const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
-            raiseNotification(response);
-          } else {
-            const updatedData = { ...data, id: newId, imgPath: url || data.imgPath, profitMargin: data.profitMargin ? data.profitMargin : 0 };
-            if (tempIngredients.length > 0) {
-              const response = await sendRecipe(updatedData, tempIngredients);
-              raiseNotification(response);
-            }
-          }
-      
-    } catch (error) {
-        raiseNotification({
-            success: false,
-            message: 'An unexpected error occurred.',
-            error: { message: String(error) }
-        });
-    } finally {
-      resetForm();
+  console.log("Recipe Calculation Details:", {
+  "Cost": newCost,
+  "Selling Price": newPrice,
+  "Tax": newTax,
+  "Profit Margin Input": newMargin,
+  "Calculated Margin from Price": marginAfterPrice,
+  "Calculated Price from Margin": priceAfterMArgin
+});
+    
+
+  const addedIngredients: RecipeIngredients[] = tempIngredients.filter(
+    (tempIngredient) => !recipeIngredients.includes(tempIngredient)
+  );
+  const removedIngredients: RecipeIngredients[] = recipeIngredients.filter(
+    (recipeIngredient) => !tempIngredients.includes(recipeIngredient)
+  );
+
+  try {
+    let url: string | undefined;
+
+    if (state.file) {
+      url = await handleFileUpload(state.file);
     }
-  };
+
+    if (mode === 'edit') {
+
+      const recipeToUpdate = { 
+        ...data, 
+        totalCost: newCost, imgPath: url || data.imgPath};
+
+      const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+      raiseNotification(response);
+    } else {
+      const updatedData = {
+        ...data,
+        id: newId,
+        imgPath: url || data.imgPath,
+        profitMargin: data.profitMargin ? data.profitMargin : 0,
+      };
+      if (tempIngredients.length > 0) {
+        const response = await sendRecipe(updatedData, tempIngredients);
+        raiseNotification(response);
+      }
+    }
+  } catch (error) {
+    raiseNotification({
+      success: false,
+      message: 'An unexpected error occurred.',
+      error: { message: `${error}` },
+    });
+  } finally {
+    resetForm();
+  }
+};
 
   return {
     newId,

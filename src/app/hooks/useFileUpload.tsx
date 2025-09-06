@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { PutBlobResult } from '@vercel/blob';
 import useHelpers from './useHelpers';
-import { sendError } from '../api/utils/responses';
+
 
 export const useFileUpload = () => {
  
@@ -50,9 +50,12 @@ export const useFileUpload = () => {
         try {
           const url = await uploadFile(file)
           return url
-        } catch (err) {
-          const url = "https://yqbnjpxj7oneobhf.public.blob.vercel-storage.com/beef%20burger.png"
-          return url
+        } catch(err) {
+          raiseNotification({
+        success: false,
+        message: 'An unexpected error occurred.',
+        error: { message: `${err}` },
+    });
         }
       }
     }

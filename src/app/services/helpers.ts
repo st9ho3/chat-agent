@@ -60,7 +60,7 @@ export const normalizePrice = (price: string, unit: Unit, quantity: number): num
 
 export const calculateSellingPrice = (cost: number, profitMargin: number, tax: number): number | undefined => {
   const denominator = (1 - tax) - (profitMargin / 100);
-  if (denominator > 0) {
+  if (denominator > 0 && profitMargin > 0) {
     return cost / denominator;
   }
   return undefined;
@@ -71,7 +71,6 @@ export const calculateProfitMargin = (cost: number, sellingPrice: number, tax: n
     return ((sellingPrice - (sellingPrice * tax) - cost) / sellingPrice) * 100;
     
   }
-  console.error("Selling price must be greater than zero to calculate profit margin.");
   return undefined;
 };
 

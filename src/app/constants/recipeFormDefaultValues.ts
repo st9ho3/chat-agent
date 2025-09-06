@@ -11,6 +11,5 @@ export const defaultValues: FormFields = {
       tax: 0,
       sellingPrice: 0, 
       profitMargin: 0, 
-      imgPath: "https://yqbnjpxj7oneobhf.public.blob.vercel-storage.com/beef%20burger.png", 
-    
+      imgPath: "https://yqbnjpxj7oneobhf.public.blob.vercel-storage.com/beef%20burger.png",
 }
