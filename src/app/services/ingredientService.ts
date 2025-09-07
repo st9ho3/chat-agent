@@ -6,6 +6,7 @@ import { zodValidateIngredientBeforeAddItToDatabase } from "./services";
 import { RecipeRepository } from "../repositories/recipeRepository";
 import { transformIngredientToDB } from "./helpers";
 import { RecipeService } from "./recipeService";
+import { db } from "@/db/db";
 
 
 export class IngredientService implements IIngredientService {
@@ -54,30 +55,27 @@ export class IngredientService implements IIngredientService {
     }
 
     async update(ingredient: Ingredient): Promise<{ ingredientId: string; } | undefined> {
+  const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient);
+  const DBIngredient = validatedIngredient ? transformIngredientToDB(validatedIngredient) : undefined;
 
-        const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient)
-        const DBIngredient =  validatedIngredient ?  transformIngredientToDB(validatedIngredient) : undefined
+  try {
+    const transactionResponse = await db.transaction(async () => {
+      const ingredientId = DBIngredient ? await this.ingredientRepository.update(DBIngredient) : undefined;
 
-        try {
+      const recipes = ingredientId ? await this.recipeRepository.findAllByIngredientId(ingredientId?.ingredientId) : [];
 
-          const ingredientId = DBIngredient ? await this.ingredientRepository.update(DBIngredient) : undefined
-          const recipes = ingredientId ? await this.recipeRepository.findAllByIngredientId(ingredientId?.ingredientId) : []
-          
-
-          if (recipes) {
-
-            for (const dbRecipe of recipes) {
-            
-              this.recipeService.updateRecipeAfterIngredientsChange(dbRecipe)
-            
-            }
-          } 
-          
-          return ingredientId
-        } catch(err) {
-            console.log(err)
+      if (recipes) {
+        for (const dbRecipe of recipes) {
+          await this.recipeService.updateRecipeAfterIngredientsChange(dbRecipe);
         }
-    }
+      }
+      return ingredientId;
+    });
+    return transactionResponse;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
     async delete(id: string): Promise<void> {
 
