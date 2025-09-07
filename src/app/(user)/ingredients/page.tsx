@@ -1,7 +1,6 @@
 import IngredientsTable from '@/app/components/ingredients/ingredientsTable'
 import Header from '@/app/components/recipes/header'
 import Pagination from '@/app/components/recipes/pagination'
-import { transformIngredientFromDB } from '@/app/services/helpers'
 import { IngredientService } from '@/app/services/ingredientService'
 import React from 'react'
 

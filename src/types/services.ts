@@ -1,5 +1,4 @@
-import { Database } from '@/db/schema';
-import { Recipe, Ingredient, RecipeIngredients, DBIngredient, DBRecipe } from '@/shemas/recipe';
+import { Recipe, Ingredient, RecipeIngredients, DBRecipe } from '@/shemas/recipe';
 import { RecipeWithQuery } from './specialTypes';
 
 export interface CreateResponse {

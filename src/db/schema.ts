@@ -4,8 +4,6 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { PgTransaction } from 'drizzle-orm/pg-core';
 import * as schema from './schema';
 
-
-type Schema = typeof import('./schema');
 export type Database = NodePgDatabase<typeof schema>;
 export type Transaction = PgTransaction<any, typeof schema, any>;
 

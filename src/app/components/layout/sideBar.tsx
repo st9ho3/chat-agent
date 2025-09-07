@@ -27,8 +27,6 @@ function SidebarLink({
   href: string;
 }) {
   const { dispatch } = useHomeContext();
-  const [onHover, setOnHover] = useState(false)
-
 
 
   // Use a conditional to render either a Link or a div that opens a modal

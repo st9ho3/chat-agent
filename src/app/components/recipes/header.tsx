@@ -1,5 +1,4 @@
 import React from 'react'
-import {Hamburger } from 'lucide-react'
 
 const Header = () => {
   return (

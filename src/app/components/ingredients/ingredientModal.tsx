@@ -1,8 +1,6 @@
 "use client"
 import React from 'react'
 import { Ingredient } from '@/shemas/recipe'
-import { sendIngredient } from '@/app/services/services'
-import { useRouter } from 'next/navigation'
 import { ExitButton, IngredientForm } from '@/app/constants/components'
 
 interface Props {

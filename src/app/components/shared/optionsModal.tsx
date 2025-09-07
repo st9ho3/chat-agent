@@ -5,14 +5,8 @@ import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import Link from 'next/link';
 
 const OptionsModal = () => {
-    const {state, dispatch} = useHomeContext()
+    const { dispatch} = useHomeContext()
 
-    const closeAfterDelay = (dispatch: React.Dispatch<{type: string}>) => (e: React.MouseEvent ) => {
-  e.stopPropagation();
-  setTimeout(() => {
-    dispatch({ type: "CLOSE_MODAL" });
-  }, 1000);
-};
 
 // How you would use it:
 // <button onClick={closeAfterDelay(dispatch)}>Close</button>

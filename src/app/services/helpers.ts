@@ -1,4 +1,4 @@
-import { DBIngredient, DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit, DBRecipeIngredients } from "@/shemas/recipe";
+import { DBIngredient, DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
 import { RecipeIngredientFromDB } from "@/types/specialTypes";
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {

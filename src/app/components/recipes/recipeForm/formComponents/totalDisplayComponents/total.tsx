@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React from 'react';
 import { RecipeIngredients } from '@/shemas/recipe';
 import { getTotalPrice } from '@/app/services/helpers';
 import {  ShoppingBasket,TrendingUp, UtensilsCrossed, BadgeCent, Banknote } from 'lucide-react';

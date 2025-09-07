@@ -3,10 +3,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe';
-import { normalizePrice, transformIngredientToDB } from '@/app/services/helpers';
+import { normalizePrice } from '@/app/services/helpers';
 import { sendIngredient, updateIngredient } from '../services/services';
 import useHelpers from './useHelpers';
-import { NotificationType } from '@/types/context';
 
 type IngredientErrors = string[];
 

@@ -2,7 +2,7 @@ import { DBIngredient, Ingredient } from "@/shemas/recipe";
 import { IIngredientRepository } from "@/types/repositories";
 import { db } from "@/db/db";
 import { Database, ingredientsTable } from "@/db/schema";
-import { transformIngredientFromDB, transformIngredientToDB } from "../services/helpers";
+import { transformIngredientFromDB } from "../services/helpers";
 import { eq, sql } from "drizzle-orm";
 
 export class IngredientRepository implements IIngredientRepository {
@@ -80,7 +80,7 @@ export class IngredientRepository implements IIngredientRepository {
             
             return ingredientId
         } catch (err) {
-            throw Error("Failed to delete ingredient from database")
+            throw Error(`${err}`)
             
         }
     }

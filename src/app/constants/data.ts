@@ -1,4 +1,4 @@
-import { Column, Recipe } from "@/shemas/recipe";
+import { Column } from "@/shemas/recipe";
 import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
 
 export const recipesColumns: Column[] = [

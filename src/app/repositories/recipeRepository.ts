@@ -1,15 +1,14 @@
-import { DBRecipe, DBRecipeIngredients, Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
 import { IRecipeIngredientsRepository, IRecipeRepository } from "@/types/repositories";
 import { db } from "@/db/db";
 import { eq, and } from "drizzle-orm";
-import { Database, recipesTable, recipeIngredientsTable, ingredientsTable } from "@/db/schema";
+import { Database, recipesTable, recipeIngredientsTable } from "@/db/schema";
 import { transformRecipeFromDB } from "../services/helpers";
 import { checkIfRecipeExists } from "@/db/helpers";
 import { transformRecipeToDB } from "../services/helpers";
 import { revalidatePath } from "next/cache";
 import { checkIfIngredientExists } from "@/db/helpers";
 import { RecipeWithQuery } from "@/types/specialTypes";
-import { on } from "events";
 
 
 export class RecipeRepository implements IRecipeRepository {
@@ -45,8 +44,8 @@ export class RecipeRepository implements IRecipeRepository {
         return recipes.map((recipe) => recipe.recipes)
         
       } catch(err) {
-
-        return
+        throw new Error(`${err}`)
+        
       }
     }
 

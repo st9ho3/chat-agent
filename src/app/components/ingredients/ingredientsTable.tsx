@@ -4,14 +4,13 @@ import { ingredientColumns } from "@/app/constants/data";
 import { paginate } from "@/app/services/helpers";
 import { useHomeContext } from "@/app/context/homeContext/homeContext";
 import { Pencil, Trash2 } from "lucide-react";
-import { Ingredient, Recipe } from "@/shemas/recipe";
+import { Ingredient} from "@/shemas/recipe";
 import { useRouter } from "next/navigation";
 import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
 import Label from "../shared/label";
 import { deleteIngredient } from "@/app/services/services";
 import useHelpers from "@/app/hooks/useHelpers";
-import { NotificationType } from "@/types/context";
 
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();

@@ -1,10 +1,10 @@
 import { IIngredientService } from "@/types/services";
 import { IngredientRepository } from "../repositories/ingredientRepository";
-import { DBRecipe, Ingredient } from "@/shemas/recipe";
+import { Ingredient } from "@/shemas/recipe";
 import { checkIfIngredientExists } from "@/db/helpers";
 import { zodValidateIngredientBeforeAddItToDatabase } from "./services";
 import { RecipeRepository } from "../repositories/recipeRepository";
-import { calculateProfitMargin, getTotalPrice, transformIngredientToDB, transformRecipeFromDB, transformRecipeIngredentFromDB } from "./helpers";
+import { transformIngredientToDB } from "./helpers";
 import { RecipeService } from "./recipeService";
 
 
@@ -27,7 +27,8 @@ export class IngredientService implements IIngredientService {
         const ingredients = await this.ingredientRepository.findAll()
         return ingredients
       }catch (err) {
-        return 
+
+        throw new Error(`${err}`) 
       }
     }
 

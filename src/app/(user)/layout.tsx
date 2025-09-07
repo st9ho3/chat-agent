@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import HomeContextProvider, { useHomeContext } from "../context/homeContext/homeContext";
+import HomeContextProvider from "../context/homeContext/homeContext";
 import Chat from "../components/chatUI/chat";
 import Sidebar from "../components/layout/sideBar"; // Import the new component
-import OptionsModal from "../components/shared/optionsModal";
 
 export const metadata: Metadata = {
   title: "Recipes App",

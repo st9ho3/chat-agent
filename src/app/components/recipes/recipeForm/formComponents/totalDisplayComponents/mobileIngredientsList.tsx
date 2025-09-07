@@ -3,7 +3,6 @@ import React from 'react'
 import { UseFormGetValues, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 import { FormFields } from '../../recipeForm'
 import {OrderTotal, DisplayedIngredientItem} from '@/app/constants/components'
-import { watch } from 'fs'
 
 interface Props {
     onToggle: (value: React.SetStateAction<boolean>) => void

@@ -1,8 +1,6 @@
 "use client";
 
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
-import UseHelpers from '@/app/hooks/useHelpers';
-import { useEffect } from 'react';
 import { notificationVariants } from '@/app/constants/data';
 
 const Notification = () => {

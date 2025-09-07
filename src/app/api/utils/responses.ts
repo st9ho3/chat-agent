@@ -14,7 +14,7 @@ interface APIResponseError {
     }
 }
 
-export const sendSuccess = <T>(message: string, data: any = null, status = 200): NextResponse<APIResponseSuccess<T>>  => {
+export const sendSuccess = <T>(message: string, data: any, status = 200): NextResponse<APIResponseSuccess<T>>  => {
   return NextResponse.json({
     success: true,
     message,

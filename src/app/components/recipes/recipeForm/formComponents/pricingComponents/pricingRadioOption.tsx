@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseFormRegister, FieldErrors, useWatch } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 import { LucideIcon } from 'lucide-react';
 import { FormFields } from '../../recipeForm';
 import { PricingMethod } from '@/app/hooks/usePricing';
