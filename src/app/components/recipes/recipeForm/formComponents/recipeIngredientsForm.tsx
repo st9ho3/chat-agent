@@ -17,6 +17,7 @@ interface FormProps {
   ingredients: Ingredient[];
   onAddIngredient: (ing: RecipeIngredients) => void;
   tempIngredients: RecipeIngredients[];
+  mode: "create" | "edit"
 }
 
 const RecipeIngredientForm: React.FC<FormProps> = ({
@@ -24,6 +25,7 @@ const RecipeIngredientForm: React.FC<FormProps> = ({
   ingredients,
   onAddIngredient,
   tempIngredients,
+  mode
 }) => {
   const {
     quantity,
@@ -74,7 +76,7 @@ const RecipeIngredientForm: React.FC<FormProps> = ({
           </div>
         </div>
 
-        <AddIngredientButton onClick={addIngredient} />
+        <AddIngredientButton onClick={addIngredient} mode={mode} />
       </div>
 
       <ErrorDisplay errors={errors} error='' pricingErrors={{}}/>

@@ -1,11 +1,11 @@
 import { relations } from "drizzle-orm";
 import { date, numeric, pgEnum, uuid, pgTable, varchar, serial } from "drizzle-orm/pg-core";
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { NodePgDatabase, NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 import { PgTransaction } from 'drizzle-orm/pg-core';
 import * as schema from './schema';
 
 export type Database = NodePgDatabase<typeof schema>;
-export type Transaction = PgTransaction<any, typeof schema, any>;
+export type Transaction = PgTransaction<NodePgQueryResultHKT, typeof schema>;
 
 // Defines an enum for recipe categories.
 export const recipeCategoryEnum = pgEnum("recipe_category", ["starter", "main", "dessert"])
