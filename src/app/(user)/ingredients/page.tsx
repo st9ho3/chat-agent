@@ -4,6 +4,8 @@ import Pagination from '@/app/components/recipes/pagination'
 import { IngredientService } from '@/app/services/ingredientService'
 import React from 'react'
 
+export const dynamic = "force-dynamic"
+
 const ingredientsPage = async() => {
 
   const service = new IngredientService()
