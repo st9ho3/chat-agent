@@ -8,7 +8,6 @@ import { RecipeUpdatePayload } from "@/types/context";
 import { RecipeWithQuery } from "@/types/specialTypes";
 import { calculateProfitMargin, getTotalPrice, transformRecipeFromDB, transformRecipeIngredentFromDB } from "./helpers";
 import { Database } from "@/db/schema";
-import { IngredientService } from "./ingredientService";
 
 
 export class RecipeService implements IRecipeService {
