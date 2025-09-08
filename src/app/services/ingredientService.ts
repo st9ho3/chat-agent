@@ -7,6 +7,7 @@ import { RecipeRepository } from "../repositories/recipeRepository";
 import { transformIngredientToDB } from "./helpers";
 import { RecipeService } from "./recipeService";
 import { db } from "@/db/db";
+import { Database } from "@/db/schema";
 
 
 export class IngredientService implements IIngredientService {
@@ -57,16 +58,19 @@ export class IngredientService implements IIngredientService {
     async update(ingredient: Ingredient): Promise<{ ingredientId: string; } | undefined> {
   const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient);
   const DBIngredient = validatedIngredient ? transformIngredientToDB(validatedIngredient) : undefined;
-
+      console.log("DBIngredient",DBIngredient)
   try {
-    const transactionResponse = await db.transaction(async () => {
-      const ingredientId = DBIngredient ? await this.ingredientRepository.update(DBIngredient) : undefined;
-
+    const transactionResponse = await db.transaction(async (tx: Database) => {
+      const ingredientId = DBIngredient ? await this.ingredientRepository.update(DBIngredient, tx) : undefined;
+      console.log("ingredientID: ", ingredientId)
       const recipes = ingredientId ? await this.recipeRepository.findAllByIngredientId(ingredientId?.ingredientId) : [];
-
+      console.log("recipes: ", recipes)
       if (recipes) {
         for (const dbRecipe of recipes) {
-          await this.recipeService.updateRecipeAfterIngredientsChange(dbRecipe);
+          if (DBIngredient) {
+              await this.recipeService.updateRecipeAfterIngredientsChange(dbRecipe, DBIngredient, tx);
+
+          }
         }
       }
       return ingredientId;

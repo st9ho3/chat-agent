@@ -83,10 +83,11 @@ export class RecipeRepository implements IRecipeRepository {
           }
     }
 
-    async update(id: string, recipe: Recipe): Promise<{id: string} | undefined> {
+    async update(id: string, recipe: Recipe, tx?: Database): Promise<{id: string} | undefined> {
+      const dbConnection = tx || db
       const recipeToDB = transformRecipeToDB(recipe)
         try {
-        const [response] = await db
+        const [response] = await dbConnection
             .update(recipesTable)
             .set(recipeToDB)
             .where(eq(recipesTable.id, id))

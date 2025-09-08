@@ -52,9 +52,12 @@ export class IngredientRepository implements IIngredientRepository {
             }
     }
 
-    async update( ingredient: DBIngredient ): Promise<{ ingredientId: string } | undefined> {
+    async update( ingredient: DBIngredient, tx?: Database ): Promise<{ ingredientId: string } | undefined> {
+        
+        const dbConnection = tx || db
+
         try {
-            const [ingredientId] = await db
+            const [ingredientId] = await dbConnection
                 .update(ingredientsTable)
                 .set(ingredient)
                 .where(eq(ingredientsTable.id, ingredient.id))

@@ -1,5 +1,6 @@
-import { Recipe, Ingredient, RecipeIngredients, DBRecipe } from '@/shemas/recipe';
+import { Recipe, Ingredient, RecipeIngredients, DBRecipe, DBIngredient } from '@/shemas/recipe';
 import { RecipeWithQuery } from './specialTypes';
+import { Database } from '@/db/schema';
 
 export interface CreateResponse {
     recipe: string | undefined;
@@ -17,7 +18,7 @@ export interface IRecipeService {
     update(id: string, recipe: Recipe, removedIngredients: RecipeIngredients[] | undefined, addedIngredients: RecipeIngredients[] | undefined): Promise<{id: string} | undefined>
     delete(id: string): Promise<{id: string} | undefined>
 
-    updateRecipeAfterIngredientsChange(recipe: DBRecipe): Promise<void>
+    updateRecipeAfterIngredientsChange(recipe: DBRecipe, dbIngredient: DBIngredient, tx?: Database): Promise<void>
 }
 
 export interface IIngredientService {

@@ -1,4 +1,4 @@
-import { DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { DBIngredient, DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
 import { CreateRequest, CreateResponse, IRecipeService } from "@/types/services";
 import { db } from "@/db/db";
 import { RecipeIngredientsRepository, RecipeRepository } from "../repositories/recipeRepository";
@@ -7,6 +7,8 @@ import { zodValidateDataBeforeAddThemToDatabase } from "./services";
 import { RecipeUpdatePayload } from "@/types/context";
 import { RecipeWithQuery } from "@/types/specialTypes";
 import { calculateProfitMargin, getTotalPrice, transformRecipeFromDB, transformRecipeIngredentFromDB } from "./helpers";
+import { Database } from "@/db/schema";
+import { IngredientService } from "./ingredientService";
 
 
 export class RecipeService implements IRecipeService {
@@ -14,11 +16,13 @@ export class RecipeService implements IRecipeService {
     private recipeRepository: RecipeRepository
     private recipeIngredientsRepository: RecipeIngredientsRepository
     private ingredientRepository: IngredientRepository
+    
 
     constructor() {
         this.recipeRepository = new RecipeRepository()
         this.recipeIngredientsRepository = new RecipeIngredientsRepository()
         this.ingredientRepository = new IngredientRepository()
+        
     }
 
     async findAll(): Promise<Recipe[] | undefined> {
@@ -103,24 +107,28 @@ export class RecipeService implements IRecipeService {
       return deleteResponse
     }
 
-    async updateRecipeAfterIngredientsChange(dbRecipe: DBRecipe): Promise<void> {
+    async updateRecipeAfterIngredientsChange(dbRecipe: DBRecipe, dbIngredient: DBIngredient, tx: Database): Promise<void> {
         
         const queredRecipe = await this.recipeRepository.findById(dbRecipe.id)
+        
         const dbIngredients = queredRecipe?.recipeIngredients.map((ingredient) => ingredient)
         const ingredients = dbIngredients?.map((ing) => transformRecipeIngredentFromDB(ing))
+        const updatedIngredients = ingredients?.map((ingredient) =>  ingredient.ingredientId === dbIngredient.id ? {...ingredient, unitPrice: Number(dbIngredient.unitPrice)} : ingredient)
+
         const recipe = transformRecipeFromDB(dbRecipe)
-        const cost = ingredients ? getTotalPrice(ingredients) : 0
+        const cost = updatedIngredients && getTotalPrice(updatedIngredients)
         const tax = recipe.tax
         const price =recipe.sellingPrice ? recipe.sellingPrice : 1
-        const margin = calculateProfitMargin(cost, price, tax)
-
+        const margin = cost && calculateProfitMargin(cost, price, tax)
+        console.log("margin: ", margin)
         const updatedRecipe = 
         {
             ...recipe,
-            totalCost: cost,
+            totalCost: cost ? cost : 0 ,
             profitMargin: margin 
         }
-        this.recipeRepository.update(recipe.id, updatedRecipe)
+
+        this.recipeRepository.update(recipe.id, updatedRecipe, tx)
     }
 }
 

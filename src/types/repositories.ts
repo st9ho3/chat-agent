@@ -8,7 +8,7 @@ export interface IRecipeRepository {
   findAllByIngredientId(id: string): Promise<DBRecipe[] | undefined>;
   findAll(): Promise<Recipe[] | undefined>;
   create(recipe: Recipe, tx: Database): Promise<string | undefined>;
-  update(id: string, recipe: Recipe): Promise<{id: string} | undefined>;
+  update(id: string, recipe: Recipe, tx?: Database): Promise<{id: string} | undefined>;
   delete(id: string): Promise<{id: string} | undefined>;
   
 }
@@ -22,7 +22,7 @@ export interface IIngredientRepository {
   findById(id: string): Promise<Ingredient | undefined>;
   findAll(): Promise<Ingredient[] | undefined>;
   create(ingredient: DBIngredient): Promise<{ingredientId: string} | undefined>;
-  update(ingredient: DBIngredient): Promise<{ingredientId: string} | undefined>;
+  update(ingredient: DBIngredient, tx?: Database): Promise<{ingredientId: string} | undefined>;
   delete(id: string): Promise<{ingredientId: string} | undefined>;
   updateUsage(id: string, tx: Database, action: "+" | "-"): Promise<undefined>
   
