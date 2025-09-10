@@ -21,10 +21,22 @@ export class AuthRepository implements AUTHrepository {
 
     async create(email: string, password: string): Promise<string | undefined> {
         
-        const userId = await db
+        try {
+            const [userId] = await db
         .insert(users)
-        .values()
+        .values({
+            email: email,
+            password: password
+        })
+        .returning({
+            user: users.id
+        })
+        
+        return userId.user
 
+        } catch (err) {
+            throw new Error(`${err}`)
+        }
 
     }
 }

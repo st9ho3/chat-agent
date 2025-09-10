@@ -70,14 +70,6 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
 
   const newPrice = data.profitMargin !== recipe?.profitMargin && margin ? calculateSellingPrice(newCost, margin, newTax) : price
   const newMargin = newPrice && calculateProfitMargin(newCost, newPrice, newTax)  
-
-  console.log("Recipe Calculation Details:", {
-  "Cost": newCost,
-  "Selling Price": newPrice,
-  "Tax": newTax,
-  "Profit Margin Input": newMargin,
-  
-});
     
 
   const addedIngredients: RecipeIngredients[] = tempIngredients.filter(

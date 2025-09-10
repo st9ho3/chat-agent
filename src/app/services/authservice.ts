@@ -16,4 +16,17 @@ export class AuthService implements AUTHService {
 
         return user
     }
+
+    async create(email: string, password: string): Promise<string | undefined> {
+
+        try {
+            const user = await this.authRepository.create(email, password)
+            console.log(user)
+            return user
+
+        } catch (err) { 
+            throw new Error(`${err}`)
+        }
+       
+    }
 }

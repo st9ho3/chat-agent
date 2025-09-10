@@ -4,29 +4,82 @@ import { Label, Button, GoogleIcon, Input } from '@/app/constants/components'
 import useSignIn from '@/app/hooks/useSignIn';
 import useSignUp from '@/app/hooks/useSignUp';
 import { useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 
 interface AuthFormProps {
   isSignIn?: boolean;
 }
 
-type SignInCredentials = { email: string; password: string; };
-type SignUpCredentials = { email: string; password: string; passwordConfirmation: string; };
-
 const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
   const [isSignIn, setIsSignIn] = useState(initialIsSignIn);
-  const { register, handleSubmit, onSubmit } = isSignIn 
-    ? useSignIn({ isSignIn }) 
-    : useSignUp({ isSignIn });
-
-  // Type assertion to make it work with your Input component
-  const typedRegister = register as UseFormRegister<SignInCredentials | SignUpCredentials>;
 
   const title = isSignIn ? 'Sign In' : 'Create an account';
   const subtitle = isSignIn ? "Enter your email below to sign in to your account." : "Enter your email below to create your account.";
   const buttonText = isSignIn ? 'Sign In' : 'Create Account';
   const switchText = isSignIn ? "Don't have an account?" : 'Already have an account?';
   const switchLinkText = isSignIn ? 'Sign Up' : 'Sign In';
+
+  // Render different forms based on the state to avoid type conflicts
+  const renderForm = () => {
+    if (isSignIn) {
+      const { register, handleSubmit, onSubmit } = useSignIn({ isSignIn });
+      
+      return (
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input 
+              id="email" 
+              type="email" 
+              placeholder="name@example.com" 
+              register={register}
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input 
+              id="password" 
+              type="password" 
+              register={register}
+            />
+          </div>
+          <Button type="submit">{buttonText}</Button>
+        </form>
+      );
+    } else {
+      const { register, handleSubmit, onSubmit } = useSignUp({ isSignIn });
+      
+      return (
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input 
+              id="email" 
+              type="email" 
+              placeholder="name@example.com" 
+              register={register} 
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input 
+              id="password" 
+              type="password" 
+              register={register} 
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input 
+              id="passwordConfirmation" 
+              type="password" 
+              register={register} 
+            />
+          </div>
+          <Button type="submit">{buttonText}</Button>
+        </form>
+      );
+    }
+  };
 
   return (
     <div className="w-full max-w-sm p-6 md:p-8 space-y-4 bg-white rounded-xl border border-gray-200">
@@ -38,36 +91,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
 
       {/* Card Content */}
       <div className="space-y-4">
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="name@example.com" 
-              register={typedRegister} 
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input 
-              id="password" 
-              type="password" 
-              register={typedRegister} 
-            />
-          </div>
-          {!isSignIn && (
-            <div className="grid gap-2">
-              <Label htmlFor="confirm-password">Confirm Password</Label>
-              <Input 
-                id="passwordConfirmation" 
-                type="password" 
-                register={typedRegister} 
-              />
-            </div>
-          )}
-          <Button type="submit">{buttonText}</Button>
-        </form>
+        {renderForm()}
 
         {isSignIn && (
           <>
