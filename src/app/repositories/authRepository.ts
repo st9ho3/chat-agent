@@ -3,6 +3,7 @@ import { users } from "@/db/schema";
 import { User } from "@/shemas/auth";
 import { AUTHrepository } from "@/types/auth";
 import { eq } from "drizzle-orm";
+import { use } from "react";
 
 export class AuthRepository implements AUTHrepository {
     
@@ -38,5 +39,15 @@ export class AuthRepository implements AUTHrepository {
             throw new Error(`${err}`)
         }
 
+    }
+
+    async createGoogleUser(user: User): Promise<string | undefined> {
+        
+        const [userId] = await db
+        .insert(users)
+        .values(user)
+        .returning({id: users.id})
+
+        return userId.id
     }
 }

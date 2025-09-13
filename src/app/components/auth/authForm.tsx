@@ -3,6 +3,8 @@
 import { Label, Button, GoogleIcon, Input } from '@/app/constants/components'
 import useSignIn from '@/app/hooks/useSignIn';
 import useSignUp from '@/app/hooks/useSignUp';
+import { sign } from 'crypto';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 interface AuthFormProps {
@@ -42,7 +44,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
               register={register}
             />
           </div>
-          <Button type="submit">{buttonText}</Button>
+          <Button isSignIn={isSignIn} mode='credentials' type="submit">{buttonText}</Button>
         </form>
       );
     } else {
@@ -75,7 +77,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
               register={register} 
             />
           </div>
-          <Button type="submit">{buttonText}</Button>
+          <Button isSignIn={isSignIn} mode='credentials' type="submit">{buttonText}</Button>
         </form>
       );
     }
@@ -89,8 +91,11 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
         <p className="text-sm text-gray-500">{subtitle}</p>
       </div>
 
+      
+
       {/* Card Content */}
       <div className="space-y-4">
+       
         {renderForm()}
 
         {isSignIn && (
@@ -106,7 +111,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
               </div>
             </div>
 
-            <Button variant="outline" type="button">
+            <Button mode='google' isSignIn={isSignIn} variant="outline" type="button">
               <GoogleIcon />
               Google
             </Button>

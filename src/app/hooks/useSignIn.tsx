@@ -1,10 +1,9 @@
-import React from 'react'
-import { z } from "zod"
-import { useForm, Resolver } from 'react-hook-form'
-import { SignInCredentials, signInCredentialsSchema, SignUpCredentials, signUpCredentialsSchema } from '@/shemas/auth'
-
+"use client"
+import { useForm } from 'react-hook-form'
+import { SignInCredentials, signInCredentialsSchema } from '@/shemas/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signInCredentials, signUpCredentials } from '../constants/uathFormdefaultValues'
+import { signIn } from 'next-auth/react'
 
 export interface AuthProps {
     isSignIn: boolean
@@ -12,29 +11,35 @@ export interface AuthProps {
 
 const useSignIn = ({ isSignIn }: AuthProps) => {
 
-    const { register, handleSubmit, formState, watch, getValues } = useForm<SignInCredentials>({
+    const { register, handleSubmit } = useForm<SignInCredentials>({
         defaultValues: isSignIn ? signInCredentials : signUpCredentials,
         resolver: zodResolver(signInCredentialsSchema)
     })
 
-    const onSubmit = async (data: any) => {
-        try {
-            const res = await fetch("/auth/signin", {
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "body": JSON.stringify(data)
-            })
+    const onSubmit = async (formData: SignInCredentials) => {
 
-            if (!res.ok) {
-                throw new Error("Res is not ok")
+        console.log(formData)
+
+        try {
+            const {data, success, error} = signInCredentialsSchema.safeParse(formData)
+
+            if (success) {
+                 const user = await signIn("credentials", {
+                    email: data.email,
+                    password: data.password,
+                    redirectTo: "/" 
+                 })
+                 console.log(user)
+                 return user
+                 
             }
-            console.log(res.body)
-            return res.body
-        } catch (error) {
-            console.error("Error during form submission:", error)
-            // Handle the error appropriately, e.g., show a toast notification
+           
+            if (error) {
+                console.log(error)
+                throw new Error(`${error}`)
+            }
+        } catch(err) {
+            console.log(err)
         }
     }
 

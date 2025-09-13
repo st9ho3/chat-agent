@@ -1,21 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { SignUpCredentials, signUpCredentialsSchema } from '@/shemas/auth'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signInCredentials, signUpCredentials } from '../constants/uathFormdefaultValues'
+import useHelpers from './useHelpers'
 
 export interface AuthProps {
     isSignIn: boolean
 }
 const useSignUp = ({ isSignIn }: AuthProps) => {
 
-    const { register, handleSubmit, formState, watch, getValues } = useForm<SignUpCredentials>({
+    const { register, handleSubmit, formState,  reset } = useForm<SignUpCredentials>({
         defaultValues: isSignIn ? signInCredentials : signUpCredentials,
         resolver: zodResolver(signUpCredentialsSchema)
     })
-
     const onSubmit = async (data: SignUpCredentials) => {
-        console.log("Data: ",data)
+        
         const res = await fetch("/api/auth/signup", {
             method: "POST",
             headers: {
@@ -27,13 +26,18 @@ const useSignUp = ({ isSignIn }: AuthProps) => {
             throw new Error("Res s not ok")
         }
        const response = await res.json()
-       console.log(response)
+       
+       reset()
+       return response
+       
     }
 
     return {
         register,
         handleSubmit,
-        onSubmit
+        onSubmit,
+        formState
+        
     }
 }
 
