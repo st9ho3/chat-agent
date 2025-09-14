@@ -106,6 +106,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   async session({session, token, user}) {
 
     return session
+  },
+  async redirect({url}) {
+    url = "/"
+    return url
   }
 }
 })

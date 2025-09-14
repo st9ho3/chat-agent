@@ -3,6 +3,7 @@ import { date, numeric, pgEnum, uuid, pgTable, varchar, serial, text, integer, t
 import { NodePgDatabase, NodePgQueryResultHKT } from 'drizzle-orm/node-postgres';
 import type { AdapterAccountType } from "@auth/core/adapters"
 import * as schema from './schema';
+import IngredientsTable from "@/app/components/ingredients/ingredientsTable";
 
 export type Database = NodePgDatabase<typeof schema>;
 export type Transaction = PgTransaction<NodePgQueryResultHKT, typeof schema>;
@@ -21,7 +22,8 @@ export const recipesTable = pgTable("recipes", {
   imgPath: varchar("img_path").notNull(),
   tax: numeric("tax").notNull(),
   sellingPrice: numeric("selling_price", { precision: 10, scale: 2 }).notNull(),
-  profitMargin: numeric("profit_margin", { precision: 10, scale: 2 }).notNull()
+  profitMargin: numeric("profit_margin", { precision: 10, scale: 2 }).notNull(),
+  userId: text("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
 });
 
 // Defines the 'ingredients' table schema for individual ingredients.
@@ -32,7 +34,8 @@ export const ingredientsTable = pgTable('ingredients', {
   unit: varchar('unit', { length: 50 }).notNull(), 
   unitPrice: numeric('unit_price', { precision: 10, scale: 5 }).notNull(),
   quantity: numeric('quantity').notNull(),
-  usage: numeric('usage').notNull().default('1') 
+  usage: numeric('usage').notNull().default('1'),
+  userId: text("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }), 
 });
 
 // Defines the 'recipeIngredients' table schema, linking recipes and ingredients.
@@ -43,12 +46,20 @@ ingredientId: uuid("ingredient_id").notNull().references(() =>  ingredientsTable
 quantity: numeric("quantity").notNull()
 });
 
-export const recipeRelations = relations(recipesTable,({many}) => ({
-  recipeIngredients: many(recipeIngredientsTable)
+export const recipeRelations = relations(recipesTable,({many, one}) => ({
+  recipeIngredients: many(recipeIngredientsTable),
+  user: one(users, {
+    fields: [recipesTable.userId],
+    references: [users.id]
+  })
 }))
 
-export const ingredientRelations = relations(ingredientsTable, ({many}) => ({
-  recipeIngredients: many(recipeIngredientsTable)
+export const ingredientRelations = relations(ingredientsTable, ({many, one}) => ({
+  recipeIngredients: many(recipeIngredientsTable),
+  user: one(users, {
+    fields: [ingredientsTable.userId],
+    references: [users.id]
+  })
 }))
 
 export const recipeIngredientsRelations = relations(recipeIngredientsTable, ({one}) => ({
@@ -62,6 +73,8 @@ export const recipeIngredientsRelations = relations(recipeIngredientsTable, ({on
   })
 }))
 
+
+
 // Auth.js
 
 export const users = pgTable("user", {
@@ -74,6 +87,11 @@ export const users = pgTable("user", {
   image: text("image"),
   password: varchar("password"),
 })
+
+export const udersRelations = relations(users, ({many}) => ({
+  recipes: many(recipesTable),
+  ingredients: many(ingredientsTable)
+}))
  
 export const accounts = pgTable(
   "account",
