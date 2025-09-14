@@ -3,6 +3,7 @@ import "../globals.css";
 import HomeContextProvider from "../context/homeContext/homeContext";
 import Chat from "../components/chatUI/chat";
 import Sidebar from "../components/layout/sideBar"; // Import the new component
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Recipes App",
@@ -19,14 +20,17 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <HomeContextProvider>
+          <SessionProvider>
           <div className="flex h-screen">
             <Sidebar /> {/* Use the Sidebar component */}
             <main className="flex-1 overflow-y-hidden">
+              {/* <Header /> */}
               {children}
               
             </main>
           </div>
           <Chat />
+          </SessionProvider>
         </HomeContextProvider>
       </body>
     </html>

@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import Modal from '../shared/modal';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 function SidebarLink({
   icon: Icon,
@@ -27,6 +29,7 @@ function SidebarLink({
   href: string;
 }) {
   const { dispatch } = useHomeContext();
+
 
 
   // Use a conditional to render either a Link or a div that opens a modal
@@ -79,6 +82,8 @@ function SidebarLink({
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { state, dispatch } = useHomeContext();
+  const {data} = useSession()
+  console.log(data)
 
   return (
     <>
@@ -89,6 +94,8 @@ export default function Sidebar() {
       >
         {/* Top navigation links */}
         <nav className="flex flex-col space-y-2">
+
+          {data?.user?.image && <Image alt='profile pic' src={ data?.user?.image  } width={30} height={30} className='rounded-full'/> } 
           <SidebarLink
             icon={Home}
             text="Home"

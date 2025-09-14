@@ -1,17 +1,20 @@
-import { auth } from '@/auth'
+"use client"
+import Button from '@/app/components/shared/sharedButton'
+import { signOut, useSession } from 'next-auth/react'
+
 import React from 'react'
 
-const page = async() => {
+const page = () => {
   
-  const session = await auth()
 
+  const session = useSession()
 
 
   return (
     <div className='m-10 relative'>
-      
-      Hello {session?.user?.email}
-      
+      Hello bro {session.data?.user?.email}
+      <button className='border-1 h-10 w-30 rounded-2xl'
+       onClick={() => signOut()}>Sign out </button>
     </div>
   )
 }

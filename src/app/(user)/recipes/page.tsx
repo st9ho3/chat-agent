@@ -1,4 +1,3 @@
-import Header from '@/app/components/recipes/header'
 import Pagination from '@/app/components/recipes/pagination'
 import RecipesTable from '@/app/components/recipes/recipestable'
 import { RecipeService } from '@/app/services/recipeService'
@@ -17,7 +16,7 @@ const RecipesPage = async() => {
 
   return (
     <div className='relative w-full h-screen px-2 md:px-5 bg-white'>
-      <Header />
+      
       <RecipesTable items={recipes} />
       <Pagination items={recipes} />
       

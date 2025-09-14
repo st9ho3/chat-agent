@@ -14,7 +14,7 @@ const useSignUp = ({ isSignIn }: AuthProps) => {
         resolver: zodResolver(signUpCredentialsSchema)
     })
     const onSubmit = async (data: SignUpCredentials) => {
-        
+        console.log(data)
         const res = await fetch("/api/auth/signup", {
             method: "POST",
             headers: {
@@ -22,11 +22,12 @@ const useSignUp = ({ isSignIn }: AuthProps) => {
             },
             body: JSON.stringify(data)
         })
+        console.log(res)
         if (!res.ok) {
             throw new Error("Res s not ok")
         }
        const response = await res.json()
-       
+       console.log("response: ", response)
        reset()
        return response
        
