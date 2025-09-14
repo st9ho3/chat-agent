@@ -3,7 +3,6 @@ import { users } from "@/db/schema";
 import { User } from "@/shemas/auth";
 import { AUTHrepository } from "@/types/auth";
 import { eq } from "drizzle-orm";
-import { use } from "react";
 
 export class AuthRepository implements AUTHrepository {
     

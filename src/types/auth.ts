@@ -1,5 +1,4 @@
 import { SignUpCredentials, User } from "@/shemas/auth";
-import { AdapterOptions } from "next/dist/server/web/adapter";
 
 
 export interface AUTHService {

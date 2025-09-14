@@ -33,7 +33,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null
         }
 
-        const { data, success, error } = signInCredentialsSchema.safeParse(credentials)
+        const { data, success } = signInCredentialsSchema.safeParse(credentials)
         let user = null
 
         if (!success) {

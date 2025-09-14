@@ -3,8 +3,6 @@
 import { Label, Button, GoogleIcon, Input } from '@/app/constants/components'
 import useSignIn from '@/app/hooks/useSignIn';
 import useSignUp from '@/app/hooks/useSignUp';
-import { sign } from 'crypto';
-import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 interface AuthFormProps {
@@ -21,7 +19,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
   const switchLinkText = isSignIn ? 'Sign Up' : 'Sign In';
 
   // Render different forms based on the state to avoid type conflicts
-  const renderForm = () => {
+  const RenderForm = () => {
     if (isSignIn) {
       const { register, handleSubmit, onSubmit } = useSignIn({ isSignIn });
       
@@ -96,7 +94,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
       {/* Card Content */}
       <div className="space-y-4">
        
-        {renderForm()}
+        {RenderForm()}
 
         {isSignIn && (
           <>
