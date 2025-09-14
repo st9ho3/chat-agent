@@ -6,14 +6,15 @@ import { ExitButton, IngredientForm } from '@/app/constants/components'
 interface Props {
   mode: 'create' | 'edit'
   ingredient: Ingredient | undefined
+  userId: string
 }
 
-const IngredientModal = ({ingredient, mode}: Props) => {
+const IngredientModal = ({ingredient, mode, userId}: Props) => {
 
   return (
     <div>
       <ExitButton />
-      <IngredientForm mode={mode} ingredient={ingredient}  />
+      <IngredientForm mode={mode} ingredient={ingredient} userId={userId} />
     </div>
   )
 }

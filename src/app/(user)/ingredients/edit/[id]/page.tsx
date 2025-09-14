@@ -2,8 +2,15 @@
 import React from 'react'
 import { IngredientModal } from '@/app/constants/components'
 import { IngredientService } from '@/app/services/ingredientService'
-
+import { auth } from '@/auth'
+import { redirect } from 'next/navigation'
 const IngredientEditPage = async ({params}: {params: Promise<{id: string}>} ) => {
+
+  const session = await auth()
+    
+    if (!session?.user) {
+      redirect("/signin")
+    }
 
   const service = new IngredientService()
     const {id} = await params

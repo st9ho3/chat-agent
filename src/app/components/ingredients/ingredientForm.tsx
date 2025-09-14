@@ -9,15 +9,16 @@ import { useIngredientForm } from '../../hooks/useIngredientsForm'; // Adjust pa
 type AddIngredientProps = {
   ingredient: Ingredient | undefined
   mode: 'create' | 'edit'
+  userId: string
   
 };
 
-const IngredientForm = ({ ingredient, mode }: AddIngredientProps) => {
+const IngredientForm = ({ ingredient, mode, userId }: AddIngredientProps) => {
   const {
     quantity, name, unit, price, displayedPrice, errors,
     setQuantity, setErrors, handleName, handlePrice, handleFocus,
     handleBlur, handleUnit, addIngredient, handleKeyDown,
-  } = useIngredientForm({ ingredient, mode });
+  } = useIngredientForm({ ingredient, mode, userId });
 
   return (
     <form className="p-2">

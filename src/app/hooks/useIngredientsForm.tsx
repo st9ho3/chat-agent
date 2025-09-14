@@ -1,20 +1,22 @@
 "use client"
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe';
 import { normalizePrice } from '@/app/services/helpers';
 import { sendIngredient, updateIngredient } from '../services/services';
 import useHelpers from './useHelpers';
+import { useSession } from 'next-auth/react';
 
 type IngredientErrors = string[];
 
 type UseIngredientFormProps = {
   mode: 'create' | 'edit';
   ingredient: Ingredient | undefined;
+  userId: string
 };
 
-export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) => {
+export const useIngredientForm = ({ mode, ingredient, userId }: UseIngredientFormProps) => {
   const [quantity, setQuantity] = useState<number>(
     mode === 'edit' && ingredient ? ingredient.quantity : 0
   );
@@ -30,9 +32,10 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [errors, setErrors] = useState<IngredientErrors>([]);
   
-  const router =  useRouter()
-  const { raiseNotification } =  useHelpers() 
+  const router = useRouter()
+  const { raiseNotification } = useHelpers()
 
+  
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     // For create mode, convert to lowercase; for edit mode, keep as is
@@ -90,11 +93,12 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
         unit: unit === "g" || unit === "kg" ? "g" : unit === "L" || unit === "ml" ? "ml" : "piece",
         unitPrice: normalizedUnitPrice,
         quantity: quantity,
-        usage: "0"
+        usage: "0",
+        userId: userId
       };
 
       const validatedIngredient = IngredientSchema.safeParse(ingredientPrototype);
-      
+      console.log(validatedIngredient)
       if (!validatedIngredient.success) {
   setErrors([]);
   const zodErrors = validatedIngredient.error.errors;
@@ -119,7 +123,8 @@ export const useIngredientForm = ({ mode, ingredient }: UseIngredientFormProps) 
         unit:  unit === "g" || unit === "kg" ? "g" : unit === "L" || unit === "ml" ? "ml" : "piece",
         unitPrice: normalizedUnitPrice,
         quantity: quantity,
-        usage: ingredient.usage || "0"
+        usage: ingredient.usage || "0",
+        userId: userId
       };
 
       const validatedIngredient = IngredientSchema.safeParse(updatedIngredient);

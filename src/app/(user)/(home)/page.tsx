@@ -1,18 +1,20 @@
-"use client"
-import { signOut, useSession } from 'next-auth/react'
+
+import { auth } from '@/auth'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
-const page = () => {
+const page = async() => {
   
-
-  const session = useSession()
-
+  const session = await auth()
+  
+  if (!session?.user) {
+    redirect("/signin")
+  }
 
   return (
     <div className='m-10 relative'>
-      Hello bro {session.data?.user?.email}
-      <button className='border-1 h-10 w-30 rounded-2xl'
-       onClick={() => signOut()}>Sign out </button>
+      
+      Hello, {session.user.email}
     </div>
   )
 }

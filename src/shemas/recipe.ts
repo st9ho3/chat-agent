@@ -54,7 +54,8 @@ export const RecipeSchema = z.object({
   tax: z.number().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
   imgPath: z.string().url("Image path must be a valid URL"),
   sellingPrice: z.number().min(0, "Selling price can't be negative").optional(),
-  profitMargin: z.number().min(0, "Profit margin can't be negative").optional()
+  profitMargin: z.number().min(0, "Profit margin can't be negative").optional(),
+  userId: z.string()
 });
 
 export type Recipe = z.infer<typeof RecipeSchema>;
@@ -70,7 +71,8 @@ export const DBRecipeSchema = z.object({
   tax: z.string().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
   imgPath: z.string().url("Image path must be a valid URL"),
   sellingPrice: z.string().min(0, "Selling price can't be negative"),
-  profitMargin: z.string().min(0, "Profit margin can't be negative")
+  profitMargin: z.string().min(0, "Profit margin can't be negative"),
+  userId: z.string()
 });
 
 export type DBRecipe = z.infer<typeof DBRecipeSchema>;
@@ -84,7 +86,8 @@ export const IngredientSchema = z.object({
   unit: z.string().min(1, "Unit is required"),
   unitPrice: z.number().min(0.001, "Unit price can't be zero."),
   quantity: z.number().min(1, "Quantity must be non-negative"),
-  usage: z.string()
+  usage: z.string(),
+  userId: z.string()
 });
 
 export type Ingredient = z.infer<typeof IngredientSchema>;
@@ -96,7 +99,8 @@ export const DBIngredientSchema = z.object({
   unit: z.string().min(1, "Unit is required"),
   unitPrice: z.string().min(0.001, "Unit price can't be zero."),
   quantity: z.string().min(1, "Quantity must be non-negative"),
-  usage: z.string()
+  usage: z.string(),
+  userId: z.string()
 });
 
 export type DBIngredient = z.infer<typeof DBIngredientSchema>;

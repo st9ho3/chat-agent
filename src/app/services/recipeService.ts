@@ -24,8 +24,8 @@ export class RecipeService implements IRecipeService {
         
     }
 
-    async findAll(): Promise<Recipe[] | undefined> {
-        const recipes = await this.recipeRepository.findAll()
+    async findAll(userId: string): Promise<Recipe[] | undefined> {
+        const recipes = await this.recipeRepository.findAll(userId)
         return recipes
     }
 

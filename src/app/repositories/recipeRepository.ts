@@ -49,11 +49,12 @@ export class RecipeRepository implements IRecipeRepository {
       }
     }
 
-    async findAll(): Promise<Recipe[] | undefined> {
+    async findAll(userId: string): Promise<Recipe[] | undefined> {
         try {
         const dbRecipes = await db
             .select()
-            .from(recipesTable);
+            .from(recipesTable)
+            .where(eq(recipesTable.userId, userId))
 
         const recipes =  dbRecipes.map((dbRecipe) => transformRecipeFromDB(dbRecipe))
         return recipes

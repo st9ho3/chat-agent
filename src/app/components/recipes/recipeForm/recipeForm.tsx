@@ -27,10 +27,11 @@ export interface RecipeFormProps {
   ingredients: Ingredient[]
   recipe?: Recipe
   recipeIngredients: RecipeIngredients[]
+  userId: string
 }
 
 
-const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormProps) => {
+const RecipeForm = ({ingredients, recipe, recipeIngredients, mode, userId}: RecipeFormProps) => {
   
   const [isListVisible, setIsListVisible] = useState(false);
   const { 
@@ -48,7 +49,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode}: RecipeFormPr
     error, 
     state,
     watch
-   } = useRecipeForm({ingredients, recipe, recipeIngredients, mode});
+   } = useRecipeForm({ingredients, recipe, recipeIngredients, mode, userId});
 
     
   return (

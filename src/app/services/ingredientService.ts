@@ -23,10 +23,10 @@ export class IngredientService implements IIngredientService {
         this.recipeService = new RecipeService()
     }
 
-    async findAll(): Promise<Ingredient[] | undefined> {
+    async findAll(userId: string): Promise<Ingredient[] | undefined> {
       
       try {
-        const ingredients = await this.ingredientRepository.findAll()
+        const ingredients = await this.ingredientRepository.findAll(userId)
         return ingredients
       }catch (err) {
 
@@ -45,7 +45,7 @@ export class IngredientService implements IIngredientService {
           const ingredientExists = await checkIfIngredientExists(ingredient.name);
           const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient)
           const DBIngredient = validatedIngredient ? transformIngredientToDB(validatedIngredient) : undefined
-
+        
           if (!ingredientExists && DBIngredient) {
             const ingredientId = this.ingredientRepository.create(DBIngredient)
             return ingredientId

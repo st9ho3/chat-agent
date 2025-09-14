@@ -7,11 +7,12 @@ import { eq, sql } from "drizzle-orm";
 
 export class IngredientRepository implements IIngredientRepository {
 
-    async findAll(): Promise<Ingredient[] | undefined> {
+    async findAll(userId: string): Promise<Ingredient[] | undefined> {
         try {
             const dbIngredients = await db
                 .select()
-                .from(ingredientsTable);
+                .from(ingredientsTable)
+                .where(eq(ingredientsTable.userId, userId))
 
             const ingredients = dbIngredients.map((dbIngredient) => transformIngredientFromDB(dbIngredient))
             return ingredients

@@ -5,13 +5,20 @@ import { IngredientService } from '@/app/services/ingredientService'
 import { RecipeService } from '@/app/services/recipeService'
 import { RecipeIngredientFromDB } from '@/types/specialTypes'
 import React from 'react'
-
+import { auth } from '@/auth'
+import { redirect } from 'next/navigation'
 interface Params {
   params: Promise<{
     id: string
   }>
 }
 const EditPage = async ({params}: Params ) => {
+
+  const session = await auth()
+    
+    if (!session?.user) {
+      redirect("/signin")
+    }
   
   const recipeService = new RecipeService()
   const ingredientService = new IngredientService()

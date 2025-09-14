@@ -15,7 +15,7 @@ import { RecipeFormProps } from '../components/recipes/recipeForm/recipeForm';
 
 export type FormFields = z.infer<typeof RecipeSchema>;
 
-const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
+const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProps) => {
   const [newId, setNewId] = useState<string>(() => uuidv4());
   const [tempIngredients, setTempIngredients] = useState<RecipeIngredients[]>(mode === 'edit' && recipeIngredients ? recipeIngredients : []);
 
@@ -90,6 +90,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
 
       const recipeToUpdate = { 
         ...data, 
+        userId: userId,
         totalCost: newCost, imgPath: url || data.imgPath,
         profitMargin: newMargin,
         sellingPrice: newPrice
@@ -102,6 +103,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients}: RecipeFormProps) => {
       const updatedData = {
         ...data,
         id: newId,
+        userId: userId,
         imgPath: url || data.imgPath,
         profitMargin: data.profitMargin ? data.profitMargin : 0,
       };

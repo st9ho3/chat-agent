@@ -97,14 +97,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   async jwt({token, user}) {
    
     if (user) {
+      
       token.lastAccessed = Date.now()
     }
     
     console.log(token)
     return token
   },
-  async session({session, token, user}) {
+  async session({session, token}) {
 
+    if (token.sub) {
+      session.user.id = token.sub
+    }
+    
     return session
   },
   async redirect({url}) {

@@ -12,7 +12,7 @@ export interface CreateRequest {
 }
 
 export interface IRecipeService {
-    findAll(): Promise<Recipe[] | undefined>
+    findAll(userId: string): Promise<Recipe[] | undefined>
     findById(id: string): Promise< RecipeWithQuery | undefined>
     create(request: CreateRequest): Promise<CreateResponse | undefined>
     update(id: string, recipe: Recipe, removedIngredients: RecipeIngredients[] | undefined, addedIngredients: RecipeIngredients[] | undefined): Promise<{id: string} | undefined>
@@ -22,7 +22,7 @@ export interface IRecipeService {
 }
 
 export interface IIngredientService {
-    findAll(): Promise<Ingredient[] | undefined>
+    findAll(userId: string): Promise<Ingredient[] | undefined>
     findById(id: string): Promise<Ingredient | undefined>
     create(ingredient: Ingredient): Promise<{ingredientId: string} | undefined>
     update(ingredient: Ingredient): Promise<{ingredientId: string} | undefined>

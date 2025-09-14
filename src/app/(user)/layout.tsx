@@ -20,26 +20,26 @@ export default async function RootLayout({
 }>) {
 
   const session = await auth()
-    console.log(session)
+    
   if(!session?.user) {
     redirect("/signin")
   }
   return (
     <html lang="en">
       <body>
+        <SessionProvider session={session}>
         <HomeContextProvider>
-          <SessionProvider>
           <div className="flex h-screen">
             <Sidebar /> {/* Use the Sidebar component */}
             <main className="flex-1 overflow-y-hidden">
               {/* <Header /> */}
               {children}
-              
             </main>
           </div>
           <Chat />
-          </SessionProvider>
+          
         </HomeContextProvider>
+        </SessionProvider>
       </body>
     </html>
   );
