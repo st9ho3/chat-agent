@@ -26,7 +26,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
       return (
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label text="email">Email</Label>
             <Input 
               id="email" 
               type="email" 
@@ -35,7 +35,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label text="password">Password</Label>
             <Input 
               id="password" 
               type="password" 
@@ -51,7 +51,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
       return (
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
+            <Label text="email">Email</Label>
             <Input 
               id="email" 
               type="email" 
@@ -60,7 +60,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label text="password">Password</Label>
             <Input 
               id="password" 
               type="password" 
@@ -68,7 +68,7 @@ const AuthForm = ({ isSignIn: initialIsSignIn = true }: AuthFormProps) => {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Label text="confirm-password">Confirm Password</Label>
             <Input 
               id="passwordConfirmation" 
               type="password" 
