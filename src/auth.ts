@@ -8,6 +8,7 @@ import bcrypt from "bcrypt"
 export const service = new AuthService()
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+
   session: {strategy: "jwt"},
   providers: [
     Google({
@@ -113,6 +114,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     return session
   },
   async redirect({url}) {
+
     url = "/"
     return url
   }

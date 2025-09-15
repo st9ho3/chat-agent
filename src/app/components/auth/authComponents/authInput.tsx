@@ -1,3 +1,4 @@
+import { SignInCredentials, SignUpCredentials } from '@/shemas/auth';
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
@@ -5,13 +6,10 @@ export interface InputProps {
   className?: string
   placeholder?: string
   type: string
-  // Should not be any
-  register: UseFormRegister<any>
+  
+  register: UseFormRegister<SignInCredentials | SignUpCredentials>
   id: "email" | "password" | "passwordConfirmation"}
 
-/**
- * A styled input component for forms.
- */
 const Input = ({ className, type, id, register,  }: InputProps) => {
   const baseClasses = "flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
   

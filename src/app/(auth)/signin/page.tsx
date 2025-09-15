@@ -1,8 +1,8 @@
 import React from 'react';
-import { AuthForm } from '@/app/constants/components'; 
 import Image from 'next/image';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import SignInForm from '@/app/components/auth/signInForm';
 
 const SignInPage = async() => {
 
@@ -16,7 +16,7 @@ const SignInPage = async() => {
     <div className="grid lg:grid-cols-2 min-h-screen bg-[rgb(252,252,252)]">
       <div className="flex flex-col items-center justify-center p-6 sm:p-8 md:p-12">
         <div className="w-full max-w-sm">
-           <AuthForm isSignIn={true} />
+           <SignInForm />
         </div>
       </div>
 

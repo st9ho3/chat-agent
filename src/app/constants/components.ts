@@ -32,7 +32,6 @@ import Button from "../components/auth/authComponents/authButton";
 import Input from "../components/auth/authComponents/authInput";
 import Label from "../components/auth/authComponents/authLabel";
 import GoogleIcon from "../components/auth/authComponents/googleComponent";
-import AuthForm from "../components/auth/authForm";
 
 export {
 
@@ -68,5 +67,4 @@ export {
   Input,
   Label,
   GoogleIcon,
-  AuthForm
 };

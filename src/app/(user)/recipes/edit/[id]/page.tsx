@@ -35,14 +35,14 @@ const EditPage = async ({params}: Params ) => {
   const recIngredients = recipeIngredients.map((ing: RecipeIngredientFromDB) => transformRecipeIngredentFromDB(ing))
   const recipe = transformRecipeFromDB(rawRecipe)
 
-  const rawIngredients = await ingredientService.findAll()
+  const rawIngredients = session.user.id && await ingredientService.findAll(session.user.id)
   const ingredients = rawIngredients ? rawIngredients : []
  
   return (
     <div className="fixed inset-0 z-55 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
       <div className={`relative w-full max-w-fit p-9 mx-4 transform transition-all duration-300 bg-white rounded-2xl shadow-xl`}>
         
-        <RecipeForm mode='edit' recipe={recipe} recipeIngredients={recIngredients} ingredients={ingredients} />
+        { session.user.id && <RecipeForm mode='edit' recipe={recipe} recipeIngredients={recIngredients} ingredients={ingredients} userId={session.user.id} />}
         
       </div>
     </div>
