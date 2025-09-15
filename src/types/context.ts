@@ -30,6 +30,7 @@ export interface HomeState {
   messages: MessageType[];
   currentPage: number;
   isModalOpen: boolean;
+  isProfileOpen: boolean;
   modalType: ModalType;
   notification: Notification,
   file: File | null
@@ -42,6 +43,8 @@ export interface HomeState {
   | { type: "CHOOSE_PAGE"; payload: number }
   | { type: "OPEN_MODAL"; payload: ModalType}
   | { type: "CLOSE_MODAL";}
+  | { type: "OPEN_PROFILE"; }
+  | { type: "CLOSE_PROFILE" }
   | { type: "HANDLE_NOTIFICATION";  payload: Notification}
   | { type: "SET_FILE"; payload: File | null}
   | { type: "RESET_FILE"}

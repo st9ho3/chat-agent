@@ -11,11 +11,13 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Carrot,
+  CircleUserRound
 } from 'lucide-react';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import Modal from '../shared/modal';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import UserProfile from '../shared/profileModal';
 
 function SidebarLink({
   icon: Icon,
@@ -33,7 +35,7 @@ function SidebarLink({
 
 
   // Use a conditional to render either a Link or a div that opens a modal
-  if (href !== 'create') {
+  if (href !== 'create' && href !== 'profile') {
     return (
       <Link
         href={href}
@@ -57,7 +59,7 @@ function SidebarLink({
   return (
     <div
       onClick={() => {
-        dispatch({ type: 'OPEN_MODAL', payload: { type: 'create' } });
+        dispatch({ type: 'OPEN_MODAL', payload: { type: "create" } });
       }}
       className="flex relative group items-center p-2 text-gray-700 rounded-lg hover:bg-gray-100 group cursor-pointer"
     >
@@ -83,7 +85,7 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { state, dispatch } = useHomeContext();
   const {data} = useSession()
-  console.log(data)
+  
 
   return (
     <>
@@ -95,7 +97,14 @@ export default function Sidebar() {
         {/* Top navigation links */}
         <nav className="flex flex-col space-y-2">
 
-          {data?.user?.image && <Image alt='profile pic' src={ data?.user?.image  } width={30} height={30} className='rounded-full'/> } 
+          {data?.user?.image 
+          ? <Image onClick={() => {
+        dispatch({ type: 'OPEN_PROFILE' });
+      }} alt='profile pic' src={ data?.user?.image  } width={30} height={30} className='rounded-full cursor-pointer'/> 
+          : <CircleUserRound onClick={() => {
+        dispatch({ type: 'OPEN_PROFILE' });
+      }} className="w-9 h-9 text-gray-300" strokeWidth={1.5} />
+           } 
           <SidebarLink
             icon={Home}
             text="Home"
@@ -143,8 +152,12 @@ export default function Sidebar() {
           dispatch({ type: 'RESET_FILE' });
         }}
       >
-        {state.modalType.type === 'create' && <OptionsModal />}
+        {state.modalType.type === 'create' 
+        && <OptionsModal />
+        }
       </Modal>
+
+      {state.isProfileOpen && <UserProfile name={data?.user?.name || "Unknown name"} email={data?.user?.email || "Unknown email"} avatar={data?.user?.image} />}
     </>
   );
 }

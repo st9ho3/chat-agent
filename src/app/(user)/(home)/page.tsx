@@ -13,7 +13,6 @@ const page = async() => {
 
   return (
     <div className='m-10 relative'>
-      
       Hello, {session.user.email}
     </div>
   )

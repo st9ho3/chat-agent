@@ -7,6 +7,7 @@ const initialState: HomeState = {
   messages: [], // getInitialMessages(),
   currentPage: 1,
   isModalOpen: false,
+  isProfileOpen: false,
   modalType: {
     type: ""
   },
@@ -44,6 +45,16 @@ const homeReducer = (state: HomeState, action: Action): HomeState => {
       return {
         ...state,
         isModalOpen: false
+      }
+    case "OPEN_PROFILE": 
+      return {
+        ...state,
+        isProfileOpen: true
+      }
+    case "CLOSE_PROFILE": 
+      return {
+        ...state,
+        isProfileOpen: false
       }
     case 'HANDLE_NOTIFICATION':
       return {
