@@ -42,7 +42,7 @@ export class IngredientService implements IIngredientService {
 
     async create(ingredient: Ingredient): Promise<{ ingredientId: string; } | undefined> {
           
-          const ingredientExists = await checkIfIngredientExists(ingredient.name);
+          const ingredientExists = await checkIfIngredientExists(ingredient.name, ingredient.userId);
           const validatedIngredient = await zodValidateIngredientBeforeAddItToDatabase(ingredient)
           const DBIngredient = validatedIngredient ? transformIngredientToDB(validatedIngredient) : undefined
         

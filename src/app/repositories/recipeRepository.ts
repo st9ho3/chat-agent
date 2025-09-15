@@ -65,7 +65,7 @@ export class RecipeRepository implements IRecipeRepository {
     }
 
     async create(recipe: Recipe, tx: Database): Promise<string | undefined> {
-        const foundRecipe = await checkIfRecipeExists(recipe.title);
+        const foundRecipe = await checkIfRecipeExists(recipe.title, recipe.userId);
           if (foundRecipe) {
             if (foundRecipe.length === 0) {
               const transformedRecipe = transformRecipeToDB(recipe)
@@ -123,8 +123,8 @@ export class RecipeRepository implements IRecipeRepository {
 
 export class RecipeIngredientsRepository implements IRecipeIngredientsRepository {
 
-    async create(recipeIngredient: RecipeIngredients, tx: Database): Promise<{id: string | null}> {
-        const foundIngredient = await checkIfIngredientExists(recipeIngredient.name);
+    async create(recipeIngredient: RecipeIngredients, userId: string, tx: Database): Promise<{id: string | null}> {
+        const foundIngredient = await checkIfIngredientExists(recipeIngredient.name, userId );
           let assignedId;
         
           if (foundIngredient && foundIngredient.name === recipeIngredient.name) {

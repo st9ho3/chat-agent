@@ -14,7 +14,7 @@ export interface IRecipeRepository {
 }
 export interface IRecipeIngredientsRepository {
 
-  create(recipeIngredient: RecipeIngredients, tx: Database): Promise<{id: string | null} >;
+  create(recipeIngredient: RecipeIngredients, userId: string, tx: Database): Promise<{id: string | null} >;
   delete(recipeId: string, ingredientId: string, tx?: Database): Promise<{ingredientId: string | null} | undefined>  
 }
 

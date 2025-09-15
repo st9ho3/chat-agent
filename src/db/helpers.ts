@@ -1,22 +1,23 @@
 import { db } from './db';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { ingredientsTable, recipesTable } from './schema';
 
 
-export const checkIfRecipeExists = async (title: string) => {
+export const checkIfRecipeExists = async (title: string, userId: string) => {
   const recipes = await db
     .select({ recipe: recipesTable.title })
     .from(recipesTable)
-    .where(eq(recipesTable.title, title));
+    .where(and(eq(recipesTable.title, title), eq(recipesTable.userId, userId)));
 
   return recipes;
 };
 
-export const checkIfIngredientExists = async (title: string) => {
+export const checkIfIngredientExists = async (title: string, userId: string) => {
   const [ingredients] = await db
     .select()
     .from(ingredientsTable)
-    .where(eq(ingredientsTable.name, title));
+    .where(and(eq(ingredientsTable.name, title), eq(ingredientsTable.userId, userId)))
+    
 
   return ingredients;
 };

@@ -56,7 +56,7 @@ export class RecipeService implements IRecipeService {
 
                     await Promise.all(
                     validatedRecipeAddedIngredients.map(async (ingredient) => {
-                        const newIngredient = await this.recipeIngredientsRepository.create(ingredient, tx);
+                        const newIngredient = await this.recipeIngredientsRepository.create(ingredient, validatedRecipe.userId, tx);
                         await this.ingredientRepository.updateUsage(ingredient.ingredientId, tx, "+");
                         return newIngredient;
                     })
@@ -93,7 +93,7 @@ export class RecipeService implements IRecipeService {
                     }
         
                     if (validatedRecipeAddedIngredients && validatedRecipeAddedIngredients.length > 0) {
-                        await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.create(ingredient, tx)));
+                        await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.create(ingredient, validatedRecipe.userId, tx)));
                     }
                     return updateRecipeResponse
                     }) 
