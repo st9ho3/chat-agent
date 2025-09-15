@@ -29,7 +29,7 @@ export default async function RootLayout({
       <body>
         <SessionProvider session={session}>
         <HomeContextProvider>
-          <div className="flex h-screen">
+          <div className="flex h-screen bg-[rgb(252,252,252)]">
             <Sidebar /> {/* Use the Sidebar component */}
             <main className="flex-1 overflow-y-hidden">
               {/* <Header /> */}

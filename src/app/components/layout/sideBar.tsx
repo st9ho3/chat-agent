@@ -10,13 +10,11 @@ import {
   PlusSquare,
   PanelLeftClose,
   PanelLeftOpen,
-  Carrot,
-  CircleUserRound
+  Carrot
 } from 'lucide-react';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
 import Modal from '../shared/modal';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
 import UserProfile from '../shared/profileModal';
 
 function SidebarLink({
@@ -97,14 +95,6 @@ export default function Sidebar() {
         {/* Top navigation links */}
         <nav className="flex flex-col space-y-2">
 
-          {data?.user?.image 
-          ? <Image onClick={() => {
-        dispatch({ type: 'OPEN_PROFILE' });
-      }} alt='profile pic' src={ data?.user?.image  } width={30} height={30} className='rounded-full cursor-pointer'/> 
-          : <CircleUserRound onClick={() => {
-        dispatch({ type: 'OPEN_PROFILE' });
-      }} className="w-9 h-9 text-gray-300" strokeWidth={1.5} />
-           } 
           <SidebarLink
             icon={Home}
             text="Home"
