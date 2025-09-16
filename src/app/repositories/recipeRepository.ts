@@ -103,9 +103,10 @@ export class RecipeRepository implements IRecipeRepository {
     }
     }
 
-    async delete(id: string): Promise<{id: string} | undefined> {
+    async delete(id: string, tx: Database): Promise<{id: string} | undefined> {
+
          try {
-                const [deletereceipt] = await db
+                const [deletereceipt] = await tx
                     .delete(recipesTable)
                     .where(eq(recipesTable.id, id))
                     .returning({

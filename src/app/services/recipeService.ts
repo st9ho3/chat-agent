@@ -89,11 +89,17 @@ export class RecipeService implements IRecipeService {
                 const updateRecipeResponse = await this.recipeRepository.update(id, validatedRecipe)
         
                     if (validatedRecipeRemovedIngredients && validatedRecipeRemovedIngredients.length > 0) {
-                        await Promise.all(validatedRecipeRemovedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.delete(ingredient.recipeId, ingredient.ingredientId, tx)));
+                        await Promise.all(validatedRecipeRemovedIngredients.map(async (ingredient: RecipeIngredients) => {
+                            await this.recipeIngredientsRepository.delete(ingredient.recipeId, ingredient.ingredientId, tx)
+                            await this.ingredientRepository.updateUsage(ingredient.ingredientId, tx, "-");
+                    }));
                     }
         
                     if (validatedRecipeAddedIngredients && validatedRecipeAddedIngredients.length > 0) {
-                        await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => await this.recipeIngredientsRepository.create(ingredient, validatedRecipe.userId, tx)));
+                        await Promise.all(validatedRecipeAddedIngredients.map(async (ingredient: RecipeIngredients) => {
+                            await this.recipeIngredientsRepository.create(ingredient, validatedRecipe.userId, tx)
+                            await this.ingredientRepository.updateUsage(ingredient.ingredientId, tx, "+")
+                        }));
                     }
                     return updateRecipeResponse
                     }) 
@@ -102,8 +108,27 @@ export class RecipeService implements IRecipeService {
     }
 
     async delete(id: string): Promise<{ id: string; } | undefined> {
-      const deleteResponse = this.recipeRepository.delete(id)
-      return deleteResponse
+    
+      const recipe = await this.recipeRepository.findById(id) 
+
+      const totalDeletion = await db
+      .transaction(async (tx) => {
+
+        const deleteResponse = await this.recipeRepository.delete(id, tx)
+        if (recipe?.recipeIngredients) {
+            await Promise.all(recipe?.recipeIngredients.map(async(ingredient) => {
+                await this.ingredientRepository.updateUsage(ingredient.ingredientId, tx, "-")
+            }))
+        }
+        
+        
+        return deleteResponse
+      })
+      
+      return totalDeletion
+
+
+      
     }
 
     async updateRecipeAfterIngredientsChange(dbRecipe: DBRecipe, dbIngredient: DBIngredient, tx: Database): Promise<void> {

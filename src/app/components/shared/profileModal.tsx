@@ -11,7 +11,7 @@ const UserProfile = ({ name, email, avatar }: {name: string, email: string, avat
   const {dispatch} = useHomeContext()
 
   return (
-    <div className=" absolute top-8 left-5 z-50 w-72 font-sans bg-white rounded-xl shadow-lg border border-gray-200/50">
+    <div className=" absolute top-13 right-8 z-50 w-72 font-sans bg-white rounded-xl shadow-lg border border-gray-200/50">
       <X onClick={() => dispatch({type: 'CLOSE_PROFILE'})} className='flex justify-self-end m-1 cursor-pointer' />
       <div className="p-2">
         <button

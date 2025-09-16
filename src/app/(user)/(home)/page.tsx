@@ -18,10 +18,10 @@ const page = async() => {
     <div className=' m-2'>
       <Header session={session} />
       <div className='m-1 p-3 flex justify-between rounded-2xl bg-white h-full'>
-        <Card title='Recipes' value={5} Icon={ShoppingBasket} color='bg-amber-50' />
-        <Card title='Ingredients' value={13} Icon={Carrot} color='bg-red-50' />
-        <Card title='Avg Food Cost' value={33.5} Icon={Euro} color='bg-green-50' />
-        <Card title='Avg Profit Margin' value={65} Icon={Percent} color='bg-purple-50' />
+        <Card title='Recipes' value={5} Icon={ShoppingBasket} color='bg-amber-100' />
+        <Card title='Ingredients' value={13} Icon={Carrot} color='bg-red-100' />
+        <Card title='Avg Food Cost' value={33.5} Icon={Euro} color='bg-green-100' />
+        <Card title='Avg Profit Margin' value={65} Icon={Percent} color='bg-purple-100' />
       </div>
     </div>
   )
