@@ -25,6 +25,7 @@ export type RecipeWithQuery = {
     imgPath: string;
     sellingPrice: string;
     profitMargin: string;
+    foodCost: string;
     userId: string;
     recipeIngredients: {
         id: number;
