@@ -12,7 +12,8 @@ export const defaultValues: FormFields = {
       dateCreated: new Date(),
       tax: 0,
       sellingPrice: 0, 
-      profitMargin: 0, 
+      profitMargin: 0,
+      foodCost: 0, 
       imgPath: "https://yqbnjpxj7oneobhf.public.blob.vercel-storage.com/beef%20burger.png",
       userId:  " "
 }

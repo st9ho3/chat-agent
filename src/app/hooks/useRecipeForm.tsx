@@ -67,7 +67,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
   const price = data.sellingPrice !== recipe?.sellingPrice ? data.sellingPrice : recipe?.sellingPrice
   const newCost = getTotalPrice(tempIngredients);
   const newTax = data.tax ? data.tax : recipe?.tax || 0
-
+  const foodCost = price ? newCost / price : 0
   const newPrice = data.profitMargin !== recipe?.profitMargin && margin ? calculateSellingPrice(newCost, margin, newTax) : price
   const newMargin = newPrice && calculateProfitMargin(newCost, newPrice, newTax)  
     
@@ -93,7 +93,8 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
         userId: userId,
         totalCost: newCost, imgPath: url || data.imgPath,
         profitMargin: newMargin,
-        sellingPrice: newPrice
+        sellingPrice: newPrice,
+        foodCost: foodCost
       };
         
 
@@ -106,6 +107,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
         userId: userId,
         imgPath: url || data.imgPath,
         profitMargin: data.profitMargin ? data.profitMargin : 0,
+        foodCost: foodCost * 100
       };
       if (tempIngredients.length > 0) {
         const response = await sendRecipe(updatedData, tempIngredients);

@@ -22,6 +22,7 @@ export const recipesTable = pgTable("recipes", {
   tax: numeric("tax").notNull(),
   sellingPrice: numeric("selling_price", { precision: 10, scale: 2 }).notNull(),
   profitMargin: numeric("profit_margin", { precision: 10, scale: 2 }).notNull(),
+  foodCost: numeric("food_cost", { precision: 10, scale: 2 }).notNull(),
   userId: text("user_id").notNull().references(() => users.id, { onDelete: 'cascade' }),
 });
 

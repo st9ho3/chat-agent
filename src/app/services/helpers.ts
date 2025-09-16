@@ -80,6 +80,7 @@ export const transformRecipeFromDB = (recipeFromDb: DBRecipe): Recipe => ({
     tax: Number(recipeFromDb.tax),
     sellingPrice: Number(recipeFromDb.sellingPrice),
     profitMargin: Number(recipeFromDb.profitMargin),
+    foodCost: Number(recipeFromDb.foodCost),
     dateCreated: new Date(recipeFromDb.dateCreated),
     imgPath: recipeFromDb.imgPath,
 }) 
@@ -90,7 +91,8 @@ export const transformRecipeToDB = (recipe: Recipe): DBRecipe => ({
           dateCreated: recipe.dateCreated.toISOString().split('T')[0],
           tax: recipe.tax.toString(),
           sellingPrice: recipe.sellingPrice ? recipe.sellingPrice.toString() : "0",
-          profitMargin: recipe.profitMargin ? recipe.profitMargin.toString() : "0"
+          profitMargin: recipe.profitMargin ? recipe.profitMargin.toString() : "0",
+          foodCost: recipe.foodCost ? recipe.foodCost.toString() : "0"
 }) 
 
 export const transformIngredientFromDB = (ingredient: DBIngredient): Ingredient => ({

@@ -8,6 +8,7 @@ import { RecipeUpdatePayload } from "@/types/context";
 import { RecipeWithQuery } from "@/types/specialTypes";
 import { calculateProfitMargin, getTotalPrice, transformRecipeFromDB, transformRecipeIngredentFromDB } from "./helpers";
 import { Database } from "@/db/schema";
+import { RecipeAnalytics } from "@/types/repositories";
 
 
 export class RecipeService implements IRecipeService {
@@ -153,6 +154,19 @@ export class RecipeService implements IRecipeService {
         }
 
         this.recipeRepository.update(recipe.id, updatedRecipe, tx)
+    }
+
+    async getRecipesAnalytics(userId: string): Promise<RecipeAnalytics | undefined> {
+        
+        try {
+            const recipeAnalytics = this.recipeRepository.getRecipesAnalytics(userId)
+
+            return recipeAnalytics
+            
+        }catch(err) {
+
+            throw new Error(`RecipeService: Something happened on our side. ${err}`)
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 import { DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
-import { IRecipeIngredientsRepository, IRecipeRepository } from "@/types/repositories";
+import { IRecipeIngredientsRepository, IRecipeRepository, RecipeAnalytics } from "@/types/repositories";
 import { db } from "@/db/db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, avg, countDistinct } from "drizzle-orm";
 import { Database, recipesTable, recipeIngredientsTable } from "@/db/schema";
 import { transformRecipeFromDB } from "../services/helpers";
 import { checkIfRecipeExists } from "@/db/helpers";
@@ -9,6 +9,7 @@ import { transformRecipeToDB } from "../services/helpers";
 import { revalidatePath } from "next/cache";
 import { checkIfIngredientExists } from "@/db/helpers";
 import { RecipeWithQuery } from "@/types/specialTypes";
+import { count } from "console";
 
 
 export class RecipeRepository implements IRecipeRepository {
@@ -65,6 +66,7 @@ export class RecipeRepository implements IRecipeRepository {
     }
 
     async create(recipe: Recipe, tx: Database): Promise<string | undefined> {
+
         const foundRecipe = await checkIfRecipeExists(recipe.title, recipe.userId);
           if (foundRecipe) {
             if (foundRecipe.length === 0) {
@@ -118,6 +120,27 @@ export class RecipeRepository implements IRecipeRepository {
             } catch (err) {
                 console.error("Failed to delete recipe:", err);
             }
+    }
+
+    async getRecipesAnalytics(userId: string): Promise<RecipeAnalytics | undefined> {
+      
+      try {
+
+        const [recipeAnalytics] = await db 
+        .select({
+          avgProfitMargin: avg(recipesTable.profitMargin),
+          avgFoodCost: avg(recipesTable.foodCost),
+          totalRecipes: countDistinct(recipesTable.id)
+        })
+        .from(recipesTable)
+        .where(eq(recipesTable.userId, userId))
+
+        return recipeAnalytics
+
+      }catch(err) {
+
+        throw new Error(`RecipeRepository: Something happened on our side. ${err}`)
+      }
     }
 
 }

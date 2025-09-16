@@ -3,6 +3,12 @@ import { Database } from '@/db/schema';
 import { Recipe, Ingredient, RecipeIngredients, DBIngredient, DBRecipe } from '@/shemas/recipe';
 import { RecipeWithQuery } from './specialTypes';
 
+export interface RecipeAnalytics {
+  avgProfitMargin: string | null
+  avgFoodCost: string | null
+  totalRecipes: number
+}
+
 export interface IRecipeRepository {
   findById(id: string): Promise<RecipeWithQuery | undefined>;
   findAllByIngredientId(id: string): Promise<DBRecipe[] | undefined>;
@@ -10,6 +16,8 @@ export interface IRecipeRepository {
   create(recipe: Recipe, tx: Database): Promise<string | undefined>;
   update(id: string, recipe: Recipe, tx?: Database): Promise<{id: string} | undefined>;
   delete(id: string, tx: Database): Promise<{id: string} | undefined>;
+
+  getRecipesAnalytics(userId: string): Promise<RecipeAnalytics | undefined>;
   
 }
 export interface IRecipeIngredientsRepository {

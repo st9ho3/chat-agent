@@ -54,7 +54,8 @@ export const RecipeSchema = z.object({
   tax: z.number().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
   imgPath: z.string().url("Image path must be a valid URL"),
   sellingPrice: z.number().min(0, "Selling price can't be negative").optional(),
-  profitMargin: z.number().min(0, "Profit margin can't be negative").optional(),
+  profitMargin: z.number().optional(),
+  foodCost: z.number().min(0, "Food cost can't be negative" ),
   userId: z.string()
 });
 
@@ -71,7 +72,8 @@ export const DBRecipeSchema = z.object({
   tax: z.string().min(0, "Tax cannot be negative").max(1, "Tax cannot exceed 100%"),
   imgPath: z.string().url("Image path must be a valid URL"),
   sellingPrice: z.string().min(0, "Selling price can't be negative"),
-  profitMargin: z.string().min(0, "Profit margin can't be negative"),
+  profitMargin: z.string(),
+  foodCost: z.string().min(0, "Food cost can't be negative"),
   userId: z.string()
 });
 
