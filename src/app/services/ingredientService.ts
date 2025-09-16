@@ -8,6 +8,7 @@ import { transformIngredientToDB } from "./helpers";
 import { RecipeService } from "./recipeService";
 import { db } from "@/db/db";
 import { Database } from "@/db/schema";
+import { IngredientAnalytics } from "@/types/repositories";
 
 
 export class IngredientService implements IIngredientService {
@@ -79,12 +80,25 @@ export class IngredientService implements IIngredientService {
   } catch (err) {
     console.log(err);
   }
-}
+    }
 
     async delete(id: string): Promise<void> {
 
       await this.ingredientRepository.delete(id)
 
+    }
+
+    async getIngredientAnalytics(userId: string): Promise<IngredientAnalytics | undefined> {
+      
+      try {
+
+        const ingredientAnalytics = this.ingredientRepository.getIngredientAnalytics(userId)
+
+        return ingredientAnalytics
+
+      }catch(err){
+        throw new Error(`Ingredient Service: An error on our side ${err}`)
+      }
     }
 
 }

@@ -1,9 +1,9 @@
 import { DBIngredient, Ingredient } from "@/shemas/recipe";
-import { IIngredientRepository } from "@/types/repositories";
+import { IIngredientRepository, IngredientAnalytics } from "@/types/repositories";
 import { db } from "@/db/db";
 import { Database, ingredientsTable } from "@/db/schema";
 import { transformIngredientFromDB } from "../services/helpers";
-import { eq, sql } from "drizzle-orm";
+import { countDistinct, eq, sql } from "drizzle-orm";
 
 export class IngredientRepository implements IIngredientRepository {
 
@@ -99,6 +99,23 @@ export class IngredientRepository implements IIngredientRepository {
                 .where(eq(ingredientsTable.id, id))
         } catch (err) {
             console.log("Something happened on our behalf: ", err, id)
+        }
+    }
+
+    async getIngredientAnalytics(userId: string): Promise<IngredientAnalytics | undefined> {
+        
+        try {
+
+            const [ingredientAnalytics] = await db
+            .select({
+                totalIngredients: countDistinct(ingredientsTable.id)
+            })
+            .from(ingredientsTable)
+            .where(eq(ingredientsTable.userId, userId))
+
+            return ingredientAnalytics
+        }catch(err) {
+            throw new Error(`Ingredient Repository: An error on our side ${err}`)
         }
     }
 }

@@ -1,7 +1,7 @@
 import { Recipe, Ingredient, RecipeIngredients, DBRecipe, DBIngredient } from '@/shemas/recipe';
 import { RecipeWithQuery } from './specialTypes';
 import { Database } from '@/db/schema';
-import { RecipeAnalytics } from './repositories';
+import { RecipeAnalytics, IngredientAnalytics } from './repositories';
 
 export interface CreateResponse {
     recipe: string | undefined;
@@ -20,7 +20,6 @@ export interface IRecipeService {
     delete(id: string): Promise<{id: string} | undefined>
 
     updateRecipeAfterIngredientsChange(recipe: DBRecipe, dbIngredient: DBIngredient, tx?: Database): Promise<void>
-
     getRecipesAnalytics(userId: string): Promise<RecipeAnalytics | undefined>;
 }
 
@@ -30,4 +29,6 @@ export interface IIngredientService {
     create(ingredient: Ingredient): Promise<{ingredientId: string} | undefined>
     update(ingredient: Ingredient): Promise<{ingredientId: string} | undefined>
     delete(id: string): Promise<void>
+
+    getIngredientAnalytics(userId: string): Promise<IngredientAnalytics | undefined>;
 }

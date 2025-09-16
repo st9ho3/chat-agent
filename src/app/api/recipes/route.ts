@@ -1,7 +1,6 @@
 import { NextRequest } from "next/server";
 import { sendError, sendSuccess } from "../utils/responses";
 import { RecipeService } from "@/app/services/recipeService";
-import { Recipe } from "@/shemas/recipe";
 
 export const POST = async (req: NextRequest) => {
     

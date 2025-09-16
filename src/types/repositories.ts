@@ -9,6 +9,10 @@ export interface RecipeAnalytics {
   totalRecipes: number
 }
 
+export interface IngredientAnalytics {
+  totalIngredients: number
+}
+
 export interface IRecipeRepository {
   findById(id: string): Promise<RecipeWithQuery | undefined>;
   findAllByIngredientId(id: string): Promise<DBRecipe[] | undefined>;
@@ -32,6 +36,9 @@ export interface IIngredientRepository {
   create(ingredient: DBIngredient): Promise<{ingredientId: string} | undefined>;
   update(ingredient: DBIngredient, tx?: Database): Promise<{ingredientId: string} | undefined>;
   delete(id: string): Promise<{ingredientId: string} | undefined>;
+
+
   updateUsage(id: string, tx: Database, action: "+" | "-"): Promise<undefined>
-  
+  getIngredientAnalytics(userId: string): Promise<IngredientAnalytics | undefined>;
+
 }
