@@ -1,3 +1,13 @@
+/**
+ * @fileoverview This custom React hook manages the state and logic for an ingredient form,
+ * specifically for adding ingredients to a recipe.
+ * @description
+ * The `useRecipeIngredientsForm` hook handles user input for selecting an ingredient,
+ * specifying its quantity and unit, and validating the data before adding it to a temporary
+ * list. It also dynamically determines compatible units based on the selected ingredient's
+ * base unit, enhancing the user experience. The hook interacts with a parent component
+ * through the `onAddIngredient` callback to update the main recipe form's state.
+ */
 import { useState, useEffect } from 'react';
 import { Ingredient, RecipeIngredients, RecipeIngredientsSchema, Unit } from '@/shemas/recipe';
 
@@ -32,7 +42,6 @@ export const useRecipeIngredientsForm = ({
       const baseUnit = ingredient.unit;
       let compatibleUnits: Unit[] = [];
 
-      // Determine the compatible units based on the ingredient's base unit
       if (baseUnit === 'g' || baseUnit === 'kg') {
         compatibleUnits = ['g', 'kg'];
       } else if (baseUnit === 'ml' || baseUnit === 'L') {
@@ -43,12 +52,11 @@ export const useRecipeIngredientsForm = ({
 
       setAvailableUnits(compatibleUnits);
       
-      // Automatically set the unit to the ingredient's default unit for better UX
       if (baseUnit === 'g' || baseUnit === 'kg' || baseUnit === 'L' || baseUnit === 'ml' || baseUnit === 'piece') {
         setUnit(baseUnit);
       }
     } else {
-      // If no ingredient is selected, clear the available units
+
       setAvailableUnits([]);
       setUnit('');
     }

@@ -1,4 +1,14 @@
 "use client"
+/**
+ * @fileoverview This custom React hook manages the authentication process for a Next.js application,
+ * specifically for user sign-in.
+ * @description
+ * The `useSignIn` hook provides the necessary state management and functions for a sign-in form.
+ * It integrates with `react-hook-form` for efficient form handling, `zod` for robust data validation,
+ * and `next-auth` for credential-based authentication. The hook handles the form submission
+ * logic, validates user input, and attempts to sign the user in with the provided credentials.
+ * It is designed to be used on the client side.
+ */
 import { useForm } from 'react-hook-form'
 import { SignInCredentials, signInCredentialsSchema } from '@/shemas/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,8 +28,6 @@ const useSignIn = ({ isSignIn }: AuthProps) => {
 
     const onSubmit = async (formData: SignInCredentials) => {
 
-        console.log(formData)
-
         try {
             const {data, success, error} = signInCredentialsSchema.safeParse(formData)
 
@@ -29,7 +37,6 @@ const useSignIn = ({ isSignIn }: AuthProps) => {
                     password: data.password,
                     redirectTo: "/" 
                  })
-                 console.log(user)
                  return user
                  
             }
@@ -40,6 +47,7 @@ const useSignIn = ({ isSignIn }: AuthProps) => {
             }
         } catch(err) {
             console.log(err)
+            throw new Error(`${err}`)
         }
     }
 
@@ -50,4 +58,4 @@ const useSignIn = ({ isSignIn }: AuthProps) => {
     }
 }
 
-export default useSignIn
+export default useSignIn;

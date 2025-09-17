@@ -1,10 +1,26 @@
+/**
+ * @fileoverview This custom React hook manages the state and logic for a recipe form.
+ * It handles both creating a new recipe and editing an existing one, including form validation
+ * with Zod, managing temporary ingredients, calculating pricing details, and handling
+ * form submission, including file uploads and API calls.
+ * * @description
+ * The `useRecipeForm` hook orchestrates the entire lifecycle of a recipe form. It leverages
+ * `react-hook-form` for efficient form management and validation. The hook dynamically
+ * handles form initialization based on the `mode` prop (create or edit). It also
+ * provides functions for adding and removing ingredients, recalculating total costs,
+ * and performing complex pricing calculations (profit margin, selling price) before
+ * submitting data to the appropriate backend service. It uses a separate `useFileUpload`
+ * hook and a context (`useHomeContext`) to manage file upload state and notifications.
+ */
+/**
+*/
 import { useState } from 'react';
 import { RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { calculateProfitMargin, calculateSellingPrice, getTotalPrice } from '@/app/services/helpers';
+import { calculateRecipeData, getTotalPrice } from '@/app/services/helpers';
 import { sendRecipe, sendRecipeToUpdate } from '@/app/services/services';
 import { useHomeContext } from '../context/homeContext/homeContext';
 import { useRouter } from 'next/navigation';
@@ -63,15 +79,9 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
 
   const onSubmit = async (data: FormFields) => {
 
-  const margin = data.profitMargin !== recipe?.profitMargin ? data.profitMargin : recipe?.profitMargin
-  const price = data.sellingPrice !== recipe?.sellingPrice ? data.sellingPrice : recipe?.sellingPrice
-  const newCost = getTotalPrice(tempIngredients);
-  const newTax = data.tax ? data.tax : recipe?.tax || 0
-  const foodCost = price ? newCost / price : 0
-  const newPrice = data.profitMargin !== recipe?.profitMargin && margin ? calculateSellingPrice(newCost, margin, newTax) : price
-  const newMargin = newPrice && calculateProfitMargin(newCost, newPrice, newTax)  
-    
-
+  
+  const {newCost, newMargin, newPrice, foodCost} = calculateRecipeData(data, recipe, tempIngredients)
+  
   const addedIngredients: RecipeIngredients[] = tempIngredients.filter(
     (tempIngredient) => !recipeIngredients.includes(tempIngredient)
   );
@@ -80,6 +90,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
   );
 
   try {
+
     let url: string | undefined;
 
     if (state.file) {
@@ -91,7 +102,8 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
       const recipeToUpdate = { 
         ...data, 
         userId: userId,
-        totalCost: newCost, imgPath: url || data.imgPath,
+        totalCost: newCost,
+        imgPath: url || data.imgPath,
         profitMargin: newMargin,
         sellingPrice: newPrice,
         foodCost: foodCost
@@ -100,6 +112,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
 
       const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
       raiseNotification(response);
+    
     } else {
       const updatedData = {
         ...data,
@@ -123,6 +136,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
   } finally {
     resetForm();
   }
+
 };
 
   return {
@@ -145,4 +159,4 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
     
 }
 }
-export default useRecipeForm
+export default useRecipeForm;

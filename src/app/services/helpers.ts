@@ -1,5 +1,12 @@
 import { DBIngredient, DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
 import { RecipeIngredientFromDB } from "@/types/specialTypes";
+import { FormFields } from "../hooks/useRecipeForm";
+
+
+
+
+//////////////
+
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {
     if (items.length === 0) {
@@ -20,6 +27,8 @@ export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[
   return pageNumbers
 
 }
+
+//////////
 
 export const getTotalPrice = (ingredients: RecipeIngredients[]): number => {
   return ingredients.reduce((sum, item) => {
@@ -73,6 +82,47 @@ export const calculateProfitMargin = (cost: number, sellingPrice: number, tax: n
   }
   return undefined;
 };
+
+export const calculateRecipeData = (data: FormFields, recipe: Recipe | undefined, tempIngredients: RecipeIngredients[] ) => {
+  
+  const newCost = getTotalPrice(tempIngredients);
+
+  const margin = data.profitMargin !== undefined && data.profitMargin !== recipe?.profitMargin
+    ? data.profitMargin
+    : recipe?.profitMargin;
+
+  const price = data.sellingPrice !== undefined && data.sellingPrice !== recipe?.sellingPrice
+    ? data.sellingPrice
+    : recipe?.sellingPrice;
+
+  const newTax = data.tax !== undefined
+    ? data.tax
+    : recipe?.tax || 0;
+
+  const foodCost = price ? newCost / price : 0;
+
+  const newPrice = (data.profitMargin !== undefined && data.profitMargin !== recipe?.profitMargin && margin !== undefined)
+    ? calculateSellingPrice(newCost, margin, newTax)
+    : price;
+
+  const newMargin = (newPrice !== undefined && newPrice !== null)
+    ? calculateProfitMargin(newCost, newPrice, newTax)
+    : undefined;
+
+  return {
+    margin: margin,
+    price: price,
+    newCost: newCost,
+    newTax: newTax,
+    foodCost: foodCost,
+    newPrice: newPrice,
+    newMargin: newMargin
+  };
+}
+
+
+
+/////////////
 
 export const transformRecipeFromDB = (recipeFromDb: DBRecipe): Recipe => ({
   ...recipeFromDb,
