@@ -8,11 +8,18 @@
 import { NextRequest } from "next/server";
 import { sendError, sendSuccess } from "../utils/responses";
 import { RecipeService } from "@/app/services/recipeService";
+import { auth } from "@/auth";
 
 export const POST = async (req: NextRequest) => {
+    const session = await auth()
+    
     const service = new RecipeService();
 
+
     try {
+        if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+        }
         const request = await req.json();
 
         const res = await service.create(request);

@@ -102,7 +102,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       token.lastAccessed = Date.now()
     }
     
-    console.log(token)
     return token
   },
   async session({session, token}) {

@@ -78,66 +78,78 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
   }; 
 
   const onSubmit = async (data: FormFields) => {
-
-  
-  const {newCost, newMargin, newPrice, foodCost} = calculateRecipeData(data, recipe, tempIngredients)
-  
-  const addedIngredients: RecipeIngredients[] = tempIngredients.filter(
-    (tempIngredient) => !recipeIngredients.includes(tempIngredient)
-  );
-  const removedIngredients: RecipeIngredients[] = recipeIngredients.filter(
-    (recipeIngredient) => !tempIngredients.includes(recipeIngredient)
-  );
-
-  try {
-
-    let url: string | undefined;
-
-    if (state.file) {
-      url = await handleFileUpload(state.file);
+    // Validate that ingredients are present for create mode
+    if (mode === 'create' && tempIngredients.length === 0) {
+      raiseNotification({
+        success: false,
+        message: 'Please add at least one ingredient to your recipe.',
+        error: { message: 'No ingredients provided' },
+      });
+      return; // Exit early without redirecting
     }
 
-    if (mode === 'edit') {
-
-      const recipeToUpdate = { 
-        ...data, 
-        userId: userId,
-        totalCost: newCost,
-        imgPath: url || data.imgPath,
-        profitMargin: newMargin,
-        sellingPrice: newPrice,
-        foodCost: foodCost
-      };
-        
-
-      const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
-      raiseNotification(response);
+    const {newCost, newMargin, newPrice, foodCost} = calculateRecipeData(data, recipe, tempIngredients);
     
-    } else {
-      const updatedData = {
-        ...data,
-        id: newId,
-        userId: userId,
-        imgPath: url || data.imgPath,
-        profitMargin: data.profitMargin ? data.profitMargin : 0,
-        foodCost: foodCost * 100
-      };
-      if (tempIngredients.length > 0) {
+    const addedIngredients: RecipeIngredients[] = tempIngredients.filter(
+      (tempIngredient) => !recipeIngredients.includes(tempIngredient)
+    );
+    const removedIngredients: RecipeIngredients[] = recipeIngredients.filter(
+      (recipeIngredient) => !tempIngredients.includes(recipeIngredient)
+    );
+
+    let submissionSuccessful = false;
+
+    try {
+      let url: string | undefined;
+
+      if (state.file) {
+        url = await handleFileUpload(state.file);
+      }
+
+      if (mode === 'edit') {
+        const recipeToUpdate = { 
+          ...data, 
+          userId: userId,
+          totalCost: newCost,
+          imgPath: url || data.imgPath,
+          profitMargin: newMargin,
+          sellingPrice: newPrice,
+          foodCost: foodCost
+        };
+          
+        const response = await sendRecipeToUpdate(recipeToUpdate, addedIngredients, removedIngredients);
+        raiseNotification(response);
+        submissionSuccessful = response.success;
+      
+      } else {
+        // For create mode, we already validated ingredients above
+        const updatedData = {
+          ...data,
+          id: newId,
+          userId: userId,
+          imgPath: url || data.imgPath,
+          profitMargin: data.profitMargin ? data.profitMargin : 0,
+          foodCost: foodCost * 100
+        };
+
         const response = await sendRecipe(updatedData, tempIngredients);
         raiseNotification(response);
+        submissionSuccessful = response.success;
+      }
+    } catch (error) {
+      raiseNotification({
+        success: false,
+        message: 'An unexpected error occurred.',
+        error: { message: `${error}` },
+      });
+      submissionSuccessful = false;
+    } finally {
+      // Only reset and redirect if submission was successful
+      if (submissionSuccessful) {
+        resetForm();
       }
     }
-  } catch (error) {
-    raiseNotification({
-      success: false,
-      message: 'An unexpected error occurred.',
-      error: { message: `${error}` },
-    });
-  } finally {
-    resetForm();
-  }
-
-};
+  };
 
   return {
     newId,
@@ -156,7 +168,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
     error,
     tempIngredients,
     state
-    
+  }
 }
-}
+
 export default useRecipeForm;

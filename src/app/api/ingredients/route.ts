@@ -9,13 +9,19 @@ import { NextRequest } from 'next/server';
 import { sendError, sendSuccess } from '../utils/responses';
 import { IngredientService } from '@/app/services/ingredientService';
 import { Ingredient } from '@/shemas/recipe';
+import { auth } from '@/auth';
 
 export const POST = async (req: NextRequest) => {
+    const session = await auth()
+    
     const ingredient: Ingredient = await req.json();
 
     const service = new IngredientService();
 
     try {
+        if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+        }
         const response = await service.create(ingredient);
         console.log(response);
         if (!response) {

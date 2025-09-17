@@ -15,6 +15,7 @@ import { zodValidateDataBeforeAddThemToDatabase } from "@/app/services/services"
 import { RecipeUpdatePayload } from "@/types/context";
 import { sendError, sendSuccess } from "../../utils/responses";
 import { RecipeService } from "@/app/services/recipeService";
+import { auth } from "@/auth";
 
 const service = new RecipeService();
 
@@ -22,6 +23,10 @@ export async function GET(
     request: NextRequest,
     context: { params: Promise<{ id: string }> }
 ) {
+    const session = await auth()
+    if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+        }
     const { id } = await context.params;
     const recipe = await service.findById(id);
 
@@ -29,7 +34,13 @@ export async function GET(
 }
 
 export const PATCH = async (req: NextRequest, context: { params: Promise<{ id: string }> }) => {
+
+    const session = await auth()
     try {
+
+        if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+        }
         const request: RecipeUpdatePayload = await req.json();
         const { id } = await context.params;
 
@@ -49,6 +60,10 @@ export const PATCH = async (req: NextRequest, context: { params: Promise<{ id: s
 };
 
 export const DELETE = async (req: NextRequest, context: { params: Promise<{ id: string }> }) => {
+    const session = await auth()
+    if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+        }
     const { id } = await context.params;
     await service.delete(id);
     return sendSuccess("Recipe succesfully deleted", null, 200);

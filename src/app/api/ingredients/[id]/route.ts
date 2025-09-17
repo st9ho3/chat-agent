@@ -15,13 +15,18 @@ import { NextRequest } from 'next/server';
 import { sendError, sendSuccess } from '../../utils/responses';
 import { IngredientService } from '@/app/services/ingredientService';
 import { Ingredient } from '@/shemas/recipe';
+import { auth } from '@/auth';
 
 const service = new IngredientService();
 
 export const PATCH = async (req: NextRequest) => {
+    const session = await auth()
     const ingredient: Ingredient = await req.json();
 
     try {
+        if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+        }
         const res = await service.update(ingredient);
 
         if (!res) {
@@ -38,7 +43,11 @@ export const PATCH = async (req: NextRequest) => {
 };
 
 export const DELETE = async (req: NextRequest, context: { params: Promise<{ id: string }> }) => {
+    const session = await auth()
     try {
+        if(!session?.user) {
+        throw new Error("Can't take an action if not validated")
+  }
         const { id } = await context.params;
 
         await service.delete(id);
