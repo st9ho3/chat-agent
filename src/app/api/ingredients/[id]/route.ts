@@ -37,7 +37,7 @@ export const PATCH = async (req: NextRequest) => {
     }
 };
 
-export const DELETE = async (req: NextRequest, context: { params: { id: string } }) => {
+export const DELETE = async (req: NextRequest, context: { params: Promise<{ id: string }> }) => {
     try {
         const { id } = await context.params;
 

@@ -18,9 +18,9 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 
 interface Params {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 const EditPage = async ({ params }: Params) => {
@@ -33,7 +33,7 @@ const EditPage = async ({ params }: Params) => {
     const recipeService = new RecipeService();
     const ingredientService = new IngredientService();
 
-    const { id } = params;
+    const { id } = await params;
 
     const dbRecipe = await recipeService.findById(id);
 

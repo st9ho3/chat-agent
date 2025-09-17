@@ -20,7 +20,7 @@ const service = new RecipeService();
 
 export async function GET(
     request: NextRequest,
-    context: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     const { id } = await context.params;
     const recipe = await service.findById(id);
@@ -28,7 +28,7 @@ export async function GET(
     return sendSuccess("Recipe fetched succesfully", recipe, 200);
 }
 
-export const PATCH = async (req: NextRequest, context: { params: { id: string } }) => {
+export const PATCH = async (req: NextRequest, context: { params: Promise<{ id: string }> }) => {
     try {
         const request: RecipeUpdatePayload = await req.json();
         const { id } = await context.params;
@@ -48,7 +48,7 @@ export const PATCH = async (req: NextRequest, context: { params: { id: string } 
     }
 };
 
-export const DELETE = async (req: NextRequest, context: { params: { id: string } }) => {
+export const DELETE = async (req: NextRequest, context: { params: Promise<{ id: string }> }) => {
     const { id } = await context.params;
     await service.delete(id);
     return sendSuccess("Recipe succesfully deleted", null, 200);
