@@ -11,6 +11,7 @@ import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
 import Label from "../shared/label";
 import useHelpers from "@/app/hooks/useHelpers";
+import { useCallback } from "react";
 
 
 const RecipesTable = ({items}: {items: Recipe[]}) => {
@@ -20,11 +21,11 @@ const RecipesTable = ({items}: {items: Recipe[]}) => {
   const paginateItems = paginate(10, state.currentPage, items);
   const itemsToDisplay = paginateItems ? paginateItems : [];
 
-  const handleDelete = async(rec: Recipe) => {
+  const handleDelete = useCallback(async(rec: Recipe) => {
     const response = await deleteRecipesFromServer(rec.id)
     raiseNotification(response)
     router.replace("recipes")
-  }
+  },[raiseNotification, router])
  
 
   return (

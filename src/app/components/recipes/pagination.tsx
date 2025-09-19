@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useCallback } from 'react';
 import Button from '../shared/sharedButton';
 import { paginationPages } from '@/app/services/helpers';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
@@ -10,17 +10,17 @@ const Pagination = ({ items }: { items: Recipe[] | Ingredient[] }) => {
   const { state, dispatch } = useHomeContext();
   const pages = paginationPages(items, 10);
 
-  const handlePrev = (): void => {
+  const handlePrev = useCallback((): void => {
     if (state.currentPage > 1) {
       dispatch({ type: "CHOOSE_PAGE", payload: state.currentPage - 1 });
     }
-  };
+  },[dispatch, state.currentPage]);
 
-  const handleNext = (): void => {
+  const handleNext = useCallback((): void => {
     if (state.currentPage < pages.length) {
       dispatch({ type: "CHOOSE_PAGE", payload: state.currentPage + 1 });
     }
-  };
+  },[state.currentPage, dispatch, pages]);
 
   if (pages.length <= 1) {
     return null; // Don't render pagination if there's only one page or less

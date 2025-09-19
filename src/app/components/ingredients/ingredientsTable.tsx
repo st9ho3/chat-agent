@@ -11,6 +11,7 @@ import Link from "next/link";
 import Label from "../shared/label";
 import { deleteIngredient } from "@/app/services/services";
 import useHelpers from "@/app/hooks/useHelpers";
+import { useCallback } from "react";
 
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();
@@ -20,11 +21,13 @@ const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 
-  const handleDelete = async(id: string) => {
+  const handleDelete = useCallback(async(id: string) => {
     const response = await deleteIngredient(id)
     raiseNotification(response)
     router.replace("ingredients")
-  }
+  },[raiseNotification, router])
+
+  console.log("Ingredients: ")
 
   return (
     <div>
