@@ -9,7 +9,7 @@
  * to interact with form fields and uses helper functions to perform the core calculations.
  * It also handles UI-related concerns like disabling fields and applying dynamic CSS classes.
  */
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { UseFormSetValue, UseFormGetValues } from 'react-hook-form';
 import { FormFields } from '@/app/components/recipes/recipeForm/recipeForm';
 import { getTotalPrice } from '../services/helpers';
@@ -26,34 +26,33 @@ export const usePricing = (
 ) => {
   const [selectedPricingMethod, setSelectedPricingMethod] = useState<PricingMethod>("");
 
-  const handlePricingMethodChange = (method: PricingMethod) => {
+  const handlePricingMethodChange = useCallback((method: PricingMethod) => {
     setSelectedPricingMethod(method);
-    // Reset both values when switching methods
     setValue("profitMargin", 0);
     setValue("sellingPrice", 0);
-  };
+  },[setValue]);
 
-  const handleInputFocus = (fieldName: "sellingPrice" | "profitMargin") => {
+  const handleInputFocus = useCallback((fieldName: "sellingPrice" | "profitMargin") => {
     const currentValue = getValues(fieldName);
     if (currentValue === 0) {
       setValue(fieldName, undefined, { shouldValidate: true });
     }
-  };
+  },[getValues, setValue]);
 
-  const isFieldDisabled = (fieldType: "price" | "profit"): boolean => {
+  const isFieldDisabled = useCallback((fieldType: "price" | "profit"): boolean => {
     if (!selectedPricingMethod) return true;
     return fieldType !== selectedPricingMethod;
-  };
+  },[selectedPricingMethod]);
 
-  const getFieldClasses = (fieldType: "price" | "profit"): string => {
+  const getFieldClasses = useCallback((fieldType: "price" | "profit"): string => {
     const baseClasses = "px-3 placeholder:text-gray-500 text-md focus:outline-none flex-grow";
     const disabledClasses = "rounded-lg disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed disabled:border-gray-200";
     
     return isFieldDisabled(fieldType) ? `${baseClasses} ${disabledClasses}` : baseClasses;
-  };
+  },[isFieldDisabled]);
 
   
-  const calculate = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const calculate = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
   e.preventDefault();
   const tax = getValues('tax');
   const cost = getTotalPrice(ingredients);
@@ -72,7 +71,7 @@ export const usePricing = (
       setValue('profitMargin', profit ? Number(profit.toFixed(2)) : 0);
     }
   }
-};
+},[selectedPricingMethod, getValues, setValue, ingredients]);
 
   return {
     selectedPricingMethod,

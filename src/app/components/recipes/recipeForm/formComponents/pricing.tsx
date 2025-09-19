@@ -1,6 +1,6 @@
 "use client"
 import { Euro, Percent } from 'lucide-react';
-import React, { useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormGetValues, UseFormWatch } from 'react-hook-form';
 import { FormFields } from '../recipeForm';
 import { usePricing } from '@/app/hooks/usePricing';
@@ -18,14 +18,14 @@ type PricingCostsProps = {
   watch: UseFormWatch<FormFields>
 };
 
-const Pricing: React.FC<PricingCostsProps> = ({
+const Pricing = memo(({
   children,
   register,
   errors,
   setValue,
   getValues,
   ingredients
-}) => {
+}: PricingCostsProps) => {
   const {
     selectedPricingMethod,
     handlePricingMethodChange,
@@ -89,6 +89,8 @@ const Pricing: React.FC<PricingCostsProps> = ({
       <ErrorDisplay pricingErrors={errors} errors={[]} error=''/>
     </div>
   );
-};
+});
+
+Pricing.displayName = "Pricing"
 
 export default Pricing;

@@ -13,7 +13,7 @@
  * @exports {object} An object containing all necessary state variables and handler functions for a form component, including `quantity`, `name`, `unit`, `price`, `errors`, and their corresponding `handle` and `set` functions.
  */
 "use client"
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { Unit, Ingredient, IngredientSchema } from '@/shemas/recipe';
@@ -43,39 +43,44 @@ export const useIngredientForm = ({ mode, ingredient, userId }: UseIngredientFor
   const [errors, setErrors] = useState<IngredientErrors>([]);
   const router = useRouter();
   const { raiseNotification } = useHelpers();
+
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     // For create mode, convert to lowercase; for edit mode, keep as is
     setName(mode === 'create' ? value.toLowerCase() : value);
     setErrors([]);
   };
-  const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handlePrice = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+
     const { value } = e.target;
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setPrice(value);
     }
     setErrors([]);
-  };
-  const handleFocus = () => setIsEditing(true);
-  const handleBlur = () => setIsEditing(false);
+  },[]);
+
+  const handleFocus = useCallback(() => setIsEditing(true),[]);
+  const handleBlur = useCallback(() => setIsEditing(false),[]);
+
   // Logic to show an empty input when editing and the price is "0"
   const displayedPrice = isEditing && price === '0' ? '' : price;
-  const handleUnit = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleUnit = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     if (value === 'g' || value === 'ml' || value === 'kg' || value === 'L' || value === 'piece') {
       setUnit(value as Unit);
       setErrors([]);
     }
-  };
-  const resetForm = () => {
+  },[]);
+  const resetForm = useCallback(() => {
     setQuantity(0);
     setName('');
     setUnit('');
     setPrice('0');
     setErrors([]);
     setIsEditing(false);
-  };
-  const addIngredient = async (
+  }, []);
+  const addIngredient = useCallback(async (
     e:
       | React.MouseEvent<HTMLButtonElement>
       | React.KeyboardEvent<HTMLInputElement>
@@ -138,7 +143,8 @@ export const useIngredientForm = ({ mode, ingredient, userId }: UseIngredientFor
         }
       }
     }
-  };
+  }, [ingredient, mode, name, price, quantity, raiseNotification,resetForm, router, unit, userId]);
+
   const handleKeyDown = (
     e:
       | React.KeyboardEvent<HTMLInputElement>

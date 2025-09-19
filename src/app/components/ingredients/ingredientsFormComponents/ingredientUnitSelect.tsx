@@ -1,4 +1,5 @@
 import { Scale } from 'lucide-react';
+import { memo } from 'react';
 
 type IngredientUnitSelectProps = {
   value: string;
@@ -6,7 +7,7 @@ type IngredientUnitSelectProps = {
   onKeyDown: (e: React.KeyboardEvent<HTMLSelectElement>) => void;
 };
 
-const IngredientUnitSelect = ({ value, onChange, onKeyDown }: IngredientUnitSelectProps) => (
+const IngredientUnitSelect = memo(({ value, onChange, onKeyDown }: IngredientUnitSelectProps) => (
   <div className='flex items-center p-1 space-x-3 border-dashed rounded-lg border-1 border-gray-300'>
     <Scale />
     <select
@@ -25,6 +26,8 @@ const IngredientUnitSelect = ({ value, onChange, onKeyDown }: IngredientUnitSele
       <option value="piece">piece</option>
     </select>
   </div>
-);
+));
+
+IngredientUnitSelect.displayName = "IngredientUnitSelect"
 
 export default IngredientUnitSelect

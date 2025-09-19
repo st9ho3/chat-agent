@@ -1,4 +1,5 @@
 import { Euro } from 'lucide-react';
+import { memo } from 'react';
 
 type IngredientPriceInputProps = {
   value: string;
@@ -8,7 +9,9 @@ type IngredientPriceInputProps = {
   onBlur: () => void;
 };
 
-const IngredientPriceInput = ({ value, onChange, onKeyDown, onFocus, onBlur }: IngredientPriceInputProps) => (
+const IngredientPriceInput = memo(({ value, onChange, onKeyDown, onFocus, onBlur }: IngredientPriceInputProps) => {
+  console.log("IngredientPriceInput")
+  return (
   <div className='flex items-center p-1 space-x-3 border-dashed rounded-lg border-1 border-gray-300'>
     <Euro />
     <input
@@ -24,6 +27,8 @@ const IngredientPriceInput = ({ value, onChange, onKeyDown, onFocus, onBlur }: I
       pattern="[0-9]*[.]?[0-9]*"
     />
   </div>
-);
+)});
+
+IngredientPriceInput.displayName = "IngredientPriceInput"
 
 export default IngredientPriceInput

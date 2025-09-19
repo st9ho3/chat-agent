@@ -1,5 +1,5 @@
 import { Carrot } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 
 type IngredientNameInputProps = {
   value: string;
@@ -7,7 +7,11 @@ type IngredientNameInputProps = {
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
-const IngredientNameInput = ({ value, onChange, onKeyDown }: IngredientNameInputProps) => (
+const IngredientNameInput = memo(({ value, onChange, onKeyDown }: IngredientNameInputProps) => {
+  
+  console.log("IngredientNameInput")
+  
+  return (
   <div className='flex items-center p-1 space-x-3 border-dashed rounded-lg border-1 border-gray-300'>
     <Carrot />
     <input
@@ -20,6 +24,8 @@ const IngredientNameInput = ({ value, onChange, onKeyDown }: IngredientNameInput
       placeholder="Ingredient Name"
     />
   </div>
-);
+)});
+
+IngredientNameInput.displayName = "IngredientName"
 
 export default IngredientNameInput

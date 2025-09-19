@@ -1,12 +1,12 @@
 import { RecipeIngredients } from '@/shemas/recipe'
-import React from 'react'
+import React, { memo } from 'react'
 
 interface Props {
     onToggleList: (value: React.SetStateAction<boolean>) => void
     ingredients: RecipeIngredients[]
 }
 
-const ViewIngredientsButtonMobile = ({onToggleList, ingredients}: Props) => {
+const ViewIngredientsButtonMobile = memo(({onToggleList, ingredients}: Props) => {
   console.log("ViewIngredientsButtonMobile")
   return (
     <button
@@ -17,6 +17,7 @@ const ViewIngredientsButtonMobile = ({onToggleList, ingredients}: Props) => {
         View Ingredients ({ingredients.length})
       </button>
   )
-}
+});
 
+ViewIngredientsButtonMobile.displayName = "ViewIngredientsButtonMobile"
 export default ViewIngredientsButtonMobile
