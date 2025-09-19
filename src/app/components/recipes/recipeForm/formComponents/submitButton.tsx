@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Check } from 'lucide-react'
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
     isSubmitting: boolean
 }
 
-const SubmitButton = ({isSubmitting, mode}: Props) => {
+const SubmitButton = memo(({isSubmitting, mode}: Props) => {
 
   let buttonText = ""
 
@@ -24,6 +24,8 @@ const SubmitButton = ({isSubmitting, mode}: Props) => {
         </div>
       </div>
   )
-}
+})
+
+SubmitButton.displayName = "SubmitButton"
 
 export default SubmitButton

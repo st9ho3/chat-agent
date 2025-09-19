@@ -20,13 +20,13 @@ interface FormProps {
   mode: "create" | "edit"
 }
 
-const RecipeIngredientForm: React.FC<FormProps> = ({
+const RecipeIngredientForm = ({
   recipeId,
   ingredients,
   onAddIngredient,
   tempIngredients,
   mode
-}) => {
+}: FormProps) => {
   const {
     quantity,
     selectedIngredient,

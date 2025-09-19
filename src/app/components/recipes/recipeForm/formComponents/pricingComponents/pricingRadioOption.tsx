@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { LucideIcon } from 'lucide-react';
 import { FormFields } from '../../recipeForm';
@@ -19,7 +19,7 @@ type PricingRadioOptionProps = {
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
-const PricingRadioOption: React.FC<PricingRadioOptionProps> = ({
+const PricingRadioOption = memo(({
   label,
   value,
   fieldName,
@@ -32,11 +32,13 @@ const PricingRadioOption: React.FC<PricingRadioOptionProps> = ({
   onRadioClick,
   onInputFocus,
   onKeyDown,
-}) => {
-  const handleRadioClick = (e: React.MouseEvent<HTMLInputElement>) => {
-    onRadioClick(e.currentTarget.value as PricingMethod);
-  };
+}: PricingRadioOptionProps) => {
 
+  const handleRadioClick = useCallback((e: React.MouseEvent<HTMLInputElement>) => {
+    onRadioClick(e.currentTarget.value as PricingMethod);
+  },[onRadioClick]);
+
+  console.log("Pricing RadioOption renders: ", value)
   return (
     <div className="flex items-center justify-start w-full border border-dashed border-gray-300 rounded-2xl flex-grow p-2">
       <input
@@ -67,6 +69,7 @@ const PricingRadioOption: React.FC<PricingRadioOptionProps> = ({
       />
     </div>
   );
-};
+});
 
+PricingRadioOption.displayName = "PricingRadioOption"
 export default PricingRadioOption;

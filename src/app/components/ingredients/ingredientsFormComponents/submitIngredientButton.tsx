@@ -1,13 +1,13 @@
 "use client";
 import { Plus, Pencil } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 
 type AddIngredientButtonProps = {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   mode: 'create' | 'edit';
 };
 
-const AddIngredientButton = ({ onClick, mode }: AddIngredientButtonProps) => {
+const AddIngredientButton = memo(({ onClick, mode }: AddIngredientButtonProps) => {
   const isEditMode = mode === 'edit';
 
   return (
@@ -26,6 +26,8 @@ const AddIngredientButton = ({ onClick, mode }: AddIngredientButtonProps) => {
       </button>
     </div>
   );
-};
+});
+
+AddIngredientButton.displayName = "AddIngredientButton"
 
 export default AddIngredientButton;

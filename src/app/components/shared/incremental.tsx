@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Plus, Minus } from 'lucide-react'
 
 type IncrementalProps = {
@@ -12,7 +12,7 @@ type IncrementalProps = {
 const Incremental = ({onChange, count, onKeyDown, setErrors}: IncrementalProps) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
-  const handleClick = (action: 'minus' | 'plus') => {
+  const handleClick = useCallback((action: 'minus' | 'plus') => {
     setIsEditing(false)             
     if (action === 'plus') {
       onChange(count + 1)
@@ -20,22 +20,23 @@ const Incremental = ({onChange, count, onKeyDown, setErrors}: IncrementalProps) 
       onChange(count - 1)
     }
     setErrors([])
-  }
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  },[count, onChange, setErrors])
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     const value = e.target.value === '' ? 0 : Number(e.target.value)
     onChange(value)
     setErrors([])
-  }
+  },[onChange, setErrors])
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setIsEditing(true)
-  }
+  },[])
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     if (count === 0) {
       setIsEditing(false)
     }
-  }
+  },[count])
 
   
   const displayValue = isEditing && count === 0

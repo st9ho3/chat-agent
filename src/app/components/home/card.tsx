@@ -17,13 +17,14 @@ const Card = ({ title, value, Icon, color }: {title: string, value: number, Icon
       <div className="flex justify-between items-start">
         <span className="text-base font-medium">{title}</span>
         <div className="icon">
-          {Icon && <Icon className="w-8 h-8 opacity-90" strokeWidth={1.5} />}
+          {title !== "Avg Food Cost" && title !== "Avg Profit Margin" ? <Icon className="w-8 h-8 opacity-90" strokeWidth={1.5} /> : null }
         </div>
       </div>
 
       {/* Card Body */}
-      <div className="flex-grow flex items-start pt-2">
-        <span className="text-4xl font-bold">{value}</span>
+      <div className="flex-grow flex items-center gap-1 pt-2">
+        <span className="text-4xl font-bold">{value} </span>
+        {title === "Avg Food Cost" || title === "Avg Profit Margin" ? <Icon className="w-8 h-8 opacity-90" strokeWidth={1.5} /> : null}
       </div>
 
       {/* Card Footer */}

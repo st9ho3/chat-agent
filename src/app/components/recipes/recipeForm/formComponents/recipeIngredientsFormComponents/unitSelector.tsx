@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Scale } from 'lucide-react';
 import { Unit } from '@/shemas/recipe';
 
@@ -10,13 +10,13 @@ interface UnitSelectorProps {
   onKeyDown: (e: React.KeyboardEvent<HTMLSelectElement>) => void;
 }
 
-export const UnitSelector: React.FC<UnitSelectorProps> = ({
+const UnitSelector = memo(({
   unit,
   availableUnits,
   selectedIngredient,
   onUnitChange,
   onKeyDown,
-}) => {
+}: UnitSelectorProps) => {
   return (
     <div className="flex items-center p-1 space-x-2 border-l border-dashed border-gray-300">
       <Scale className="h-5 w-5 text-gray-400 flex-shrink-0 ml-2" />
@@ -40,4 +40,8 @@ export const UnitSelector: React.FC<UnitSelectorProps> = ({
       </select>
     </div>
   );
-};
+});
+
+export default UnitSelector
+
+UnitSelector.displayName = "UnitSelector"

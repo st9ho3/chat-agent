@@ -14,7 +14,7 @@
  */
 /**
 */
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from 'react-hook-form';
@@ -50,20 +50,20 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
 
   const { errors, isSubmitting } = formState;
 
-  const handleAddIngredient = (ing: RecipeIngredients) => {
+  const handleAddIngredient = useCallback((ing: RecipeIngredients) => {
     const newIngredients = [...tempIngredients, ing];
     const totalPrice = getTotalPrice(newIngredients);
     setTempIngredients(newIngredients);
     setValue("totalCost", totalPrice);
-  };
+  },[tempIngredients, setValue]);
 
-  const handleRemoveIngredient = (id: string) => {
+  const handleRemoveIngredient = useCallback((id: string) => {
     const newIngredients = tempIngredients.filter((ing) => ing.ingredientId !== id);
     setTempIngredients(newIngredients);
     setValue("totalCost", getTotalPrice(newIngredients));
-  };
+  },[setValue, tempIngredients]);
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     if (mode === 'create') {
       const nextRecipeId = uuidv4();
       setNewId(nextRecipeId);
@@ -75,17 +75,16 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
       setTempIngredients([]);
     }, 1000);
     router.replace("/recipes");
-  }; 
+  },[mode, setValue, reset, router, dispatch]); 
 
-  const onSubmit = async (data: FormFields) => {
-    // Validate that ingredients are present for create mode
+  const onSubmit = useCallback( async (data: FormFields) => {
+    
     if (mode === 'create' && tempIngredients.length === 0) {
       raiseNotification({
         success: false,
         message: 'Please add at least one ingredient to your recipe.',
         error: { message: 'No ingredients provided' },
       });
-      return; // Exit early without redirecting
     }
 
     const {newCost, newMargin, newPrice, foodCost} = calculateRecipeData(data, recipe, tempIngredients);
@@ -122,7 +121,7 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
         submissionSuccessful = response.success;
       
       } else {
-        // For create mode, we already validated ingredients above
+        
         const updatedData = {
           ...data,
           id: newId,
@@ -144,12 +143,12 @@ const useRecipeForm = ({mode, recipe, recipeIngredients, userId}: RecipeFormProp
       });
       submissionSuccessful = false;
     } finally {
-      // Only reset and redirect if submission was successful
+      
       if (submissionSuccessful) {
         resetForm();
       }
     }
-  };
+  }, [mode, tempIngredients, recipeIngredients, handleFileUpload, raiseNotification, state.file, userId, recipe, newId, resetForm]);
 
   return {
     newId,

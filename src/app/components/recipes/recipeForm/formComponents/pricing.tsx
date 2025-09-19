@@ -1,6 +1,6 @@
 "use client"
 import { Euro, Percent } from 'lucide-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormGetValues, UseFormWatch } from 'react-hook-form';
 import { FormFields } from '../recipeForm';
 import { usePricing } from '@/app/hooks/usePricing';
@@ -35,12 +35,13 @@ const Pricing: React.FC<PricingCostsProps> = ({
     calculate
   } = usePricing(setValue, getValues, ingredients);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
-  };
-
+  },[]);
+  
+  console.log("Pricing renders")
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">

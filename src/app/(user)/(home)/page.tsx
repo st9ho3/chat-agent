@@ -1,6 +1,6 @@
 
 import { auth } from '@/auth'
-import { Carrot, Euro, Percent, ShoppingBasket } from 'lucide-react'
+import { Carrot, Percent, ShoppingBasket } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import Card from '@/app/components/home/card'
@@ -33,7 +33,7 @@ const page = async() => {
       <div className='m-1 p-3 flex justify-between rounded-2xl bg-white h-full'>
         <Card title='Recipes' value={totalRecipes} Icon={ShoppingBasket} color='bg-amber-100' />
         <Card title='Ingredients' value={totalIngredients} Icon={Carrot} color='bg-red-100' />
-        <Card title='Avg Food Cost' value={avgfoodCost} Icon={Euro} color='bg-green-100' />
+        <Card title='Avg Food Cost' value={avgfoodCost} Icon={Percent} color='bg-green-100' />
         <Card title='Avg Profit Margin' value={avgProfitMargin} Icon={Percent} color='bg-purple-100' />
       </div>
     </div>

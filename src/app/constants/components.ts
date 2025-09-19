@@ -20,8 +20,8 @@ import IngredientSummary  from '../components/ingredients/ingredientsFormCompone
 import FormErrors  from '../components/ingredients/ingredientsFormComponents/formErrors';
 import IngredientModal from '@/app/components/ingredients/ingredientModal'
 import IngredientForm from "../components/ingredients/ingredientForm";
-import { IngredientSelector } from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/ingredientSelector";
-import { UnitSelector } from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/unitSelector";
+import  IngredientSelector  from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/ingredientSelector";
+import  UnitSelector  from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/unitSelector";
 import { AddRecipeIngredientButton } from "../components/recipes/recipeForm/formComponents/recipeIngredientsFormComponents/addIngredientButton";
 import RecipeIngredientForm from "../components/recipes/recipeForm/formComponents/recipeIngredientsForm";
 import PricingRadioOption from "../components/recipes/recipeForm/formComponents/pricingComponents/pricingRadioOption";

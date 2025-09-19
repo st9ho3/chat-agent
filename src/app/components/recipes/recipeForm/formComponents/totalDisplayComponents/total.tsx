@@ -15,7 +15,7 @@ const OrderTotal = ({ ingredients, watch }: { ingredients: RecipeIngredients[], 
   const profitMargin = watch('profitMargin');
   const foodCost = sellingPrice ? (totalCost / sellingPrice) * 100 : 0;
   const ingredientCount = ingredients.length;
-
+console.log("OrderTotal renders :")
   return (
     <div className="mt-1 p-2 w-full border-t border-dashed border-gray-300 flex flex-col justify-between ">
       <StatItem 

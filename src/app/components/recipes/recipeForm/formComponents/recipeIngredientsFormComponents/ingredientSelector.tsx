@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Carrot } from 'lucide-react';
 import { Ingredient } from '@/shemas/recipe';
 
@@ -9,12 +9,12 @@ interface IngredientSelectorProps {
   onKeyDown: (e: React.KeyboardEvent<HTMLSelectElement>) => void;
 }
 
-export const IngredientSelector: React.FC<IngredientSelectorProps> = ({
+ const IngredientSelector = memo(({
   ingredients,
   selectedIngredient,
   onIngredientChange,
   onKeyDown,
-}) => {
+}: IngredientSelectorProps) => {
   return (
     <div className="flex items-center gap-3">
       <Carrot className="h-5 w-5 text-gray-400 flex-shrink-0" />
@@ -35,4 +35,8 @@ export const IngredientSelector: React.FC<IngredientSelectorProps> = ({
       </select>
     </div>
   );
-};
+});
+
+IngredientSelector.displayName = 'IngredientSelector';
+
+export default IngredientSelector

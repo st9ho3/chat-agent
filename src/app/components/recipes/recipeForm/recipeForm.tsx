@@ -18,6 +18,7 @@ import {
   RecipeIngredientForm
 } from '@/app/constants/components';
 import useRecipeForm from '@/app/hooks/useRecipeForm';
+import Notification from '../../shared/notification';
 
 // Use the Zod schema as the single source of truth for the form's type
 export type FormFields = z.infer<typeof RecipeSchema>;
@@ -106,6 +107,7 @@ const RecipeForm = ({ingredients, recipe, recipeIngredients, mode, userId}: Reci
           onToggle={setIsListVisible}
           watch ={watch} 
         />}
+        {state.notification.isOpen && <Notification />}
     </>
   );
 };

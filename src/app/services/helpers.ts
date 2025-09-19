@@ -99,7 +99,7 @@ export const calculateRecipeData = (data: FormFields, recipe: Recipe | undefined
     ? data.tax
     : recipe?.tax || 0;
 
-  const foodCost = price ? newCost / price : 0;
+  const foodCost = price ? newCost / price * 100 : 0;
 
   const newPrice = (data.profitMargin !== undefined && data.profitMargin !== recipe?.profitMargin && margin !== undefined)
     ? calculateSellingPrice(newCost, margin, newTax)
