@@ -31,6 +31,7 @@ export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[
 //////////
 
 export const getTotalPrice = (ingredients: RecipeIngredients[]): number => {
+  
   return ingredients.reduce((sum, item) => {
     return sum + item.unitPrice * item.quantity;
   }, 0);

@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { RecipeIngredients } from '@/shemas/recipe';
 import { getTotalPrice } from '@/app/services/helpers';
 import {  ShoppingBasket,TrendingUp, UtensilsCrossed, BadgeCent, Banknote } from 'lucide-react';
@@ -10,12 +10,12 @@ import StatItem from './statItem';
 
 const OrderTotal = ({ ingredients, watch }: { ingredients: RecipeIngredients[], getValues: UseFormGetValues<FormFields> , setValue: UseFormSetValue<FormFields>, watch: UseFormWatch<FormFields>}) => {
 
-  const totalCost = getTotalPrice(ingredients);
+  const totalCost = useMemo(() => getTotalPrice(ingredients),[ingredients] )
   const sellingPrice = watch('sellingPrice');
   const profitMargin = watch('profitMargin');
   const foodCost = sellingPrice ? (totalCost / sellingPrice) * 100 : 0;
   const ingredientCount = ingredients.length;
-console.log("OrderTotal renders :")
+
   return (
     <div className="mt-1 p-2 w-full border-t border-dashed border-gray-300 flex flex-col justify-between ">
       <StatItem 

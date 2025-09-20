@@ -11,13 +11,13 @@ import Link from "next/link";
 import Label from "../shared/label";
 import { deleteIngredient } from "@/app/services/services";
 import useHelpers from "@/app/hooks/useHelpers";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 const IngredientsTable = ({items}: {items: Ingredient[]}) => {
   const { state } = useHomeContext();
   const {raiseNotification} = useHelpers()
   const router = useRouter()
-  const paginateItems= paginate(10, state.currentPage, items);
+  const paginateItems= useMemo( () => paginate(10, state.currentPage, items),[state.currentPage, items]);
   
   const itemsToDisplay =  paginateItems  ? paginateItems : [];
 

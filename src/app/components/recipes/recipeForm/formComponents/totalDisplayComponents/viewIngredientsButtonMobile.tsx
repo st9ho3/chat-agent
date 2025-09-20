@@ -7,7 +7,6 @@ interface Props {
 }
 
 const ViewIngredientsButtonMobile = memo(({onToggleList, ingredients}: Props) => {
-  console.log("ViewIngredientsButtonMobile")
   return (
     <button
         type='button'
