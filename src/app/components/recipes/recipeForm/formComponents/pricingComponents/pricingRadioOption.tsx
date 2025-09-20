@@ -38,7 +38,6 @@ const PricingRadioOption = memo(({
     onRadioClick(e.currentTarget.value as PricingMethod);
   },[onRadioClick]);
 
-  console.log("Pricing RadioOption renders: ", value)
   return (
     <div className="flex items-center justify-start w-full border border-dashed border-gray-300 rounded-2xl flex-grow p-2">
       <input

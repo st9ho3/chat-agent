@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Button from '../shared/sharedButton';
 import { paginationPages } from '@/app/services/helpers';
 import { useHomeContext } from '@/app/context/homeContext/homeContext';
@@ -8,7 +8,7 @@ import { Ingredient, Recipe } from '@/shemas/recipe';
 
 const Pagination = ({ items }: { items: Recipe[] | Ingredient[] }) => {
   const { state, dispatch } = useHomeContext();
-  const pages = paginationPages(items, 10);
+  const pages = useMemo( () => paginationPages(items, 10), [items]);
 
   const handlePrev = useCallback((): void => {
     if (state.currentPage > 1) {

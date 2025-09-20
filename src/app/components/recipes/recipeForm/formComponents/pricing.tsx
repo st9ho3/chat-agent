@@ -41,7 +41,6 @@ const Pricing = memo(({
     }
   },[]);
   
-  console.log("Pricing renders")
   return (
     <div className="flex flex-col gap-y-1">
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">

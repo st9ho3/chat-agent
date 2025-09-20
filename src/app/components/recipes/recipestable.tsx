@@ -11,14 +11,14 @@ import Notification from '@/app/components/shared/notification'
 import Link from "next/link";
 import Label from "../shared/label";
 import useHelpers from "@/app/hooks/useHelpers";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 
 const RecipesTable = ({items}: {items: Recipe[]}) => {
   const { state } = useHomeContext();
   const { raiseNotification } = useHelpers()
   const router = useRouter()
-  const paginateItems = paginate(10, state.currentPage, items);
+  const paginateItems = useMemo(() => paginate(10, state.currentPage, items),[state.currentPage, items]);
   const itemsToDisplay = paginateItems ? paginateItems : [];
 
   const handleDelete = useCallback(async(rec: Recipe) => {

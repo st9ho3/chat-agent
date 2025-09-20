@@ -14,7 +14,6 @@ interface Props {
 
 const RecipeIngredientsDisplay = memo(({ingredients, onRemove, getValues, setValue, watch}: Props) => {
 
-  console.log("RecipeIngredientsDisplay renders: ")
   return (
     <div className='hidden md:flex flex-col items-center border-1 border-gray-300 border-dashed rounded-lg w-full p-2 md:ml-1 mt-4 md:mt-0'>
       <div className='w-full h-2/3 overflow-auto'>
