@@ -1,6 +1,12 @@
-import { describe, test, expect } from '@jest/globals';
-import { getTotalPrice, normalizePrice } from "./helpers";
+import { describe, test, expect, jest } from '@jest/globals';
+import { calculateProfitMargin, calculateSellingPrice, getTotalPrice, normalizePrice } from "./helpers";
 import { RecipeIngredients } from "@/shemas/recipe";
+
+export const mockFunctions = jest.mock("./helpers.ts", () => ({
+  getTotalPrice: jest.fn(),
+  calculateSellingPrice: jest.fn(),
+  calculateProfitMargin: jest.fn(),
+}))
 
 export const mockIngredients: RecipeIngredients[] = [
   {
@@ -130,5 +136,88 @@ describe("normalizePrice", () => {
         expect(result).toBe(0)
     })
 
+
     
 })
+
+describe("calculateSellingPrice", () => {
+
+  test("Should return selling price", () => {
+
+    const cost = 1
+    const profitMargin = 10
+    const tax = 0.1
+
+    const result = calculateSellingPrice(cost, profitMargin, tax)
+
+    expect(result).toBe(1.25)
+  })
+
+  test("Should return undefined if denominator =< 0", () => {
+
+    const cost = 1
+    const profitMargin = 10
+    const tax = 10
+
+    const result = calculateSellingPrice(cost, profitMargin, tax)
+
+    expect(result).toBe(undefined)
+  })
+
+  test("Should return undefined if profitMargin =< 0", () => {
+
+    const cost = 1
+    const profitMargin = 0
+    const tax = 10
+
+    const result = calculateSellingPrice(cost, profitMargin, tax)
+
+    expect(result).toBe(undefined)
+  })
+})
+
+describe("calculateProfitMargin", () => {
+
+  test("Should return profit margin", () => {
+    const cost = 1;
+    const sellingPrice = 1.25;
+    const tax = 0.1;
+
+    const result = calculateProfitMargin(cost, sellingPrice, tax);
+
+    // Using toBeCloseTo because of floating-point arithmetic.
+    // The expected result is 10.
+    expect(result).toBeCloseTo(10);
+  });
+
+  test("Should return undefined if sellingPrice is 0", () => {
+    const cost = 1;
+    const sellingPrice = 0;
+    const tax = 0.1;
+
+    const result = calculateProfitMargin(cost, sellingPrice, tax);
+
+    expect(result).toBe(undefined);
+  });
+
+  test("Should return undefined if sellingPrice is negative", () => {
+    const cost = 1;
+    const sellingPrice = -1;
+    const tax = 0.1;
+
+    const result = calculateProfitMargin(cost, sellingPrice, tax);
+
+    expect(result).toBe(undefined);
+  });
+
+  test("Should return a negative profit margin if cost is greater than net revenue", () => {
+    const cost = 2;
+    const sellingPrice = 1.25;
+    const tax = 0.1;
+
+    const result = calculateProfitMargin(cost, sellingPrice, tax);
+
+    expect(result).toBeCloseTo(-70);
+  });
+});
+
