@@ -1,9 +1,10 @@
 import { describe, test, expect } from '@jest/globals';
-import { calculateProfitMargin, calculateSellingPrice, getTotalPrice, normalizePrice, paginate, paginationPages } from "./helpers";
-import { Recipe, RecipeIngredients } from "@/shemas/recipe";
+import { calculateProfitMargin, calculateSellingPrice, getTotalPrice, normalizePrice, paginate, paginationPages, transformIngredientFromDB, transformIngredientToDB, transformRecipeFromDB, transformRecipeToDB } from "./helpers";
+import { DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
 
+const date = new Date("2025-09-22")
 
-export const mockIngredients: RecipeIngredients[] = [
+const mockIngredients: RecipeIngredients[] = [
   {
     recipeId: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
     ingredientId: "12345678-90ab-cdef-1234-567890abcdef",
@@ -42,7 +43,29 @@ export const mockIngredients: RecipeIngredients[] = [
   },
 ];
 
-export const mockRecipes: Recipe[] = [
+const mockIngredient = {
+  "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+  "icon": "https://example.com/icons/flour.png",
+  "name": "All-Purpose Flour",
+  "unit": "kg",
+  "unitPrice": 1.55,
+  "quantity": 25,
+  "usage": "Used in various baked goods like bread and cakes.",
+  "userId": "user_xyz789"
+}
+
+const mockDBIngredient = {
+  "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+  "icon": "https://example.com/icons/flour.png",
+  "name": "All-Purpose Flour",
+  "unit": "kg",
+  "unitPrice": "1.55",
+  "quantity": "25",
+  "usage": "Used in various baked goods like bread and cakes.",
+  "userId": "user_xyz789"
+}
+
+const mockRecipes: Recipe[] = [
   {
     "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
     "title": "Grilled Salmon with Asparagus",
@@ -114,6 +137,37 @@ export const mockRecipes: Recipe[] = [
     "userId": "user_foodie007"
   }
 ];
+
+const mockDbRecipe: DBRecipe = {
+  "id": "e446554b-d779-45e0-b615-1a89c379a957",
+  "title": "Spicy Thai Green Curry",
+  "totalCost": "15.75",
+  "createdBy": "user_abc123",
+  "dateCreated": "2025-09-22",
+  "category": "main",
+  "tax": "0.08",
+  "imgPath": "https://example.com/images/green-curry.jpg",
+  "sellingPrice": "25",
+  "profitMargin": "9.25",
+  "foodCost": "13.5",
+  "userId": "user_abc123"
+}
+const mockRecipe: Recipe = {
+  "id": "e446554b-d779-45e0-b615-1a89c379a957",
+  "title": "Spicy Thai Green Curry",
+  "totalCost": 15.75,
+  "createdBy": "user_abc123",
+  "dateCreated": date,
+  "category": "main",
+  "tax": 0.08,
+  "imgPath": "https://example.com/images/green-curry.jpg",
+  "sellingPrice": 25.00,
+  "profitMargin": 9.25,
+  "foodCost": 13.50,
+  "userId": "user_abc123"
+}
+
+
 
 describe("getTotalPrice", () => {
 
@@ -327,5 +381,47 @@ describe("paginationPages", () => {
     const result = paginationPages(items, itemsPerPage)
 
     expect(result).toStrictEqual([1])
+  })
+})
+
+/////////
+
+describe("transformRecipeFromDB", () => {
+  
+  test("Should return recipe: Recipe with numbered keys", () => {
+
+    const result = transformRecipeFromDB(mockDbRecipe)
+
+    expect(result).toStrictEqual(mockRecipe)
+  })
+})
+
+describe("transformRecipeToDB", () => {
+  
+  test("Should return recipe: DBRecipe with string keys", () => {
+
+    const result = transformRecipeToDB(mockRecipe)
+
+    expect(result).toStrictEqual(mockDbRecipe)
+  })
+})
+
+describe("transformIngredientFromDB", () => {
+
+  test("Should return ingredient with numbered Keys", () => {
+
+    const result = transformIngredientFromDB(mockDBIngredient)
+
+    expect(result).toStrictEqual(mockIngredient)
+  })
+})
+
+describe("transformIngredientToDB", () => {
+
+  test("Should return ingredient with string Keys", () => {
+
+    const result = transformIngredientToDB(mockIngredient)
+
+    expect(result).toStrictEqual(mockDBIngredient)
   })
 })
