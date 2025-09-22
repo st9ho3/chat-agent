@@ -1,36 +1,171 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CostWise
 
-## Getting Started
+CostWise is a web application designed to help users manage their recipes and ingredients, with a focus on cost management and profitability. It allows users to track the cost of ingredients, calculate the total cost of recipes, and determine selling prices based on desired profit margins.
 
-First, run the development server:
+## 🚀 Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  * **Live Site:** [https://your-project-demo.com](https://your-project-demo.com)
+  * **Repository:** [https://github.com/yourusername/project-name](https://github.com/yourusername/project-name)
+
+
+-----
+
+## 🎯 About
+
+CostWise is a comprehensive solution for managing recipes and ingredients, with a strong emphasis on cost analysis and profitability. This application was built to provide a seamless experience for users to track ingredient costs, calculate recipe expenses, and strategically set selling prices to achieve desired profit margins. The primary users for this application are chefs, home cooks, and small business owners in the food industry.
+
+-----
+
+## ✨ Features
+
+  * ✅ **Recipe Management:** Create, edit, and delete recipes with detailed information including title, category, and ingredients.
+  * ✅ **Ingredient Tracking:** Manage a list of ingredients with their unit prices and quantities.
+  * ✅ **Cost Calculation:** Automatically calculate the total cost of a recipe based on the ingredients used.
+  * ✅ **Pricing and Profitability:** Set selling prices based on either a fixed price or a desired profit margin.
+  * ✅ **Authentication:** Secure user authentication with credentials and Google OAuth.
+  * ✅ **File Uploads:** Upload images for recipes.
+
+-----
+
+## 🛠️ Tech Stack
+
+### Frontend:
+
+  * **React 19**
+  * **Next.js 15**
+  * **TypeScript**
+  * **Tailwind CSS**
+  * **Context API** (via `useHomeContext`)
+
+### Backend:
+
+  * **Next.js API Routes**
+  * **PostgreSQL** (with `drizzle-orm`)
+
+### Tools & Services:
+
+  * **Git & GitHub**
+  * **Vercel**
+  * **Jest**
+  * **ESLint**
+  * **NextAuth.js**
+
+-----
+
+## 🚀 Installation
+
+### Prerequisites
+
+  * Node.js (v18 or higher)
+  * npm or yarn
+
+### Local Development
+
+1.  **Clone the repository**
+
+    ```bash
+    git clone https://github.com/yourusername/project-name.git
+    ```
+
+2.  **Navigate to project directory**
+
+    ```bash
+    cd project-name
+    ```
+
+3.  **Install dependencies**
+
+    ```bash
+    npm install
+    ```
+
+4.  **Set up environment variables**
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Edit `.env` with your configuration.
+
+5.  **Start development server**
+
+    ```bash
+    npm run dev
+    ```
+
+### Environment Variables
+
+```
+DATABASE_URL=your_database_url
+AUTH_GOOGLE_ID=your_google_id
+AUTH_GOOGLE_SECRET=your_google_secret
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-----
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💡 Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Basic Usage
 
-## Learn More
+After starting the development server, you can create an account, add ingredients with their prices, and then create recipes using those ingredients. The app will automatically calculate the cost of the recipe and help you determine a selling price.
 
-To learn more about Next.js, take a look at the following resources:
+-----
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 API Documentation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Authentication
 
-## Deploy on Vercel
+  * **`POST /api/auth/signup`**: Creates a new user account.
+  * **`POST /api/auth/signin`**: Signs in a user.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  * **`GET /api/recipes`**: Retrieve all recipes for the authenticated user.
+  * **`POST /api/recipes`**: Create a new recipe.
+  * **`GET /api/recipes/:id`**: Get a recipe by ID.
+  * **`PATCH /api/recipes/:id`**: Update a recipe by ID.
+  * **`DELETE /api/recipes/:id`**: Delete a recipe by ID.
+  * 
+  * **`POST /api/upload`**: Upload an image for a recipe.
+
+ ----
+    
+  * **`GET /api/ingredients`**: Retrieve all ingredients for the authenticated user.
+  * **`POST /api/ingredients`**: Create a new ingredient.
+  * **`GET /api/ingredients/:id`**: Get an ingredient by ID.
+  * **`PATCH /api/ingredients/:id`**: Update an ingredient by ID.
+  * **`DELETE /api/ingredients/:id`**: Delete an ingredient by ID.
+  
+
+-----
+
+## 📸 Screenshots
+
+**Desktop View**
+
+**Mobile View**
+
+-----
+
+## 🚧 Future Improvements
+
+  * [ ] Add user authentication with more OAuth providers.
+  * [ ] Implement real-time notifications for when an ingredient is running low.
+  * [ ] Add comprehensive test coverage with Jest and React Testing Library.
+
+-----
+
+
+## 📄 License
+
+This project is licensed under the MIT License - see the `LICENSE` file for details.
+
+-----
+
+## 👤 Contact
+
+  * **Panagiotis Stachoulis**
+  * **Email:** stahos@windowslive.com
+  * **LinkedIn:** [linkedin.com/in/yourprofile](https://www.google.com/search?q=https://linkedin.com/in/yourprofile)
+  * **Portfolio:** pstachoulis.com
+  * **GitHub:** @st9ho3
