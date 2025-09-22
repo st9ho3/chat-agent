@@ -4,8 +4,8 @@ CostWise is a web application designed to help users manage their recipes and in
 
 ## 🚀 Live Demo
 
-  * **Live Site:** [https://your-project-demo.com](https://your-project-demo.com)
-  * **Repository:** [https://github.com/yourusername/project-name](https://github.com/yourusername/project-name)
+  * **Live Site:** [https://your-project-demo.com](https://chat-agent-rosy.vercel.app/)
+  * **Repository:** [https://github.com/yourusername/project-name](https://github.com/st9ho3/costwise.git)
 
 
 -----
@@ -166,6 +166,6 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 
   * **Panagiotis Stachoulis**
   * **Email:** stahos@windowslive.com
-  * **LinkedIn:** [linkedin.com/in/yourprofile](https://www.google.com/search?q=https://linkedin.com/in/yourprofile)
+  * **LinkedIn:** [linkedin.com/in/yourprofile](https://www.linkedin.com/in/panagiotis-stachoulis-586605291?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B1QZJsuE%2FQxWX7HDghoh9yQ%3D%3D)
   * **Portfolio:** pstachoulis.com
   * **GitHub:** @st9ho3
