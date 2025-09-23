@@ -1,4 +1,5 @@
 # CostWise
+<img width="1264" height="623" alt="Screenshot 2025-09-23 at 8 31 37 PM" src="https://github.com/user-attachments/assets/c22030a8-1ad4-40c5-8bf3-48a7002868ac" />
 
 CostWise is a web application designed to help users manage their recipes and ingredients, with a focus on cost management and profitability. It allows users to track the cost of ingredients, calculate the total cost of recipes, and determine selling prices based on desired profit margins.
 
