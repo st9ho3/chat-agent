@@ -139,18 +139,11 @@ After starting the development server, you can create an account, add ingredient
 
 -----
 
-## 📸 Screenshots
-
-**Desktop View**
-
-**Mobile View**
-
------
-
 ## 🚧 Future Improvements
 
   * [ ] Add user authentication with more OAuth providers.
   * [ ] Implement real-time notifications for when an ingredient is running low.
+  * [ ] Add a chatUI with funtionality fot searching.
   * [ ] Add comprehensive test coverage with Jest and React Testing Library.
 
 -----
