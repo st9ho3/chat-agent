@@ -1,3 +1,9 @@
+/**
+ * Behavior:
+ * - Checks if the user has an active session using NextAuth's `auth()` function.
+ * - If a session exists (user is already signed in), redirects them to the home page ('/').
+ * - If no session exists, renders the sign-in page with a form and a background image (on large screens only).
+ */
 import React from 'react';
 import Image from 'next/image';
 import { auth } from '@/auth';

@@ -1,3 +1,10 @@
+/**
+ * - Requires an active user session; redirects to "/signin" if the user is not authenticated.
+ * - Accepts a dynamic route parameter `id` representing the ingredient to edit.
+ * - Fetches the ingredient data by ID using `IngredientService`.
+ * - Renders a modal overlay (`IngredientModal` in "edit" mode) centered on the screen, displaying the ingredient form for the authenticated user.
+ * - Passes the user ID and ingredient data to the modal for editing context.
+ */
 import React from 'react'
 import { IngredientModal } from '@/app/constants/components'
 import { IngredientService } from '@/app/services/ingredientService'

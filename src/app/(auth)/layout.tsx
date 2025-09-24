@@ -1,3 +1,9 @@
+/**
+ * - Defines a root layout for authentication-related pages (e.g., sign-in, sign-up).
+ * - Sets shared metadata including page title and description.
+ * - Applies global styles via `../globals.css`.
+ * - Wraps child pages in a semantic HTML structure with a main container that prevents vertical overflow.
+ */
 import type { Metadata } from "next";
 import "../globals.css";
 

@@ -1,3 +1,8 @@
+/**
+ * - Checks if the user has an active session using NextAuth's `auth()` function.
+ * - If a session exists (user is already signed in), redirects them to the home page ('/').
+ * - If no session exists, renders the sign-up page with a registration form and a background image visible only on large screens.
+ */
 import SignUpForm from '@/app/components/auth/signUpForm'
 import React from 'react';
 import Image from 'next/image';
