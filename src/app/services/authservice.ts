@@ -1,3 +1,18 @@
+/**
+ * AuthService - Business logic layer for user authentication and registration
+ * 
+ * This service class handles user authentication workflows including email/password registration,
+ * email lookup, and Google OAuth user creation. It coordinates between the AuthRepository
+ * and external utilities (like bcrypt for password hashing) to implement secure authentication
+ * business rules and validation logic.
+ * 
+ * Features:
+ * - User registration with password confirmation validation
+ * - Email uniqueness enforcement
+ * - Secure password hashing using bcrypt
+ * - Google OAuth user creation
+ * - Input validation using Zod schemas
+ */
 import { SignUpCredentials, signUpCredentialsSchema, User } from "@/shemas/auth";
 import { AUTHService } from "@/types/auth";
 import { AuthRepository } from "../repositories/authRepository";

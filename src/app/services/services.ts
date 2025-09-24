@@ -1,3 +1,17 @@
+/**
+ * Service functions for API communication and data validation in the recipe and ingredient management system.
+ * 
+ * This module provides:
+ * - HTTP client functions for CRUD operations on recipes and ingredients (create, update, delete)
+ * - Zod-based validation utilities to ensure data integrity before sending to the backend
+ * - A mock messaging utility for local storage-based chat simulation (used for demonstration)
+ * - Type-safe request/response handling
+ * 
+ * These functions act as the bridge between the frontend UI (forms, buttons) and the backend API,
+ * ensuring that only valid, well-structured data is transmitted and that user actions trigger
+ * the appropriate server-side operations.
+ */
+
 import { uid } from "uid";
 import { FormFields } from "../components/recipes/recipeForm/recipeForm";
 import { Ingredient, IngredientSchema, Recipe, RecipeIngredients, RecipeIngredientsSchema, RecipeSchema } from "@/shemas/recipe";
@@ -61,18 +75,6 @@ export const sendRecipeToUpdate = async (data: FormFields, addedIngredients: Rec
   return response;
 };
 
-/* export const getRecipesFromServer = async () => {
-  const response = await fetch("http://localhost:3000/api/recipes");
-  const recipes = await response.json();
-  return recipes.body;
-};
-
-export const getRecipeFromServer = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/recipes/${id}`);
-  const recipe = await response.json();
-  return recipe;
-}; */
-
 export const deleteRecipesFromServer = async (recipeId: string) => {
   const response = await fetch(`api/recipes/${recipeId}`, {
     method: "DELETE",
@@ -122,7 +124,6 @@ export const updateIngredient = async (ingredient: Ingredient) => {
   }
 }
 
-// src/app/services/services.ts
 
 export const deleteIngredient = async (id: string) => {
   
