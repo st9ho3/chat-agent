@@ -1,5 +1,5 @@
 /**
- * @fileoverview IngredientRepository - Data access layer for ingredient management
+ * IngredientRepository - Data access layer for ingredient management
  * 
  * This repository class provides CRUD operations and analytics for ingredients in the recipe system.
  * It implements the IIngredientRepository interface and handles all database interactions
@@ -12,7 +12,6 @@
  * - Usage tracking with increment/decrement operations
  * - Ingredient analytics and statistics
  * - Transaction support for atomic operations
- * - Comprehensive error handling with proper error propagation
  */
 
 import { DBIngredient, Ingredient } from "@/shemas/recipe";
@@ -24,12 +23,7 @@ import { countDistinct, eq, sql } from "drizzle-orm";
 
 export class IngredientRepository implements IIngredientRepository {
 
-    /**
-     * Retrieves all ingredients for a specific user
-     * @param {string} userId - The ID of the user whose ingredients to fetch
-     * @returns {Promise<Ingredient[] | undefined>} Array of ingredients or undefined on error
-     * @throws {Error} When database operation fails
-     */
+    
     async findAll(userId: string): Promise<Ingredient[] | undefined> {
         try {
             const dbIngredients = await db
@@ -45,12 +39,7 @@ export class IngredientRepository implements IIngredientRepository {
         }
     }
 
-    /**
-     * Retrieves a single ingredient by its ID
-     * @param {string} id - The ID of the ingredient to fetch
-     * @returns {Promise<Ingredient | undefined>} The ingredient or undefined if not found/error
-     * @throws {Error} When database operation fails
-     */
+ 
     async findById(id: string): Promise<Ingredient | undefined> {
         try {
             const [dbIngredient] = await db
@@ -70,12 +59,7 @@ export class IngredientRepository implements IIngredientRepository {
         }
     }
 
-    /**
-     * Creates a new ingredient in the database
-     * @param {DBIngredient} ingredient - The ingredient data to insert
-     * @returns {Promise<{ ingredientId: string } | undefined>} The created ingredient's ID or undefined on error
-     * @throws {Error} When database operation fails
-     */
+  
     async create(ingredient: DBIngredient): Promise<{ ingredientId: string } | undefined> {
         try {
             const [ingredientID] = await db
@@ -92,13 +76,6 @@ export class IngredientRepository implements IIngredientRepository {
         }
     }
 
-    /**
-     * Updates an existing ingredient in the database
-     * @param {DBIngredient} ingredient - The ingredient data to update
-     * @param {Database} [tx] - Optional transaction object for atomic operations
-     * @returns {Promise<{ ingredientId: string } | undefined>} The updated ingredient's ID or undefined on error
-     * @throws {Error} When database operation fails
-     */
     async update(ingredient: DBIngredient, tx?: Database): Promise<{ ingredientId: string } | undefined> {
         const dbConnection = tx || db;
 
@@ -119,12 +96,6 @@ export class IngredientRepository implements IIngredientRepository {
         }
     }
 
-    /**
-     * Deletes an ingredient from the database
-     * @param {string} id - The ID of the ingredient to delete
-     * @returns {Promise<{ ingredientId: string } | undefined>} The deleted ingredient's ID or undefined on error
-     * @throws {Error} When database operation fails
-     */
     async delete(id: string): Promise<{ ingredientId: string } | undefined> {
         try {
             const [ingredientId] = await db
@@ -141,14 +112,7 @@ export class IngredientRepository implements IIngredientRepository {
         }
     }
 
-    /**
-     * Updates the usage count of an ingredient (increment or decrement)
-     * @param {string} id - The ID of the ingredient to update usage for
-     * @param {Database} tx - Transaction object for atomic operations
-     * @param {"+" | "-"} action - Whether to increment (+) or decrement (-) the usage count
-     * @returns {Promise<undefined>} Nothing returned, operation is fire-and-forget
-     * @throws {Error} When database operation fails
-     */
+
     async updateUsage(id: string, tx: Database, action: "+" | "-"): Promise<undefined> {
         try {
             await tx
@@ -163,12 +127,6 @@ export class IngredientRepository implements IIngredientRepository {
         }
     }
 
-    /**
-     * Retrieves analytics data for ingredients belonging to a specific user
-     * @param {string} userId - The ID of the user to get analytics for
-     * @returns {Promise<IngredientAnalytics | undefined>} Analytics data or undefined on error
-     * @throws {Error} When database operation fails
-     */
     async getIngredientAnalytics(userId: string): Promise<IngredientAnalytics | undefined> {
         try {
             const [ingredientAnalytics] = await db
