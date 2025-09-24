@@ -1,5 +1,5 @@
 /**
- * @fileoverview Recipe Repositories - Data access layer for recipe and recipe-ingredient management
+ * Recipe Repositories - Data access layer for recipe and recipe-ingredient management
  * 
  * This module contains two repository classes that handle database operations for recipes and 
  * recipe-ingredient relationships:
@@ -18,9 +18,7 @@
  * Features:
  * - Full CRUD operations with transaction support
  * - Recipe analytics including profit margins and food costs
- * - Complex queries with nested ingredient relationships
- * - Ingredient existence validation and smart assignment
- * - Comprehensive error handling with proper error propagation
+ * - Ingredient existence validation and assignment
  */
 
 import { DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
@@ -37,12 +35,7 @@ import { RecipeWithQuery } from "@/types/specialTypes";
 
 export class RecipeRepository implements IRecipeRepository {
 
-    /**
-     * Finds a recipe by its ID with nested ingredient relationships
-     * @param {string} id - The ID of the recipe to fetch
-     * @returns {Promise<RecipeWithQuery | undefined>} Recipe with nested ingredients or undefined if not found
-     * @throws {Error} When database operation fails
-     */
+   
     async findById(id: string): Promise<RecipeWithQuery | undefined> {
         try {
             const recipe = await db.query.recipesTable.findFirst({
@@ -63,12 +56,7 @@ export class RecipeRepository implements IRecipeRepository {
         }
     }
 
-    /**
-     * Finds all recipes that contain a specific ingredient
-     * @param {string} id - The ID of the ingredient to search for
-     * @returns {Promise<DBRecipe[] | undefined>} Array of recipes containing the ingredient
-     * @throws {Error} When database operation fails
-     */
+   
     async findAllByIngredientId(id: string): Promise<DBRecipe[] | undefined> {
         try {
             const recipes = await db
@@ -84,12 +72,7 @@ export class RecipeRepository implements IRecipeRepository {
         }
     }
 
-    /**
-     * Retrieves all recipes for a specific user
-     * @param {string} userId - The ID of the user whose recipes to fetch
-     * @returns {Promise<Recipe[] | undefined>} Array of user's recipes or empty array on error
-     * @throws {Error} When database operation fails
-     */
+  
     async findAll(userId: string): Promise<Recipe[] | undefined> {
         try {
             const dbRecipes = await db
@@ -105,13 +88,7 @@ export class RecipeRepository implements IRecipeRepository {
         }
     }
 
-    /**
-     * Creates a new recipe if it doesn't already exist
-     * @param {Recipe} recipe - The recipe data to create
-     * @param {Database} tx - Transaction object for atomic operations
-     * @returns {Promise<string | undefined>} The created recipe's ID or undefined if already exists/error
-     * @throws {Error} When database operation fails
-     */
+    
     async create(recipe: Recipe, tx: Database): Promise<string | undefined> {
         try {
             const foundRecipe = await checkIfRecipeExists(recipe.title, recipe.userId);
@@ -138,14 +115,7 @@ export class RecipeRepository implements IRecipeRepository {
         }
     }
 
-    /**
-     * Updates an existing recipe
-     * @param {string} id - The ID of the recipe to update
-     * @param {Recipe} recipe - The updated recipe data
-     * @param {Database} [tx] - Optional transaction object for atomic operations
-     * @returns {Promise<{id: string} | undefined>} The updated recipe's ID or undefined on error
-     * @throws {Error} When database operation fails
-     */
+   
     async update(id: string, recipe: Recipe, tx?: Database): Promise<{id: string} | undefined> {
         const dbConnection = tx || db;
         const recipeToDB = transformRecipeToDB(recipe);
@@ -166,13 +136,7 @@ export class RecipeRepository implements IRecipeRepository {
         }
     }
 
-    /**
-     * Deletes a recipe from the database
-     * @param {string} id - The ID of the recipe to delete
-     * @param {Database} tx - Transaction object for atomic operations
-     * @returns {Promise<{id: string} | undefined>} The deleted recipe's ID or undefined on error
-     * @throws {Error} When database operation fails
-     */
+    
     async delete(id: string, tx: Database): Promise<{id: string} | undefined> {
         try {
             const [deleteReceipt] = await tx
@@ -190,12 +154,7 @@ export class RecipeRepository implements IRecipeRepository {
         }
     }
 
-    /**
-     * Retrieves analytics data for recipes belonging to a specific user
-     * @param {string} userId - The ID of the user to get analytics for
-     * @returns {Promise<RecipeAnalytics | undefined>} Analytics data including averages and counts
-     * @throws {Error} When database operation fails
-     */
+    
     async getRecipesAnalytics(userId: string): Promise<RecipeAnalytics | undefined> {
         try {
             const [recipeAnalytics] = await db 
@@ -217,14 +176,7 @@ export class RecipeRepository implements IRecipeRepository {
 
 export class RecipeIngredientsRepository implements IRecipeIngredientsRepository {
 
-    /**
-     * Creates a recipe-ingredient relationship with smart ingredient assignment
-     * @param {RecipeIngredients} recipeIngredient - The recipe-ingredient data to create
-     * @param {string} userId - The ID of the user creating the relationship
-     * @param {Database} tx - Transaction object for atomic operations
-     * @returns {Promise<{id: string | null}>} The assigned ingredient ID
-     * @throws {Error} When database operation fails
-     */
+    
     async create(recipeIngredient: RecipeIngredients, userId: string, tx: Database): Promise<{id: string | null}> {
         try {
             const foundIngredient = await checkIfIngredientExists(recipeIngredient.name, userId);
@@ -256,14 +208,7 @@ export class RecipeIngredientsRepository implements IRecipeIngredientsRepository
         }
     }
 
-    /**
-     * Deletes a recipe-ingredient relationship
-     * @param {string} recipeId - The ID of the recipe
-     * @param {string} ingredientId - The ID of the ingredient
-     * @param {Database} [tx] - Optional transaction object for atomic operations
-     * @returns {Promise<{ ingredientId: string | null } | undefined>} The removed ingredient ID or undefined on error
-     * @throws {Error} When database operation fails
-     */
+    
     async delete(recipeId: string, ingredientId: string, tx?: Database): Promise<{ ingredientId: string | null } | undefined> {
         const dbConnection = tx || db;
 
