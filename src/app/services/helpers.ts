@@ -1,11 +1,20 @@
+/**
+ * Utility functions for recipe and ingredient management, pagination, pricing calculations,
+ * and data transformation between database and application layers.
+ * 
+ * This module provides:
+ * - Pagination helpers for recipes and ingredients
+ * - Core pricing logic including total cost, selling price, and profit margin calculations
+ * - Unit-aware price normalization for consistent cost tracking
+ * - Data transformation utilities to convert between database (string-based) and application (number/date-based) representations
+ * - Recipe data recalculation logic that reconciles form inputs with existing recipe data
+ * 
+ * These functions are used across the application to ensure consistent data handling,
+ * financial calculations, and pagination of recipe and ingredient lists.
+ */
 import { DBIngredient, DBRecipe, Ingredient, Recipe, RecipeIngredients, Unit } from "@/shemas/recipe";
 import { RecipeIngredientFromDB } from "@/types/specialTypes";
 import { FormFields } from "../hooks/useRecipeForm";
-
-
-
-
-//////////////
 
 
 export const paginate = <T>(itemsPerPage: number, page: number, items: T[] ): T[]=> {

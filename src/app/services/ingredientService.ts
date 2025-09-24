@@ -1,3 +1,18 @@
+/**
+ * IngredientService - Business logic layer for ingredient management
+ * 
+ * This service class orchestrates ingredient-related operations by coordinating between
+ * the IngredientRepository, RecipeRepository, and RecipeService. It enforces business rules
+ * such as ingredient uniqueness validation, data integrity through Zod validation, and
+ * cascading updates to dependent recipes when an ingredient is modified.
+ * 
+ * Features:
+ * - Ingredient creation with duplicate prevention and validation
+ * - Ingredient updates with transactional consistency across related recipes
+ * - Full CRUD operations delegated to the repository layer
+ * - Ingredient analytics aggregation
+ * - Automatic recipe recalculation when ingredient data changes
+ */
 import { IIngredientService } from "@/types/services";
 import { IngredientRepository } from "../repositories/ingredientRepository";
 import { Ingredient } from "@/shemas/recipe";

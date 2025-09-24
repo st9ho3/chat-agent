@@ -1,3 +1,20 @@
+/**
+ * RecipeService - Business logic layer for recipe management
+ * 
+ * This service class handles complex recipe operations by coordinating between multiple repositories
+ * (RecipeRepository, RecipeIngredientsRepository, and IngredientRepository). It ensures data
+ * consistency through database transactions and enforces business rules for recipe creation,
+ * updates, and deletion—including cascading effects on ingredient usage counts and automatic
+ * recalculation of pricing metrics when underlying ingredient costs change.
+ * 
+ * Features:
+ * - Transactional recipe creation with ingredient assignment and usage tracking
+ * - Atomic recipe updates supporting added/removed ingredients with validation
+ * - Cascading ingredient usage count adjustments on recipe changes
+ * - Automatic profit margin and cost recalculation when ingredient prices are updated
+ * - Full CRUD operations with data validation
+ * - Recipe analytics aggregation for user dashboards
+ */
 import { DBIngredient, DBRecipe, Recipe, RecipeIngredients } from "@/shemas/recipe";
 import { CreateRequest, CreateResponse, IRecipeService } from "@/types/services";
 import { db } from "@/db/db";
