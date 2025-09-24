@@ -1,9 +1,8 @@
 /**
- * @fileoverview This custom React hook manages the state and logic for a recipe form.
+ * This custom React hook manages the state and logic for a recipe form.
  * It handles both creating a new recipe and editing an existing one, including form validation
  * with Zod, managing temporary ingredients, calculating pricing details, and handling
  * form submission, including file uploads and API calls.
- * * @description
  * The `useRecipeForm` hook orchestrates the entire lifecycle of a recipe form. It leverages
  * `react-hook-form` for efficient form management and validation. The hook dynamically
  * handles form initialization based on the `mode` prop (create or edit). It also
@@ -12,8 +11,6 @@
  * submitting data to the appropriate backend service. It uses a separate `useFileUpload`
  * hook and a context (`useHomeContext`) to manage file upload state and notifications.
  */
-/**
-*/
 import { useCallback, useState } from 'react';
 import { RecipeIngredients, RecipeSchema } from '@/shemas/recipe';
 import { v4 as uuidv4 } from "uuid";

@@ -1,8 +1,7 @@
 "use client"
 /**
- * @fileoverview This custom React hook manages the authentication process for a Next.js application,
+ * This custom React hook manages the authentication process for a Next.js application,
  * specifically for user sign-in.
- * @description
  * The `useSignIn` hook provides the necessary state management and functions for a sign-in form.
  * It integrates with `react-hook-form` for efficient form handling, `zod` for robust data validation,
  * and `next-auth` for credential-based authentication. The hook handles the form submission

@@ -1,16 +1,11 @@
 /**
- * @fileoverview This file exports a custom React hook `useIngredientForm` for managing the state and logic of an ingredient form. It supports both creation and editing modes.
- * @module hooks/useIngredientForm
- * @description A custom hook that handles form state, validation, and submission for a recipe ingredient. It uses `useState` to manage form fields like name, quantity, unit, and price, as well as UI state like loading and errors. The hook integrates with Zod for schema validation and interacts with a service layer to send or update ingredient data on the server. It also uses the `next/navigation` router to redirect after a successful submission and a custom `useHelpers` hook to display notifications.
- * @dependencies
- * - React: The `useState` hook for state management.
- * - next/navigation: The `useRouter` hook for programmatic navigation.
- * - uuid: For generating unique IDs for new ingredients.
- * - '@/shemas/recipe': Contains the Zod schema for ingredient validation.
- * - '@/app/services/helpers': A utility function for normalizing price data.
- * - ../services/services: Functions for interacting with the backend API to create or update ingredients.
- * - ./useHelpers: A custom hook for raising user notifications.
- * @exports {object} An object containing all necessary state variables and handler functions for a form component, including `quantity`, `name`, `unit`, `price`, `errors`, and their corresponding `handle` and `set` functions.
+ * - Manages form state and submission logic for creating or editing recipe ingredients.
+ * - Initializes form fields based on mode (`create` or `edit`) and preloaded ingredient data.
+ * - Validates input using Zod schema and displays validation errors.
+ * - Normalizes price based on unit and quantity before submission.
+ * - Integrates with backend services to create or update ingredients.
+ * - Shows user notifications via `useHelpers` and redirects to `/ingredients` on success.
+ * - Supports keyboard-driven submission (Enter key) and dynamic price input handling.
  */
 "use client"
 import { useCallback, useState } from 'react';

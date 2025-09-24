@@ -1,7 +1,6 @@
 /**
- * @fileoverview This custom React hook manages the state and logic for an ingredient form,
+ * This custom React hook manages the state and logic for an ingredient form,
  * specifically for adding ingredients to a recipe.
- * @description
  * The `useRecipeIngredientsForm` hook handles user input for selecting an ingredient,
  * specifying its quantity and unit, and validating the data before adding it to a temporary
  * list. It also dynamically determines compatible units based on the selected ingredient's

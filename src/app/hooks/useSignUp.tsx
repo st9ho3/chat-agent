@@ -1,6 +1,5 @@
 /**
- * @fileoverview This custom React hook manages the user sign-up process for a Next.js application.
- * @description
+ * This custom React hook manages the user sign-up process for a Next.js application.
  * The `useSignUp` hook handles the state and logic for a user registration form. It uses
  * `react-hook-form` for form management, `zod` for validation against the `signUpCredentialsSchema`,
  * and facilitates communication with a backend API endpoint (`/api/auth/signup`) to create a new user.
