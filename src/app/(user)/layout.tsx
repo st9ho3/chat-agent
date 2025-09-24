@@ -1,3 +1,12 @@
+/**
+ * - Requires an active user session; redirects to "/signin" if the user is not authenticated.
+ * - Serves as the root layout for authenticated routes, wrapping all child pages in essential providers and UI components.
+ * - Integrates `SessionProvider` to make the session available to client components using NextAuth.
+ * - Provides global state via `HomeContextProvider`.
+ * - Renders a persistent sidebar navigation (`Sidebar`) and a main content area for child pages.
+ * - Includes a floating chat interface (`Chat`) outside the main layout flow.
+ * - Applies global styles from `../globals.css` and sets page metadata (title and description).
+ */
 import type { Metadata } from "next";
 import "../globals.css";
 import HomeContextProvider from "../context/homeContext/homeContext";

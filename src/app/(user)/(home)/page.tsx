@@ -1,4 +1,9 @@
-
+/**
+ * - Requires an active user session; redirects to "/signin" if the user is not authenticated.
+ * - Fetches analytics data for the authenticated user, including total recipes, total ingredients, average food cost, and average profit margin.
+ * - Displays a header with session context and a summary dashboard of key metrics using styled cards with icons.
+ * - Uses service classes (`RecipeService`, `IngredientService`) to retrieve user-specific analytics from the backend.
+ */
 import { auth } from '@/auth'
 import { Carrot, Percent, ShoppingBasket } from 'lucide-react'
 import { redirect } from 'next/navigation'
