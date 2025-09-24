@@ -1,9 +1,8 @@
 /**
- * @fileoverview This custom React hook manages the pricing logic for a recipe form.
+ * This custom React hook manages the pricing logic for a recipe form.
  * It provides state and functions for handling user selections of pricing methods (e.g., by
  * selling price or by profit margin), calculating values based on the chosen method, and
  * managing input field states.
- * * @description
  * The `usePricing` hook abstracts the complex logic for calculating and updating recipe
  * pricing, including profit margins and selling prices. It relies on `react-hook-form`
  * to interact with form fields and uses helper functions to perform the core calculations.

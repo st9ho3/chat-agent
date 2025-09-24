@@ -1,12 +1,8 @@
 /**
- * @fileoverview This custom React hook, `useFileUpload`, provides functionality for uploading files to a server using a Vercel Blob storage API.
- * @module hooks/useFileUpload
- * @description A custom hook that encapsulates the logic for file uploads, including managing loading states, handling errors, and interacting with a serverless function (`/api/upload`). It leverages the `useState` hook for state management and an external `useHelpers` hook for notifications.
- * @dependencies
- * - React: Specifically the `useState` hook for state management.
- * - @vercel/blob: The `PutBlobResult` type for type-safe handling of the API response.
- * - ./useHelpers: A custom hook for raising user notifications.
- * @exports {object} An object containing the `uploadFile` and `handleFileUpload` functions, as well as `isLoading` and `error` state variables.
+ * - Provides a reusable hook for uploading files to Vercel Blob storage via a `/api/upload` endpoint.
+ * - Manages upload state (loading, error) and returns the uploaded file’s public URL on success.
+ * - Integrates with `useHelpers` to display user notifications for errors.
+ * - Exposes both an `uploadFile` function and a `handleFileUpload` wrapper for convenience.
  */
 "use client"
 import { useState } from 'react';
@@ -16,11 +12,7 @@ export const useFileUpload = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { raiseNotification } = useHelpers();
-  /**
-   * Uploads a file to the server.
-   * @param {File} file - The file to upload.
-   * @returns {Promise<void>}
-   */
+  
   const uploadFile = async (file: File) => {
     setIsLoading(true);
     setError(null);
