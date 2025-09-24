@@ -7,6 +7,7 @@
  * - Includes a floating chat interface (`Chat`) outside the main layout flow.
  * - Applies global styles from `../globals.css` and sets page metadata (title and description).
  */
+import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next";
 import "../globals.css";
 import HomeContextProvider from "../context/homeContext/homeContext";
@@ -43,6 +44,7 @@ export default async function RootLayout({
             <main className="flex-1 overflow-y-hidden">
               {/* <Header /> */}
               {children}
+              <Analytics/>
             </main>
           </div>
           <Chat />
